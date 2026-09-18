@@ -1,0 +1,296 @@
+{
+  "runtime": {
+    "health_status": 200,
+    "openapi_status": 200
+  },
+  "live_matrix": [
+    {
+      "test": "BF-1",
+      "event_id": "EVT-SIM-160CAFCB",
+      "patient_id": "P003",
+      "logins": 1,
+      "requests": 2,
+      "records": 10,
+      "stored_logins": 1,
+      "baseline_fec": 84.1,
+      "fl_comp": 1.0,
+      "req_comp": 0.5,
+      "rec_comp": 0.2,
+      "err_comp": 2.0,
+      "calc_adjustment": 3.7,
+      "calc_final_fec": 87.8,
+      "db_fec": 87.8,
+      "api_pipeline_fec": 87.8,
+      "api_fec_route_fec": 87.8,
+      "ui_fec": 87.8,
+      "threat_index": 76.1,
+      "match": true
+    },
+    {
+      "test": "BF-2",
+      "event_id": "EVT-SIM-0531BA5E",
+      "patient_id": "P003",
+      "logins": 3,
+      "requests": 5,
+      "records": 25,
+      "stored_logins": 3,
+      "baseline_fec": 84.1,
+      "fl_comp": 3.0,
+      "req_comp": 2.0,
+      "rec_comp": 0.5,
+      "err_comp": 2.0,
+      "calc_adjustment": 7.5,
+      "calc_final_fec": 91.6,
+      "db_fec": 91.6,
+      "api_pipeline_fec": 91.6,
+      "api_fec_route_fec": 91.6,
+      "ui_fec": 91.6,
+      "threat_index": 76.1,
+      "match": true
+    },
+    {
+      "test": "BF-3",
+      "event_id": "EVT-SIM-3B1CE204",
+      "patient_id": "P003",
+      "logins": 5,
+      "requests": 10,
+      "records": 50,
+      "stored_logins": 5,
+      "baseline_fec": 84.1,
+      "fl_comp": 5.0,
+      "req_comp": 4.5,
+      "rec_comp": 1.0,
+      "err_comp": 2.0,
+      "calc_adjustment": 12.5,
+      "calc_final_fec": 96.6,
+      "db_fec": 96.6,
+      "api_pipeline_fec": 96.6,
+      "api_fec_route_fec": 96.6,
+      "ui_fec": 96.6,
+      "threat_index": 76.1,
+      "match": true
+    },
+    {
+      "test": "BF-4",
+      "event_id": "EVT-SIM-41B0DBED",
+      "patient_id": "P003",
+      "logins": 8,
+      "requests": 20,
+      "records": 100,
+      "stored_logins": 8,
+      "baseline_fec": 84.1,
+      "fl_comp": 8.0,
+      "req_comp": 9.5,
+      "rec_comp": 2.0,
+      "err_comp": 2.0,
+      "calc_adjustment": 21.5,
+      "calc_final_fec": 100.0,
+      "db_fec": 100.0,
+      "api_pipeline_fec": 100.0,
+      "api_fec_route_fec": 100.0,
+      "ui_fec": 100.0,
+      "threat_index": 76.0,
+      "match": true
+    },
+    {
+      "test": "BF-5",
+      "event_id": "EVT-SIM-4E990D6A",
+      "patient_id": "P003",
+      "logins": 12,
+      "requests": 30,
+      "records": 200,
+      "stored_logins": 12,
+      "baseline_fec": 84.1,
+      "fl_comp": 12.0,
+      "req_comp": 10.0,
+      "rec_comp": 4.0,
+      "err_comp": 2.0,
+      "calc_adjustment": 28.0,
+      "calc_final_fec": 100.0,
+      "db_fec": 100.0,
+      "api_pipeline_fec": 100.0,
+      "api_fec_route_fec": 100.0,
+      "ui_fec": 100.0,
+      "threat_index": 75.8,
+      "match": true
+    }
+  ],
+  "anti_cheating": {
+    "random_module_used": false,
+    "uuid_scoring_used": false,
+    "scenario_hardcoded_lookup_used": false,
+    "verdict": "CLEAN"
+  },
+  "determinism": {
+    "eid1": "EVT-SIM-3C4D10DB",
+    "eid2": "EVT-SIM-D6DFF8A0",
+    "fec1": 96.6,
+    "fec2": 96.6,
+    "match": true
+  },
+  "cross_patient": [
+    {
+      "patient_id": "P003",
+      "event_id": "EVT-SIM-16E4CB42",
+      "baseline_fec": 84.1,
+      "event_adjustment": 12.5,
+      "event_fec": 96.6
+    },
+    {
+      "patient_id": "P004",
+      "event_id": "EVT-SIM-4163FA99",
+      "baseline_fec": 71.0,
+      "event_adjustment": 12.5,
+      "event_fec": 83.5
+    },
+    {
+      "patient_id": "P005",
+      "event_id": "EVT-SIM-EC5DB120",
+      "baseline_fec": 45.2,
+      "event_adjustment": 12.5,
+      "event_fec": 57.7
+    }
+  ],
+  "scrambled_query": {
+    "all_correct": true,
+    "trace": [
+      {
+        "requested": "EVT-SIM-4E990D6A",
+        "returned": "EVT-SIM-4E990D6A",
+        "fec": 100.0,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-0531BA5E",
+        "returned": "EVT-SIM-0531BA5E",
+        "fec": 91.6,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-41B0DBED",
+        "returned": "EVT-SIM-41B0DBED",
+        "fec": 100.0,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-160CAFCB",
+        "returned": "EVT-SIM-160CAFCB",
+        "fec": 87.8,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-3B1CE204",
+        "returned": "EVT-SIM-3B1CE204",
+        "fec": 96.6,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-4E990D6A",
+        "returned": "EVT-SIM-4E990D6A",
+        "fec": 100.0,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-160CAFCB",
+        "returned": "EVT-SIM-160CAFCB",
+        "fec": 87.8,
+        "match": true
+      }
+    ]
+  },
+  "duplication_test": {
+    "total_duplicates": 0,
+    "checks": [
+      {
+        "event_id": "EVT-SIM-160CAFCB",
+        "se": 1,
+        "ml": 1,
+        "fu": 1,
+        "fec": 1,
+        "clean": true
+      },
+      {
+        "event_id": "EVT-SIM-0531BA5E",
+        "se": 1,
+        "ml": 1,
+        "fu": 1,
+        "fec": 1,
+        "clean": true
+      },
+      {
+        "event_id": "EVT-SIM-3B1CE204",
+        "se": 1,
+        "ml": 1,
+        "fu": 1,
+        "fec": 1,
+        "clean": true
+      },
+      {
+        "event_id": "EVT-SIM-41B0DBED",
+        "se": 1,
+        "ml": 1,
+        "fu": 1,
+        "fec": 1,
+        "clean": true
+      },
+      {
+        "event_id": "EVT-SIM-4E990D6A",
+        "se": 1,
+        "ml": 1,
+        "fu": 1,
+        "fec": 1,
+        "clean": true
+      }
+    ]
+  },
+  "modification_audit": {
+    "modified_tracked_count": 45,
+    "modified_files": [
+      " M __pycache__/generate_honeypot_events.cpython-313.pyc",
+      " M __pycache__/seed_patients.cpython-313.pyc",
+      " M backend/app/__pycache__/main.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/auth_routes.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/detection.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/features.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/fec.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/honeypot.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/patients.cpython-313.pyc",
+      " M backend/app/api/routes/auth_routes.py",
+      " M backend/app/api/routes/detection.py",
+      " M backend/app/api/routes/features.py",
+      " M backend/app/api/routes/fec.py",
+      " M backend/app/api/routes/honeypot.py",
+      " M backend/app/api/routes/patients.py",
+      " M backend/app/db/__pycache__/models.cpython-313.pyc",
+      " M backend/app/db/__pycache__/synthetic_cohort_v1.cpython-313.pyc",
+      " M backend/app/db/models.py",
+      " M backend/app/main.py",
+      " M backend/app/security_engine/__pycache__/feature_engine.cpython-313.pyc",
+      " M backend/app/security_engine/__pycache__/fec_engine.cpython-313.pyc",
+      " M backend/app/security_engine/__pycache__/telemetry_generator.cpython-313.pyc",
+      " M backend/app/security_engine/feature_engine.py",
+      " M backend/app/security_engine/fec_engine.py",
+      " M backend/app/security_engine/telemetry_generator.py",
+      " M backend/healthshield.db",
+      " M backend/models/isolation_forest_metadata.json",
+      " M backend/models/ocsvm_metadata.json",
+      " M backend/models/xgboost_metadata.json",
+      " M backend/tests/__pycache__/test_honeypot_simulation.cpython-313-pytest-8.2.2.pyc",
+      " M backend/tests/__pycache__/test_honeypot_simulation.cpython-313-pytest-9.1.1.pyc",
+      " M backend/tests/test_honeypot_simulation.py",
+      " M frontend/src/App.tsx",
+      " M frontend/src/components/DashboardAccordionBar.tsx",
+      " M frontend/src/components/layout/Sidebar.tsx",
+      " M frontend/src/pages/CommandCenter.tsx",
+      " M frontend/src/pages/FeatureView.tsx",
+      " M frontend/src/pages/FecView.tsx",
+      " M frontend/src/pages/HoneypotSimulator.tsx",
+      " M frontend/src/pages/PatientDashboard.tsx",
+      " M generate_honeypot_events.py",
+      " M reports/full_system_validation.json",
+      " M reports/patient_detection_audit.csv",
+      " M reports/patient_detection_audit.json",
+      " M reports/patient_detection_audit.txt"
+    ]
+  }
+}

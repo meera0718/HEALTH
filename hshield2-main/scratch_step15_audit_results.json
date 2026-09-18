@@ -1,0 +1,372 @@
+{
+  "runtime_check": {
+    "backend_url": "http://127.0.0.1:8000",
+    "frontend_url": "http://localhost:5173",
+    "health_status": 200,
+    "health_body": {
+      "status": "healthy",
+      "timestamp": "2026-08-31T14:07:55.428751Z",
+      "components": {
+        "api": {
+          "status": "online"
+        },
+        "database": {
+          "status": "connected"
+        },
+        "feature_engine": {
+          "status": "ready"
+        },
+        "fec_engine": {
+          "status": "ready"
+        },
+        "ocsvm": {
+          "status": "loaded"
+        },
+        "isolation_forest": {
+          "status": "loaded"
+        },
+        "xgboost": {
+          "status": "loaded"
+        },
+        "fusion_engine": {
+          "status": "ready"
+        },
+        "telemetry": {
+          "status": "streaming"
+        }
+      }
+    },
+    "openapi_status": 200,
+    "frontend_online": true
+  },
+  "p003_brute_force_events": [
+    {
+      "event_id": "EVT-SIM-6C2D6EA5",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "security_event_features": {
+        "failed_login_attempts": 5,
+        "request_count": 1,
+        "records_accessed": 0,
+        "response_status": 401
+      },
+      "11d_vector": [
+        5,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ml_results": {
+        "ocsvm_score": -5.0301,
+        "iforest_score": -0.1566,
+        "xgb_probability": 0.58
+      },
+      "threat_index": 76.1,
+      "fusion_result": "THREAT",
+      "evidence_strength": "HIGH",
+      "db_patient_fec_score": 83.6,
+      "api_pipeline_fec_score": 83.6
+    },
+    {
+      "event_id": "EVT-SIM-256BA791",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "security_event_features": {
+        "failed_login_attempts": 5,
+        "request_count": 1,
+        "records_accessed": 0,
+        "response_status": 401
+      },
+      "11d_vector": [
+        5,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ml_results": {
+        "ocsvm_score": -5.0301,
+        "iforest_score": -0.1566,
+        "xgb_probability": 0.58
+      },
+      "threat_index": 76.1,
+      "fusion_result": "THREAT",
+      "evidence_strength": "HIGH",
+      "db_patient_fec_score": 83.6,
+      "api_pipeline_fec_score": 83.6
+    },
+    {
+      "event_id": "EVT-SIM-9530EE91",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "security_event_features": {
+        "failed_login_attempts": 5,
+        "request_count": 1,
+        "records_accessed": 0,
+        "response_status": 401
+      },
+      "11d_vector": [
+        5,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ml_results": {
+        "ocsvm_score": -5.0301,
+        "iforest_score": -0.1566,
+        "xgb_probability": 0.58
+      },
+      "threat_index": 76.1,
+      "fusion_result": "THREAT",
+      "evidence_strength": "HIGH",
+      "db_patient_fec_score": 83.6,
+      "api_pipeline_fec_score": 83.6
+    },
+    {
+      "event_id": "EVT-SIM-B5028F72",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "security_event_features": {
+        "failed_login_attempts": 5,
+        "request_count": 1,
+        "records_accessed": 0,
+        "response_status": 401
+      },
+      "11d_vector": [
+        5,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ml_results": {
+        "ocsvm_score": -5.0301,
+        "iforest_score": -0.1566,
+        "xgb_probability": 0.58
+      },
+      "threat_index": 76.1,
+      "fusion_result": "THREAT",
+      "evidence_strength": "HIGH",
+      "db_patient_fec_score": 83.6,
+      "api_pipeline_fec_score": 83.6
+    },
+    {
+      "event_id": "EVT-SIM-54E09F16",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "security_event_features": {
+        "failed_login_attempts": 5,
+        "request_count": 1,
+        "records_accessed": 0,
+        "response_status": 401
+      },
+      "11d_vector": [
+        5,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ml_results": {
+        "ocsvm_score": -5.0301,
+        "iforest_score": -0.1566,
+        "xgb_probability": 0.58
+      },
+      "threat_index": 76.1,
+      "fusion_result": "THREAT",
+      "evidence_strength": "HIGH",
+      "db_patient_fec_score": 83.6,
+      "api_pipeline_fec_score": 83.6
+    }
+  ],
+  "p003_scenario_variations": [
+    {
+      "event_id": "EVT-SIM-1923A823",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "threat_index": 76.1,
+      "fusion_result": "THREAT",
+      "api_fec_score": 83.6
+    },
+    {
+      "event_id": "EVT-SIM-D3C38F1F",
+      "patient_id": "P003",
+      "scenario": "RECONNAISSANCE",
+      "threat_index": 52.2,
+      "fusion_result": "THREAT",
+      "api_fec_score": 83.6
+    },
+    {
+      "event_id": "EVT-SIM-D543F077",
+      "patient_id": "P003",
+      "scenario": "SUSPICIOUS_DATA_ACCESS",
+      "threat_index": 49.3,
+      "fusion_result": "THREAT",
+      "api_fec_score": 83.6
+    },
+    {
+      "event_id": "EVT-SIM-DB2B008A",
+      "patient_id": "P003",
+      "scenario": "DATA_EXFILTRATION",
+      "threat_index": 50.9,
+      "fusion_result": "THREAT",
+      "api_fec_score": 83.6
+    }
+  ],
+  "cross_patient_test": [
+    {
+      "patient_id": "P003",
+      "event_id": "EVT-SIM-66CF7FED",
+      "scenario": "BRUTE_FORCE",
+      "db_patient_fec": 83.6,
+      "api_pipeline_fec": 83.6
+    },
+    {
+      "patient_id": "P004",
+      "event_id": "EVT-SIM-55A2DC2F",
+      "scenario": "BRUTE_FORCE",
+      "db_patient_fec": 69.4,
+      "api_pipeline_fec": 69.4
+    },
+    {
+      "patient_id": "P005",
+      "event_id": "EVT-SIM-36563515",
+      "scenario": "BRUTE_FORCE",
+      "db_patient_fec": 40.5,
+      "api_pipeline_fec": 40.5
+    }
+  ],
+  "db_forensics": {
+    "patient_fec_columns": [
+      "fec_id",
+      "patient_id",
+      "fec_score",
+      "authentication_component",
+      "request_access_component",
+      "record_exposure_component",
+      "endpoint_anomaly_component",
+      "data_movement_component",
+      "device_anomaly_component",
+      "time_anomaly_component",
+      "general_anomaly_component",
+      "fec_version",
+      "calculated_at"
+    ],
+    "event_fusion_results_columns": [
+      "id",
+      "event_id",
+      "patient_id",
+      "scenario",
+      "event_type",
+      "timestamp",
+      "endpoint",
+      "model_agreement_count",
+      "model_agreement_ratio",
+      "fusion_result",
+      "threat_index",
+      "evidence_strength",
+      "assessment",
+      "created_at"
+    ],
+    "has_event_id_in_patient_fec": false,
+    "has_fec_score_in_event_fusion_results": false
+  },
+  "fec_code_audit": {
+    "has_randomness": false,
+    "authoritative_fec_function": "calculate_patient_fec_components",
+    "fec_table": "patient_fec (keyed by patient_id)"
+  },
+  "engine_db_api_trace": {
+    "db_patient_fec_score": 83.6,
+    "api_fec_route_score": 83.6,
+    "api_detection_pipeline_fec_score": 83.6,
+    "exact_match": true
+  },
+  "threat_index_separation": {
+    "threat_index_calculated": 76.1,
+    "fec_contributes_to_threat_index": false
+  },
+  "regression_and_modification": {
+    "pytest_exit_code": 0,
+    "tracked_modified_count": 45,
+    "modified_files": [
+      " M __pycache__/generate_honeypot_events.cpython-313.pyc",
+      " M __pycache__/seed_patients.cpython-313.pyc",
+      " M backend/app/__pycache__/main.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/auth_routes.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/detection.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/features.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/fec.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/honeypot.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/patients.cpython-313.pyc",
+      " M backend/app/api/routes/auth_routes.py",
+      " M backend/app/api/routes/detection.py",
+      " M backend/app/api/routes/features.py",
+      " M backend/app/api/routes/fec.py",
+      " M backend/app/api/routes/honeypot.py",
+      " M backend/app/api/routes/patients.py",
+      " M backend/app/db/__pycache__/models.cpython-313.pyc",
+      " M backend/app/db/__pycache__/synthetic_cohort_v1.cpython-313.pyc",
+      " M backend/app/db/models.py",
+      " M backend/app/main.py",
+      " M backend/app/security_engine/__pycache__/feature_engine.cpython-313.pyc",
+      " M backend/app/security_engine/__pycache__/fec_engine.cpython-313.pyc",
+      " M backend/app/security_engine/__pycache__/telemetry_generator.cpython-313.pyc",
+      " M backend/app/security_engine/feature_engine.py",
+      " M backend/app/security_engine/fec_engine.py",
+      " M backend/app/security_engine/telemetry_generator.py",
+      " M backend/healthshield.db",
+      " M backend/models/isolation_forest_metadata.json",
+      " M backend/models/ocsvm_metadata.json",
+      " M backend/models/xgboost_metadata.json",
+      " M backend/tests/__pycache__/test_honeypot_simulation.cpython-313-pytest-8.2.2.pyc",
+      " M backend/tests/__pycache__/test_honeypot_simulation.cpython-313-pytest-9.1.1.pyc",
+      " M backend/tests/test_honeypot_simulation.py",
+      " M frontend/src/App.tsx",
+      " M frontend/src/components/DashboardAccordionBar.tsx",
+      " M frontend/src/components/layout/Sidebar.tsx",
+      " M frontend/src/pages/CommandCenter.tsx",
+      " M frontend/src/pages/FeatureView.tsx",
+      " M frontend/src/pages/FecView.tsx",
+      " M frontend/src/pages/HoneypotSimulator.tsx",
+      " M frontend/src/pages/PatientDashboard.tsx",
+      " M generate_honeypot_events.py",
+      " M reports/full_system_validation.json",
+      " M reports/patient_detection_audit.csv",
+      " M reports/patient_detection_audit.json",
+      " M reports/patient_detection_audit.txt"
+    ]
+  }
+}

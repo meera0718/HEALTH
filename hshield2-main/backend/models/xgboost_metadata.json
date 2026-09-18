@@ -1,0 +1,53 @@
+{
+  "model_name": "XGBoost Classifier",
+  "model_version": "xgboost_v1",
+  "features": [
+    "failed_login_rate",
+    "request_rate",
+    "total_records_accessed",
+    "unique_endpoints",
+    "endpoint_discovery_count",
+    "suspicious_download_count",
+    "data_export_count",
+    "privilege_escalation_count",
+    "device_change_count",
+    "night_activity_count",
+    "error_rate",
+    "anomalous_event_count",
+    "unique_sessions",
+    "unique_devices",
+    "average_response_time_ms"
+  ],
+  "classes": [
+    "BRUTE_FORCE",
+    "DATA_EXFILTRATION",
+    "NORMAL",
+    "PRIVILEGE_ABUSE",
+    "RECONNAISSANCE",
+    "SUSPICIOUS_DATA_ACCESS"
+  ],
+  "hyperparameters": {
+    "n_estimators": 100,
+    "max_depth": 3,
+    "learning_rate": 0.05,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8
+  },
+  "training_row_count": 2520,
+  "validation_metrics": {
+    "accuracy": 1.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "weighted_f1": 1.0
+  },
+  "test_metrics": {
+    "accuracy": 1.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "weighted_f1": 1.0
+  },
+  "random_seed": 42,
+  "training_timestamp": "2026-08-26T03:53:39.725295+00:00"
+}

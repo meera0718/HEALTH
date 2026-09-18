@@ -1,0 +1,84 @@
+{
+  "bf_trace_table": [
+    {
+      "event_index": "BF-1",
+      "event_id": "EVT-SIM-16AD3811",
+      "patient_id": "P003",
+      "request_failed_logins": 1,
+      "stored_failed_logins": 1,
+      "feature_failed_logins": 1.0,
+      "baseline_fec": 84.1,
+      "event_adjustment": 3.0,
+      "event_fec_score": 87.1,
+      "threat_index": 76.1,
+      "api_fec_score": 87.1,
+      "api_event_fec_route_score": 87.1
+    },
+    {
+      "event_index": "BF-2",
+      "event_id": "EVT-SIM-E8817017",
+      "patient_id": "P003",
+      "request_failed_logins": 3,
+      "stored_failed_logins": 3,
+      "feature_failed_logins": 3.0,
+      "baseline_fec": 84.1,
+      "event_adjustment": 5.0,
+      "event_fec_score": 89.1,
+      "threat_index": 76.1,
+      "api_fec_score": 89.1,
+      "api_event_fec_route_score": 89.1
+    },
+    {
+      "event_index": "BF-3",
+      "event_id": "EVT-SIM-32CAD6CA",
+      "patient_id": "P003",
+      "request_failed_logins": 5,
+      "stored_failed_logins": 5,
+      "feature_failed_logins": 5.0,
+      "baseline_fec": 84.1,
+      "event_adjustment": 7.0,
+      "event_fec_score": 91.1,
+      "threat_index": 76.1,
+      "api_fec_score": 91.1,
+      "api_event_fec_route_score": 91.1
+    },
+    {
+      "event_index": "BF-4",
+      "event_id": "EVT-SIM-C916A3F2",
+      "patient_id": "P003",
+      "request_failed_logins": 8,
+      "stored_failed_logins": 8,
+      "feature_failed_logins": 8.0,
+      "baseline_fec": 84.1,
+      "event_adjustment": 10.0,
+      "event_fec_score": 94.1,
+      "threat_index": 76.1,
+      "api_fec_score": 94.1,
+      "api_event_fec_route_score": 94.1
+    },
+    {
+      "event_index": "BF-5",
+      "event_id": "EVT-SIM-E7BB8E7E",
+      "patient_id": "P003",
+      "request_failed_logins": 12,
+      "stored_failed_logins": 12,
+      "feature_failed_logins": 12.0,
+      "baseline_fec": 84.1,
+      "event_adjustment": 14.0,
+      "event_fec_score": 98.1,
+      "threat_index": 76.1,
+      "api_fec_score": 98.1,
+      "api_event_fec_route_score": 98.1
+    }
+  ],
+  "determinism": {
+    "eid1": "EVT-SIM-21E27203",
+    "eid2": "EVT-SIM-4AAE90CB",
+    "fec1": 91.1,
+    "fec2": 91.1,
+    "match": true
+  },
+  "cross_event_isolation": {
+    "all_matched": true
+  }
+}

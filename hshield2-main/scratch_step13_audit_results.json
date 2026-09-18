@@ -1,0 +1,1962 @@
+{
+  "runtime_verification": {
+    "backend_url": "http://127.0.0.1:8000",
+    "health_status_code": 200,
+    "health_body": {
+      "status": "healthy",
+      "timestamp": "2026-08-31T13:51:48.125987Z",
+      "components": {
+        "api": {
+          "status": "online"
+        },
+        "database": {
+          "status": "connected"
+        },
+        "feature_engine": {
+          "status": "ready"
+        },
+        "fec_engine": {
+          "status": "ready"
+        },
+        "ocsvm": {
+          "status": "loaded"
+        },
+        "isolation_forest": {
+          "status": "loaded"
+        },
+        "xgboost": {
+          "status": "loaded"
+        },
+        "fusion_engine": {
+          "status": "ready"
+        },
+        "telemetry": {
+          "status": "streaming"
+        }
+      }
+    },
+    "openapi_status_code": 200,
+    "detection_event_route_present": true,
+    "live_event_endpoint_status": 200,
+    "frontend_dev_server_online": true
+  },
+  "events": [
+    {
+      "event_id": "EVT-SIM-5DB5279E",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "http_status": 200,
+      "security_events_row": {
+        "event_id": "EVT-SIM-5DB5279E",
+        "patient_id": "P003",
+        "timestamp": "2026-08-31T13:51:49.877119Z",
+        "event_type": "BRUTE_FORCE_ATTEMPT",
+        "severity": "HIGH",
+        "source": "192.0.2.42",
+        "endpoint": "/api/v1/auth/login",
+        "session_id": "sess-sim-EEEECF91",
+        "device_id": "dev-sim-laptop",
+        "request_count": 1,
+        "records_accessed": 0,
+        "failed_login_attempts": 5,
+        "response_status": 401,
+        "response_time_ms": 120,
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SimulationAgent/1.0",
+        "network_zone": "EXTERNAL",
+        "is_anomalous_baseline": 1,
+        "created_at": "2026-08-31 13:51:49.877500",
+        "synthetic": 1,
+        "scenario": "Brute Force"
+      },
+      "event_ml_results_row": {
+        "id": 836,
+        "event_id": "EVT-SIM-5DB5279E",
+        "patient_id": "P003",
+        "scenario": "Brute Force",
+        "event_type": "BRUTE_FORCE_ATTEMPT",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:51:49.877119Z",
+        "endpoint": "/api/v1/auth/login",
+        "feature_vector_json": "[5, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0]",
+        "ocsvm_prediction": "ANOMALOUS",
+        "ocsvm_score": -5.0301,
+        "isolation_forest_prediction": "OUTLIER",
+        "isolation_forest_score": -0.1566,
+        "xgboost_classification": "BRUTE_FORCE",
+        "xgboost_probability": 0.58,
+        "created_at": "2026-08-31 13:51:50.154520"
+      },
+      "event_fusion_results_row": {
+        "id": 774,
+        "event_id": "EVT-SIM-5DB5279E",
+        "patient_id": "P003",
+        "scenario": "Brute Force",
+        "event_type": "BRUTE_FORCE_ATTEMPT",
+        "timestamp": "2026-08-31T13:51:49.877119Z",
+        "endpoint": "/api/v1/auth/login",
+        "model_agreement_count": 3,
+        "model_agreement_ratio": "3/3",
+        "fusion_result": "THREAT",
+        "threat_index": 76.1,
+        "evidence_strength": "HIGH",
+        "assessment": "HIGH RISK",
+        "created_at": "2026-08-31 13:51:50.167382"
+      },
+      "api_response": {
+        "event_id": "EVT-SIM-5DB5279E",
+        "patient_id": "P003",
+        "scenario": "Brute Force",
+        "event_type": "BRUTE_FORCE_ATTEMPT",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:51:49.877119Z",
+        "endpoint": "/api/v1/auth/login",
+        "feature_vector": [
+          5,
+          1,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "honeypot": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5DB5279E",
+          "patient_id": "P003",
+          "scenario": "Brute Force",
+          "event_type": "BRUTE_FORCE_ATTEMPT",
+          "endpoint": "/api/v1/auth/login"
+        },
+        "feature_engine": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5DB5279E",
+          "feature_vector": [
+            5,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "fec": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5DB5279E",
+          "fec_score": 83.5
+        },
+        "ocsvm": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5DB5279E",
+          "classification": "ANOMALOUS",
+          "prediction": "ANOMALOUS",
+          "score": -5.0301
+        },
+        "isolation_forest": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5DB5279E",
+          "classification": "OUTLIER",
+          "prediction": "OUTLIER",
+          "score": -0.1566
+        },
+        "xgboost": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5DB5279E",
+          "classification": "BRUTE_FORCE",
+          "probability": 0.58
+        },
+        "fusion": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5DB5279E",
+          "result": "THREAT",
+          "fusion_result": "THREAT",
+          "model_agreement": "3/3",
+          "model_agreement_details": {
+            "count": 3,
+            "ratio": "3/3",
+            "anomaly_detectors": "AGREE"
+          },
+          "threat_index": 76.1,
+          "evidence_strength": "HIGH"
+        },
+        "threat_assessment": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5DB5279E",
+          "detection_id": "EVT-SIM-5DB5279E",
+          "patient_id": "P003",
+          "scenario": "Brute Force",
+          "threat_index": 76.1,
+          "evidence_strength": "HIGH",
+          "assessment": "HIGH RISK"
+        }
+      },
+      "11d_vector": [
+        5,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "15d_features": {
+        "failed_login_rate": 5.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 0.0,
+        "unique_endpoints": 1.0,
+        "endpoint_discovery_count": 0.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 0.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 1.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      },
+      "full_precision": {
+        "xgb_raw_probability": 0.5787950754165649,
+        "ocsvm_raw_score": -5.030105448330622,
+        "iforest_raw_score": -0.15662459787951644
+      }
+    },
+    {
+      "event_id": "EVT-SIM-53576923",
+      "patient_id": "P003",
+      "scenario": "RECONNAISSANCE",
+      "http_status": 200,
+      "security_events_row": {
+        "event_id": "EVT-SIM-53576923",
+        "patient_id": "P003",
+        "timestamp": "2026-08-31T13:52:18.662659Z",
+        "event_type": "ENDPOINT_DISCOVERY",
+        "severity": "HIGH",
+        "source": "192.0.2.42",
+        "endpoint": "/api/v1/admin/scan",
+        "session_id": "sess-sim-D3300E85",
+        "device_id": "dev-sim-laptop",
+        "request_count": 1,
+        "records_accessed": 0,
+        "failed_login_attempts": 0,
+        "response_status": 404,
+        "response_time_ms": 120,
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SimulationAgent/1.0",
+        "network_zone": "EXTERNAL",
+        "is_anomalous_baseline": 1,
+        "created_at": "2026-08-31 13:52:18.663095",
+        "synthetic": 1,
+        "scenario": "Reconnaissance"
+      },
+      "event_ml_results_row": {
+        "id": 837,
+        "event_id": "EVT-SIM-53576923",
+        "patient_id": "P003",
+        "scenario": "Reconnaissance",
+        "event_type": "ENDPOINT_DISCOVERY",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:52:18.662659Z",
+        "endpoint": "/api/v1/admin/scan",
+        "feature_vector_json": "[0, 1, 0, 5, 1, 1, 0, 0, 1, 0, 0]",
+        "ocsvm_prediction": "ANOMALOUS",
+        "ocsvm_score": -5.0301,
+        "isolation_forest_prediction": "OUTLIER",
+        "isolation_forest_score": -0.1265,
+        "xgboost_classification": "NORMAL",
+        "xgboost_probability": 0.92,
+        "created_at": "2026-08-31 13:52:18.815885"
+      },
+      "event_fusion_results_row": {
+        "id": 775,
+        "event_id": "EVT-SIM-53576923",
+        "patient_id": "P003",
+        "scenario": "Reconnaissance",
+        "event_type": "ENDPOINT_DISCOVERY",
+        "timestamp": "2026-08-31T13:52:18.662659Z",
+        "endpoint": "/api/v1/admin/scan",
+        "model_agreement_count": 2,
+        "model_agreement_ratio": "2/3",
+        "fusion_result": "THREAT",
+        "threat_index": 52.2,
+        "evidence_strength": "HIGH",
+        "assessment": "SUSPICIOUS",
+        "created_at": "2026-08-31 13:52:18.826085"
+      },
+      "api_response": {
+        "event_id": "EVT-SIM-53576923",
+        "patient_id": "P003",
+        "scenario": "Reconnaissance",
+        "event_type": "ENDPOINT_DISCOVERY",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:52:18.662659Z",
+        "endpoint": "/api/v1/admin/scan",
+        "feature_vector": [
+          0,
+          1,
+          0,
+          5,
+          1,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "honeypot": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-53576923",
+          "patient_id": "P003",
+          "scenario": "Reconnaissance",
+          "event_type": "ENDPOINT_DISCOVERY",
+          "endpoint": "/api/v1/admin/scan"
+        },
+        "feature_engine": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-53576923",
+          "feature_vector": [
+            0,
+            1,
+            0,
+            5,
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        "fec": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-53576923",
+          "fec_score": 83.5
+        },
+        "ocsvm": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-53576923",
+          "classification": "ANOMALOUS",
+          "prediction": "ANOMALOUS",
+          "score": -5.0301
+        },
+        "isolation_forest": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-53576923",
+          "classification": "OUTLIER",
+          "prediction": "OUTLIER",
+          "score": -0.1265
+        },
+        "xgboost": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-53576923",
+          "classification": "NORMAL",
+          "probability": 0.92
+        },
+        "fusion": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-53576923",
+          "result": "THREAT",
+          "fusion_result": "THREAT",
+          "model_agreement": "2/3",
+          "model_agreement_details": {
+            "count": 2,
+            "ratio": "2/3",
+            "anomaly_detectors": "AGREE"
+          },
+          "threat_index": 52.2,
+          "evidence_strength": "HIGH"
+        },
+        "threat_assessment": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-53576923",
+          "detection_id": "EVT-SIM-53576923",
+          "patient_id": "P003",
+          "scenario": "Reconnaissance",
+          "threat_index": 52.2,
+          "evidence_strength": "HIGH",
+          "assessment": "SUSPICIOUS"
+        }
+      },
+      "11d_vector": [
+        0,
+        1,
+        0,
+        5,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "15d_features": {
+        "failed_login_rate": 0.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 0.0,
+        "unique_endpoints": 5.0,
+        "endpoint_discovery_count": 1.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 0.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 1.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      },
+      "full_precision": {
+        "xgb_raw_probability": 0.9205272197723389,
+        "ocsvm_raw_score": -5.030105448330622,
+        "iforest_raw_score": -0.12649990363299524
+      }
+    },
+    {
+      "event_id": "EVT-SIM-CE4D1D50",
+      "patient_id": "P004",
+      "scenario": "SUSPICIOUS_DATA_ACCESS",
+      "http_status": 200,
+      "security_events_row": {
+        "event_id": "EVT-SIM-CE4D1D50",
+        "patient_id": "P004",
+        "timestamp": "2026-08-31T13:52:19.100268Z",
+        "event_type": "SUSPICIOUS_DATA_ACCESS",
+        "severity": "HIGH",
+        "source": "192.0.2.42",
+        "endpoint": "/api/v1/patients/records",
+        "session_id": "sess-sim-28BDC021",
+        "device_id": "dev-sim-laptop",
+        "request_count": 1,
+        "records_accessed": 250,
+        "failed_login_attempts": 0,
+        "response_status": 200,
+        "response_time_ms": 120,
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SimulationAgent/1.0",
+        "network_zone": "EXTERNAL",
+        "is_anomalous_baseline": 1,
+        "created_at": "2026-08-31 13:52:19.100899",
+        "synthetic": 1,
+        "scenario": "Suspicious Data Access"
+      },
+      "event_ml_results_row": {
+        "id": 838,
+        "event_id": "EVT-SIM-CE4D1D50",
+        "patient_id": "P004",
+        "scenario": "Suspicious Data Access",
+        "event_type": "SUSPICIOUS_DATA_ACCESS",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:52:19.100268Z",
+        "endpoint": "/api/v1/patients/records",
+        "feature_vector_json": "[0, 1, 250, 1, 1, 0, 0, 0, 0, 0, 0]",
+        "ocsvm_prediction": "ANOMALOUS",
+        "ocsvm_score": -5.0301,
+        "isolation_forest_prediction": "OUTLIER",
+        "isolation_forest_score": -0.0832,
+        "xgboost_classification": "NORMAL",
+        "xgboost_probability": 0.99,
+        "created_at": "2026-08-31 13:52:19.243563"
+      },
+      "event_fusion_results_row": {
+        "id": 776,
+        "event_id": "EVT-SIM-CE4D1D50",
+        "patient_id": "P004",
+        "scenario": "Suspicious Data Access",
+        "event_type": "SUSPICIOUS_DATA_ACCESS",
+        "timestamp": "2026-08-31T13:52:19.100268Z",
+        "endpoint": "/api/v1/patients/records",
+        "model_agreement_count": 2,
+        "model_agreement_ratio": "2/3",
+        "fusion_result": "THREAT",
+        "threat_index": 49.3,
+        "evidence_strength": "HIGH",
+        "assessment": "SUSPICIOUS",
+        "created_at": "2026-08-31 13:52:19.264558"
+      },
+      "api_response": {
+        "event_id": "EVT-SIM-CE4D1D50",
+        "patient_id": "P004",
+        "scenario": "Suspicious Data Access",
+        "event_type": "SUSPICIOUS_DATA_ACCESS",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:52:19.100268Z",
+        "endpoint": "/api/v1/patients/records",
+        "feature_vector": [
+          0,
+          1,
+          250,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "honeypot": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-CE4D1D50",
+          "patient_id": "P004",
+          "scenario": "Suspicious Data Access",
+          "event_type": "SUSPICIOUS_DATA_ACCESS",
+          "endpoint": "/api/v1/patients/records"
+        },
+        "feature_engine": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-CE4D1D50",
+          "feature_vector": [
+            0,
+            1,
+            250,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "fec": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-CE4D1D50",
+          "fec_score": 68.2
+        },
+        "ocsvm": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-CE4D1D50",
+          "classification": "ANOMALOUS",
+          "prediction": "ANOMALOUS",
+          "score": -5.0301
+        },
+        "isolation_forest": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-CE4D1D50",
+          "classification": "OUTLIER",
+          "prediction": "OUTLIER",
+          "score": -0.0832
+        },
+        "xgboost": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-CE4D1D50",
+          "classification": "NORMAL",
+          "probability": 0.99
+        },
+        "fusion": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-CE4D1D50",
+          "result": "THREAT",
+          "fusion_result": "THREAT",
+          "model_agreement": "2/3",
+          "model_agreement_details": {
+            "count": 2,
+            "ratio": "2/3",
+            "anomaly_detectors": "AGREE"
+          },
+          "threat_index": 49.3,
+          "evidence_strength": "HIGH"
+        },
+        "threat_assessment": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-CE4D1D50",
+          "detection_id": "EVT-SIM-CE4D1D50",
+          "patient_id": "P004",
+          "scenario": "Suspicious Data Access",
+          "threat_index": 49.3,
+          "evidence_strength": "HIGH",
+          "assessment": "SUSPICIOUS"
+        }
+      },
+      "11d_vector": [
+        0,
+        1,
+        250,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "15d_features": {
+        "failed_login_rate": 0.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 250.0,
+        "unique_endpoints": 1.0,
+        "endpoint_discovery_count": 0.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 0.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 0.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      },
+      "full_precision": {
+        "xgb_raw_probability": 0.9892292618751526,
+        "ocsvm_raw_score": -5.030105448330622,
+        "iforest_raw_score": -0.08319411686556355
+      }
+    },
+    {
+      "event_id": "EVT-SIM-ED05AE22",
+      "patient_id": "P004",
+      "scenario": "DATA_EXFILTRATION",
+      "http_status": 200,
+      "security_events_row": {
+        "event_id": "EVT-SIM-ED05AE22",
+        "patient_id": "P004",
+        "timestamp": "2026-08-31T13:52:19.598856Z",
+        "event_type": "DATA_EXPORT",
+        "severity": "HIGH",
+        "source": "192.0.2.42",
+        "endpoint": "/api/v1/export/patient_db",
+        "session_id": "sess-sim-2290C50B",
+        "device_id": "dev-sim-laptop",
+        "request_count": 1,
+        "records_accessed": 1000,
+        "failed_login_attempts": 0,
+        "response_status": 200,
+        "response_time_ms": 120,
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SimulationAgent/1.0",
+        "network_zone": "EXTERNAL",
+        "is_anomalous_baseline": 1,
+        "created_at": "2026-08-31 13:52:19.599351",
+        "synthetic": 1,
+        "scenario": "Data Exfiltration"
+      },
+      "event_ml_results_row": {
+        "id": 839,
+        "event_id": "EVT-SIM-ED05AE22",
+        "patient_id": "P004",
+        "scenario": "Data Exfiltration",
+        "event_type": "DATA_EXPORT",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:52:19.598856Z",
+        "endpoint": "/api/v1/export/patient_db",
+        "feature_vector_json": "[0, 1, 1000, 1, 1, 0, 0, 0, 0, 1, 0]",
+        "ocsvm_prediction": "ANOMALOUS",
+        "ocsvm_score": -5.0301,
+        "isolation_forest_prediction": "OUTLIER",
+        "isolation_forest_score": -0.1147,
+        "xgboost_classification": "NORMAL",
+        "xgboost_probability": 0.99,
+        "created_at": "2026-08-31 13:52:19.724739"
+      },
+      "event_fusion_results_row": {
+        "id": 777,
+        "event_id": "EVT-SIM-ED05AE22",
+        "patient_id": "P004",
+        "scenario": "Data Exfiltration",
+        "event_type": "DATA_EXPORT",
+        "timestamp": "2026-08-31T13:52:19.598856Z",
+        "endpoint": "/api/v1/export/patient_db",
+        "model_agreement_count": 2,
+        "model_agreement_ratio": "2/3",
+        "fusion_result": "THREAT",
+        "threat_index": 50.9,
+        "evidence_strength": "HIGH",
+        "assessment": "SUSPICIOUS",
+        "created_at": "2026-08-31 13:52:19.735429"
+      },
+      "api_response": {
+        "event_id": "EVT-SIM-ED05AE22",
+        "patient_id": "P004",
+        "scenario": "Data Exfiltration",
+        "event_type": "DATA_EXPORT",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:52:19.598856Z",
+        "endpoint": "/api/v1/export/patient_db",
+        "feature_vector": [
+          0,
+          1,
+          1000,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "honeypot": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-ED05AE22",
+          "patient_id": "P004",
+          "scenario": "Data Exfiltration",
+          "event_type": "DATA_EXPORT",
+          "endpoint": "/api/v1/export/patient_db"
+        },
+        "feature_engine": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-ED05AE22",
+          "feature_vector": [
+            0,
+            1,
+            1000,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "fec": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-ED05AE22",
+          "fec_score": 68.2
+        },
+        "ocsvm": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-ED05AE22",
+          "classification": "ANOMALOUS",
+          "prediction": "ANOMALOUS",
+          "score": -5.0301
+        },
+        "isolation_forest": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-ED05AE22",
+          "classification": "OUTLIER",
+          "prediction": "OUTLIER",
+          "score": -0.1147
+        },
+        "xgboost": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-ED05AE22",
+          "classification": "NORMAL",
+          "probability": 0.99
+        },
+        "fusion": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-ED05AE22",
+          "result": "THREAT",
+          "fusion_result": "THREAT",
+          "model_agreement": "2/3",
+          "model_agreement_details": {
+            "count": 2,
+            "ratio": "2/3",
+            "anomaly_detectors": "AGREE"
+          },
+          "threat_index": 50.9,
+          "evidence_strength": "HIGH"
+        },
+        "threat_assessment": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-ED05AE22",
+          "detection_id": "EVT-SIM-ED05AE22",
+          "patient_id": "P004",
+          "scenario": "Data Exfiltration",
+          "threat_index": 50.9,
+          "evidence_strength": "HIGH",
+          "assessment": "SUSPICIOUS"
+        }
+      },
+      "11d_vector": [
+        0,
+        1,
+        1000,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "15d_features": {
+        "failed_login_rate": 0.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 1000.0,
+        "unique_endpoints": 1.0,
+        "endpoint_discovery_count": 0.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 1.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 0.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      },
+      "full_precision": {
+        "xgb_raw_probability": 0.9875547289848328,
+        "ocsvm_raw_score": -5.030105448330622,
+        "iforest_raw_score": -0.11470490326211369
+      }
+    },
+    {
+      "event_id": "EVT-SIM-5034B7DC",
+      "patient_id": "P005",
+      "scenario": "BRUTE_FORCE",
+      "http_status": 200,
+      "security_events_row": {
+        "event_id": "EVT-SIM-5034B7DC",
+        "patient_id": "P005",
+        "timestamp": "2026-08-31T13:52:20.024959Z",
+        "event_type": "BRUTE_FORCE_ATTEMPT",
+        "severity": "HIGH",
+        "source": "192.0.2.42",
+        "endpoint": "/api/v1/auth/login",
+        "session_id": "sess-sim-2E2A47FE",
+        "device_id": "dev-sim-laptop",
+        "request_count": 1,
+        "records_accessed": 0,
+        "failed_login_attempts": 5,
+        "response_status": 401,
+        "response_time_ms": 120,
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SimulationAgent/1.0",
+        "network_zone": "EXTERNAL",
+        "is_anomalous_baseline": 1,
+        "created_at": "2026-08-31 13:52:20.025420",
+        "synthetic": 1,
+        "scenario": "Brute Force"
+      },
+      "event_ml_results_row": {
+        "id": 840,
+        "event_id": "EVT-SIM-5034B7DC",
+        "patient_id": "P005",
+        "scenario": "Brute Force",
+        "event_type": "BRUTE_FORCE_ATTEMPT",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:52:20.024959Z",
+        "endpoint": "/api/v1/auth/login",
+        "feature_vector_json": "[5, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0]",
+        "ocsvm_prediction": "ANOMALOUS",
+        "ocsvm_score": -5.0301,
+        "isolation_forest_prediction": "OUTLIER",
+        "isolation_forest_score": -0.1566,
+        "xgboost_classification": "BRUTE_FORCE",
+        "xgboost_probability": 0.58,
+        "created_at": "2026-08-31 13:52:20.122063"
+      },
+      "event_fusion_results_row": {
+        "id": 778,
+        "event_id": "EVT-SIM-5034B7DC",
+        "patient_id": "P005",
+        "scenario": "Brute Force",
+        "event_type": "BRUTE_FORCE_ATTEMPT",
+        "timestamp": "2026-08-31T13:52:20.024959Z",
+        "endpoint": "/api/v1/auth/login",
+        "model_agreement_count": 3,
+        "model_agreement_ratio": "3/3",
+        "fusion_result": "THREAT",
+        "threat_index": 76.1,
+        "evidence_strength": "HIGH",
+        "assessment": "HIGH RISK",
+        "created_at": "2026-08-31 13:52:20.132305"
+      },
+      "api_response": {
+        "event_id": "EVT-SIM-5034B7DC",
+        "patient_id": "P005",
+        "scenario": "Brute Force",
+        "event_type": "BRUTE_FORCE_ATTEMPT",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:52:20.024959Z",
+        "endpoint": "/api/v1/auth/login",
+        "feature_vector": [
+          5,
+          1,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "honeypot": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5034B7DC",
+          "patient_id": "P005",
+          "scenario": "Brute Force",
+          "event_type": "BRUTE_FORCE_ATTEMPT",
+          "endpoint": "/api/v1/auth/login"
+        },
+        "feature_engine": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5034B7DC",
+          "feature_vector": [
+            5,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "fec": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5034B7DC",
+          "fec_score": 35.6
+        },
+        "ocsvm": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5034B7DC",
+          "classification": "ANOMALOUS",
+          "prediction": "ANOMALOUS",
+          "score": -5.0301
+        },
+        "isolation_forest": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5034B7DC",
+          "classification": "OUTLIER",
+          "prediction": "OUTLIER",
+          "score": -0.1566
+        },
+        "xgboost": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5034B7DC",
+          "classification": "BRUTE_FORCE",
+          "probability": 0.58
+        },
+        "fusion": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5034B7DC",
+          "result": "THREAT",
+          "fusion_result": "THREAT",
+          "model_agreement": "3/3",
+          "model_agreement_details": {
+            "count": 3,
+            "ratio": "3/3",
+            "anomaly_detectors": "AGREE"
+          },
+          "threat_index": 76.1,
+          "evidence_strength": "HIGH"
+        },
+        "threat_assessment": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-5034B7DC",
+          "detection_id": "EVT-SIM-5034B7DC",
+          "patient_id": "P005",
+          "scenario": "Brute Force",
+          "threat_index": 76.1,
+          "evidence_strength": "HIGH",
+          "assessment": "HIGH RISK"
+        }
+      },
+      "11d_vector": [
+        5,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "15d_features": {
+        "failed_login_rate": 5.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 0.0,
+        "unique_endpoints": 1.0,
+        "endpoint_discovery_count": 0.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 0.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 1.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      },
+      "full_precision": {
+        "xgb_raw_probability": 0.5787950754165649,
+        "ocsvm_raw_score": -5.030105448330622,
+        "iforest_raw_score": -0.15662459787951644
+      }
+    },
+    {
+      "event_id": "EVT-SIM-AC9DD098",
+      "patient_id": "P005",
+      "scenario": "RECONNAISSANCE",
+      "http_status": 200,
+      "security_events_row": {
+        "event_id": "EVT-SIM-AC9DD098",
+        "patient_id": "P005",
+        "timestamp": "2026-08-31T13:52:20.475791Z",
+        "event_type": "ENDPOINT_DISCOVERY",
+        "severity": "HIGH",
+        "source": "192.0.2.42",
+        "endpoint": "/api/v1/admin/scan",
+        "session_id": "sess-sim-1E3AFE05",
+        "device_id": "dev-sim-laptop",
+        "request_count": 1,
+        "records_accessed": 0,
+        "failed_login_attempts": 0,
+        "response_status": 404,
+        "response_time_ms": 120,
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SimulationAgent/1.0",
+        "network_zone": "EXTERNAL",
+        "is_anomalous_baseline": 1,
+        "created_at": "2026-08-31 13:52:20.476221",
+        "synthetic": 1,
+        "scenario": "Reconnaissance"
+      },
+      "event_ml_results_row": {
+        "id": 841,
+        "event_id": "EVT-SIM-AC9DD098",
+        "patient_id": "P005",
+        "scenario": "Reconnaissance",
+        "event_type": "ENDPOINT_DISCOVERY",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:52:20.475791Z",
+        "endpoint": "/api/v1/admin/scan",
+        "feature_vector_json": "[0, 1, 0, 5, 1, 1, 0, 0, 1, 0, 0]",
+        "ocsvm_prediction": "ANOMALOUS",
+        "ocsvm_score": -5.0301,
+        "isolation_forest_prediction": "OUTLIER",
+        "isolation_forest_score": -0.1265,
+        "xgboost_classification": "NORMAL",
+        "xgboost_probability": 0.92,
+        "created_at": "2026-08-31 13:52:20.570306"
+      },
+      "event_fusion_results_row": {
+        "id": 779,
+        "event_id": "EVT-SIM-AC9DD098",
+        "patient_id": "P005",
+        "scenario": "Reconnaissance",
+        "event_type": "ENDPOINT_DISCOVERY",
+        "timestamp": "2026-08-31T13:52:20.475791Z",
+        "endpoint": "/api/v1/admin/scan",
+        "model_agreement_count": 2,
+        "model_agreement_ratio": "2/3",
+        "fusion_result": "THREAT",
+        "threat_index": 52.2,
+        "evidence_strength": "HIGH",
+        "assessment": "SUSPICIOUS",
+        "created_at": "2026-08-31 13:52:20.580536"
+      },
+      "api_response": {
+        "event_id": "EVT-SIM-AC9DD098",
+        "patient_id": "P005",
+        "scenario": "Reconnaissance",
+        "event_type": "ENDPOINT_DISCOVERY",
+        "severity": "HIGH",
+        "timestamp": "2026-08-31T13:52:20.475791Z",
+        "endpoint": "/api/v1/admin/scan",
+        "feature_vector": [
+          0,
+          1,
+          0,
+          5,
+          1,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "honeypot": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-AC9DD098",
+          "patient_id": "P005",
+          "scenario": "Reconnaissance",
+          "event_type": "ENDPOINT_DISCOVERY",
+          "endpoint": "/api/v1/admin/scan"
+        },
+        "feature_engine": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-AC9DD098",
+          "feature_vector": [
+            0,
+            1,
+            0,
+            5,
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        "fec": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-AC9DD098",
+          "fec_score": 35.6
+        },
+        "ocsvm": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-AC9DD098",
+          "classification": "ANOMALOUS",
+          "prediction": "ANOMALOUS",
+          "score": -5.0301
+        },
+        "isolation_forest": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-AC9DD098",
+          "classification": "OUTLIER",
+          "prediction": "OUTLIER",
+          "score": -0.1265
+        },
+        "xgboost": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-AC9DD098",
+          "classification": "NORMAL",
+          "probability": 0.92
+        },
+        "fusion": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-AC9DD098",
+          "result": "THREAT",
+          "fusion_result": "THREAT",
+          "model_agreement": "2/3",
+          "model_agreement_details": {
+            "count": 2,
+            "ratio": "2/3",
+            "anomaly_detectors": "AGREE"
+          },
+          "threat_index": 52.2,
+          "evidence_strength": "HIGH"
+        },
+        "threat_assessment": {
+          "status": "COMPLETE",
+          "event_id": "EVT-SIM-AC9DD098",
+          "detection_id": "EVT-SIM-AC9DD098",
+          "patient_id": "P005",
+          "scenario": "Reconnaissance",
+          "threat_index": 52.2,
+          "evidence_strength": "HIGH",
+          "assessment": "SUSPICIOUS"
+        }
+      },
+      "11d_vector": [
+        0,
+        1,
+        0,
+        5,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "15d_features": {
+        "failed_login_rate": 0.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 0.0,
+        "unique_endpoints": 5.0,
+        "endpoint_discovery_count": 1.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 0.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 1.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      },
+      "full_precision": {
+        "xgb_raw_probability": 0.9205272197723389,
+        "ocsvm_raw_score": -5.030105448330622,
+        "iforest_raw_score": -0.12649990363299524
+      }
+    }
+  ],
+  "11d_audit": [
+    {
+      "event_id": "EVT-SIM-5DB5279E",
+      "vector_len": 11,
+      "vector": [
+        5,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "event_id": "EVT-SIM-53576923",
+      "vector_len": 11,
+      "vector": [
+        0,
+        1,
+        0,
+        5,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "event_id": "EVT-SIM-CE4D1D50",
+      "vector_len": 11,
+      "vector": [
+        0,
+        1,
+        250,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "event_id": "EVT-SIM-ED05AE22",
+      "vector_len": 11,
+      "vector": [
+        0,
+        1,
+        1000,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "event_id": "EVT-SIM-5034B7DC",
+      "vector_len": 11,
+      "vector": [
+        5,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "event_id": "EVT-SIM-AC9DD098",
+      "vector_len": 11,
+      "vector": [
+        0,
+        1,
+        0,
+        5,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "15d_audit": [
+    {
+      "event_id": "EVT-SIM-5DB5279E",
+      "vector_len": 15,
+      "features": {
+        "failed_login_rate": 5.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 0.0,
+        "unique_endpoints": 1.0,
+        "endpoint_discovery_count": 0.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 0.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 1.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      }
+    },
+    {
+      "event_id": "EVT-SIM-53576923",
+      "vector_len": 15,
+      "features": {
+        "failed_login_rate": 0.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 0.0,
+        "unique_endpoints": 5.0,
+        "endpoint_discovery_count": 1.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 0.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 1.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      }
+    },
+    {
+      "event_id": "EVT-SIM-CE4D1D50",
+      "vector_len": 15,
+      "features": {
+        "failed_login_rate": 0.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 250.0,
+        "unique_endpoints": 1.0,
+        "endpoint_discovery_count": 0.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 0.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 0.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      }
+    },
+    {
+      "event_id": "EVT-SIM-ED05AE22",
+      "vector_len": 15,
+      "features": {
+        "failed_login_rate": 0.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 1000.0,
+        "unique_endpoints": 1.0,
+        "endpoint_discovery_count": 0.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 1.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 0.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      }
+    },
+    {
+      "event_id": "EVT-SIM-5034B7DC",
+      "vector_len": 15,
+      "features": {
+        "failed_login_rate": 5.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 0.0,
+        "unique_endpoints": 1.0,
+        "endpoint_discovery_count": 0.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 0.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 1.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      }
+    },
+    {
+      "event_id": "EVT-SIM-AC9DD098",
+      "vector_len": 15,
+      "features": {
+        "failed_login_rate": 0.0,
+        "request_rate": 1.0,
+        "total_records_accessed": 0.0,
+        "unique_endpoints": 5.0,
+        "endpoint_discovery_count": 1.0,
+        "suspicious_download_count": 0.0,
+        "data_export_count": 0.0,
+        "privilege_escalation_count": 0.0,
+        "device_change_count": 0.0,
+        "night_activity_count": 0.0,
+        "error_rate": 1.0,
+        "anomalous_event_count": 1.0,
+        "unique_sessions": 1.0,
+        "unique_devices": 1.0,
+        "average_response_time_ms": 120.0
+      }
+    }
+  ],
+  "threat_index_audit": [
+    {
+      "event_id": "EVT-SIM-5DB5279E",
+      "db_stored_values": {
+        "xgb_class": "BRUTE_FORCE",
+        "xgb_prob": 0.58,
+        "ocsvm_score": -5.0301,
+        "iforest_score": -0.1566,
+        "xgb_comp": 23.2,
+        "ocsvm_comp": 25.0301,
+        "iforest_comp": 27.83,
+        "unrounded_total": 76.0601,
+        "calculated_threat_index": 76.1,
+        "db_threat_index": 76.1,
+        "api_threat_index": 76.1
+      },
+      "full_precision_values": {
+        "raw_xgb_prob": 0.5787950754165649,
+        "raw_ocsvm_score": -5.030105448330622,
+        "raw_iforest_score": -0.15662459787951644,
+        "xgb_comp": 23.151803016662598,
+        "ocsvm_comp": 25.030105448330623,
+        "iforest_comp": 27.831229893975824,
+        "unrounded_total": 76.01313835896904,
+        "calculated_threat_index": 76.0
+      },
+      "discrepancy_analysis": {
+        "db_calc_matches_db_stored": true,
+        "db_calc_matches_api": true,
+        "full_calc_diff": -0.09999999999999432
+      }
+    },
+    {
+      "event_id": "EVT-SIM-53576923",
+      "db_stored_values": {
+        "xgb_class": "NORMAL",
+        "xgb_prob": 0.92,
+        "ocsvm_score": -5.0301,
+        "iforest_score": -0.1265,
+        "xgb_comp": 0.7999999999999996,
+        "ocsvm_comp": 25.0301,
+        "iforest_comp": 26.325,
+        "unrounded_total": 52.155100000000004,
+        "calculated_threat_index": 52.2,
+        "db_threat_index": 52.2,
+        "api_threat_index": 52.2
+      },
+      "full_precision_values": {
+        "raw_xgb_prob": 0.9205272197723389,
+        "raw_ocsvm_score": -5.030105448330622,
+        "raw_iforest_score": -0.12649990363299524,
+        "xgb_comp": 0.7947278022766113,
+        "ocsvm_comp": 25.030105448330623,
+        "iforest_comp": 26.32499518164976,
+        "unrounded_total": 52.149828432256996,
+        "calculated_threat_index": 52.1
+      },
+      "discrepancy_analysis": {
+        "db_calc_matches_db_stored": true,
+        "db_calc_matches_api": true,
+        "full_calc_diff": -0.10000000000000142
+      }
+    },
+    {
+      "event_id": "EVT-SIM-CE4D1D50",
+      "db_stored_values": {
+        "xgb_class": "NORMAL",
+        "xgb_prob": 0.99,
+        "ocsvm_score": -5.0301,
+        "iforest_score": -0.0832,
+        "xgb_comp": 0.10000000000000009,
+        "ocsvm_comp": 25.0301,
+        "iforest_comp": 24.16,
+        "unrounded_total": 49.2901,
+        "calculated_threat_index": 49.3,
+        "db_threat_index": 49.3,
+        "api_threat_index": 49.3
+      },
+      "full_precision_values": {
+        "raw_xgb_prob": 0.9892292618751526,
+        "raw_ocsvm_score": -5.030105448330622,
+        "raw_iforest_score": -0.08319411686556355,
+        "xgb_comp": 0.10770738124847412,
+        "ocsvm_comp": 25.030105448330623,
+        "iforest_comp": 24.15970584327818,
+        "unrounded_total": 49.29751867285728,
+        "calculated_threat_index": 49.3
+      },
+      "discrepancy_analysis": {
+        "db_calc_matches_db_stored": true,
+        "db_calc_matches_api": true,
+        "full_calc_diff": 0.0
+      }
+    },
+    {
+      "event_id": "EVT-SIM-ED05AE22",
+      "db_stored_values": {
+        "xgb_class": "NORMAL",
+        "xgb_prob": 0.99,
+        "ocsvm_score": -5.0301,
+        "iforest_score": -0.1147,
+        "xgb_comp": 0.10000000000000009,
+        "ocsvm_comp": 25.0301,
+        "iforest_comp": 25.735,
+        "unrounded_total": 50.8651,
+        "calculated_threat_index": 50.9,
+        "db_threat_index": 50.9,
+        "api_threat_index": 50.9
+      },
+      "full_precision_values": {
+        "raw_xgb_prob": 0.9875547289848328,
+        "raw_ocsvm_score": -5.030105448330622,
+        "raw_iforest_score": -0.11470490326211369,
+        "xgb_comp": 0.12445271015167236,
+        "ocsvm_comp": 25.030105448330623,
+        "iforest_comp": 25.735245163105684,
+        "unrounded_total": 50.889803321587976,
+        "calculated_threat_index": 50.9
+      },
+      "discrepancy_analysis": {
+        "db_calc_matches_db_stored": true,
+        "db_calc_matches_api": true,
+        "full_calc_diff": 0.0
+      }
+    },
+    {
+      "event_id": "EVT-SIM-5034B7DC",
+      "db_stored_values": {
+        "xgb_class": "BRUTE_FORCE",
+        "xgb_prob": 0.58,
+        "ocsvm_score": -5.0301,
+        "iforest_score": -0.1566,
+        "xgb_comp": 23.2,
+        "ocsvm_comp": 25.0301,
+        "iforest_comp": 27.83,
+        "unrounded_total": 76.0601,
+        "calculated_threat_index": 76.1,
+        "db_threat_index": 76.1,
+        "api_threat_index": 76.1
+      },
+      "full_precision_values": {
+        "raw_xgb_prob": 0.5787950754165649,
+        "raw_ocsvm_score": -5.030105448330622,
+        "raw_iforest_score": -0.15662459787951644,
+        "xgb_comp": 23.151803016662598,
+        "ocsvm_comp": 25.030105448330623,
+        "iforest_comp": 27.831229893975824,
+        "unrounded_total": 76.01313835896904,
+        "calculated_threat_index": 76.0
+      },
+      "discrepancy_analysis": {
+        "db_calc_matches_db_stored": true,
+        "db_calc_matches_api": true,
+        "full_calc_diff": -0.09999999999999432
+      }
+    },
+    {
+      "event_id": "EVT-SIM-AC9DD098",
+      "db_stored_values": {
+        "xgb_class": "NORMAL",
+        "xgb_prob": 0.92,
+        "ocsvm_score": -5.0301,
+        "iforest_score": -0.1265,
+        "xgb_comp": 0.7999999999999996,
+        "ocsvm_comp": 25.0301,
+        "iforest_comp": 26.325,
+        "unrounded_total": 52.155100000000004,
+        "calculated_threat_index": 52.2,
+        "db_threat_index": 52.2,
+        "api_threat_index": 52.2
+      },
+      "full_precision_values": {
+        "raw_xgb_prob": 0.9205272197723389,
+        "raw_ocsvm_score": -5.030105448330622,
+        "raw_iforest_score": -0.12649990363299524,
+        "xgb_comp": 0.7947278022766113,
+        "ocsvm_comp": 25.030105448330623,
+        "iforest_comp": 26.32499518164976,
+        "unrounded_total": 52.149828432256996,
+        "calculated_threat_index": 52.1
+      },
+      "discrepancy_analysis": {
+        "db_calc_matches_db_stored": true,
+        "db_calc_matches_api": true,
+        "full_calc_diff": -0.10000000000000142
+      }
+    }
+  ],
+  "fusion_audit": [
+    {
+      "event_id": "EVT-SIM-5DB5279E",
+      "votes": {
+        "ocsvm": 1,
+        "iforest": 1,
+        "xgb": 1,
+        "total": 3
+      },
+      "fusion": {
+        "expected": "THREAT",
+        "db": "THREAT",
+        "api": "THREAT",
+        "match": true
+      },
+      "evidence": {
+        "expected": "HIGH",
+        "db": "HIGH",
+        "api": "HIGH",
+        "match": true
+      },
+      "assessment": {
+        "expected": "HIGH RISK",
+        "db": "HIGH RISK",
+        "api": "HIGH RISK",
+        "match": true
+      }
+    },
+    {
+      "event_id": "EVT-SIM-53576923",
+      "votes": {
+        "ocsvm": 1,
+        "iforest": 1,
+        "xgb": 0,
+        "total": 2
+      },
+      "fusion": {
+        "expected": "THREAT",
+        "db": "THREAT",
+        "api": "THREAT",
+        "match": true
+      },
+      "evidence": {
+        "expected": "HIGH",
+        "db": "HIGH",
+        "api": "HIGH",
+        "match": true
+      },
+      "assessment": {
+        "expected": "SUSPICIOUS",
+        "db": "SUSPICIOUS",
+        "api": "SUSPICIOUS",
+        "match": true
+      }
+    },
+    {
+      "event_id": "EVT-SIM-CE4D1D50",
+      "votes": {
+        "ocsvm": 1,
+        "iforest": 1,
+        "xgb": 0,
+        "total": 2
+      },
+      "fusion": {
+        "expected": "THREAT",
+        "db": "THREAT",
+        "api": "THREAT",
+        "match": true
+      },
+      "evidence": {
+        "expected": "HIGH",
+        "db": "HIGH",
+        "api": "HIGH",
+        "match": true
+      },
+      "assessment": {
+        "expected": "SUSPICIOUS",
+        "db": "SUSPICIOUS",
+        "api": "SUSPICIOUS",
+        "match": true
+      }
+    },
+    {
+      "event_id": "EVT-SIM-ED05AE22",
+      "votes": {
+        "ocsvm": 1,
+        "iforest": 1,
+        "xgb": 0,
+        "total": 2
+      },
+      "fusion": {
+        "expected": "THREAT",
+        "db": "THREAT",
+        "api": "THREAT",
+        "match": true
+      },
+      "evidence": {
+        "expected": "HIGH",
+        "db": "HIGH",
+        "api": "HIGH",
+        "match": true
+      },
+      "assessment": {
+        "expected": "SUSPICIOUS",
+        "db": "SUSPICIOUS",
+        "api": "SUSPICIOUS",
+        "match": true
+      }
+    },
+    {
+      "event_id": "EVT-SIM-5034B7DC",
+      "votes": {
+        "ocsvm": 1,
+        "iforest": 1,
+        "xgb": 1,
+        "total": 3
+      },
+      "fusion": {
+        "expected": "THREAT",
+        "db": "THREAT",
+        "api": "THREAT",
+        "match": true
+      },
+      "evidence": {
+        "expected": "HIGH",
+        "db": "HIGH",
+        "api": "HIGH",
+        "match": true
+      },
+      "assessment": {
+        "expected": "HIGH RISK",
+        "db": "HIGH RISK",
+        "api": "HIGH RISK",
+        "match": true
+      }
+    },
+    {
+      "event_id": "EVT-SIM-AC9DD098",
+      "votes": {
+        "ocsvm": 1,
+        "iforest": 1,
+        "xgb": 0,
+        "total": 2
+      },
+      "fusion": {
+        "expected": "THREAT",
+        "db": "THREAT",
+        "api": "THREAT",
+        "match": true
+      },
+      "evidence": {
+        "expected": "HIGH",
+        "db": "HIGH",
+        "api": "HIGH",
+        "match": true
+      },
+      "assessment": {
+        "expected": "SUSPICIOUS",
+        "db": "SUSPICIOUS",
+        "api": "SUSPICIOUS",
+        "match": true
+      }
+    }
+  ],
+  "fec_audit": {
+    "patients": [
+      {
+        "patient_id": "P003",
+        "db_fec_score": 83.5,
+        "api_fec_score": null,
+        "match": false
+      },
+      {
+        "patient_id": "P004",
+        "db_fec_score": 68.2,
+        "api_fec_score": null,
+        "match": false
+      },
+      {
+        "patient_id": "P005",
+        "db_fec_score": 35.6,
+        "api_fec_score": null,
+        "match": false
+      }
+    ],
+    "hardcoded_fec_85_occurrences_in_app": 0
+  },
+  "cross_event_isolation": {
+    "total_queries": 9,
+    "exact_matches": 9,
+    "leakage_count": 0,
+    "logs": [
+      {
+        "requested": "EVT-SIM-AC9DD098",
+        "returned": "EVT-SIM-AC9DD098",
+        "patient_match": true,
+        "is_match": true
+      },
+      {
+        "requested": "EVT-SIM-5DB5279E",
+        "returned": "EVT-SIM-5DB5279E",
+        "patient_match": true,
+        "is_match": true
+      },
+      {
+        "requested": "EVT-SIM-ED05AE22",
+        "returned": "EVT-SIM-ED05AE22",
+        "patient_match": true,
+        "is_match": true
+      },
+      {
+        "requested": "EVT-SIM-53576923",
+        "returned": "EVT-SIM-53576923",
+        "patient_match": true,
+        "is_match": true
+      },
+      {
+        "requested": "EVT-SIM-5034B7DC",
+        "returned": "EVT-SIM-5034B7DC",
+        "patient_match": true,
+        "is_match": true
+      },
+      {
+        "requested": "EVT-SIM-CE4D1D50",
+        "returned": "EVT-SIM-CE4D1D50",
+        "patient_match": true,
+        "is_match": true
+      },
+      {
+        "requested": "EVT-SIM-5DB5279E",
+        "returned": "EVT-SIM-5DB5279E",
+        "patient_match": true,
+        "is_match": true
+      },
+      {
+        "requested": "EVT-SIM-AC9DD098",
+        "returned": "EVT-SIM-AC9DD098",
+        "patient_match": true,
+        "is_match": true
+      },
+      {
+        "requested": "EVT-SIM-53576923",
+        "returned": "EVT-SIM-53576923",
+        "patient_match": true,
+        "is_match": true
+      }
+    ]
+  },
+  "cross_patient_isolation": {
+    "P003_FEC": 83.5,
+    "P004_FEC": 68.2,
+    "P005_FEC": 35.6,
+    "fec_leakage_count": 0,
+    "feature_contamination_count": 0,
+    "stale_patient_state_count": 0
+  },
+  "invalid_event_testing": {
+    "nonexistent_event_status": 404,
+    "whitespace_padded_status": 200,
+    "whitespace_padded_returned_id": "EVT-SIM-5DB5279E"
+  },
+  "rapid_event_test": {
+    "generated_count": 5,
+    "unique_ids_count": 5,
+    "ml_records_count": 5,
+    "fusion_records_count": 5,
+    "duplicates_count": 0,
+    "cross_event_leakage": 0
+  },
+  "db_api_truth": {
+    "total_events_checked": 6,
+    "exact_matches": 6
+  },
+  "automated_regression": {
+    "pytest_exit_code": 2,
+    "pytest_output_tail": [
+      "backend\\app\\security_engine\\telemetry_generator.py:212",
+      "  c:\\Users\\MEERA V\\Desktop\\PROJECTS\\HEALTH SHIELD X 2.0\\backend\\tests\\..\\app\\security_engine\\telemetry_generator.py:212: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).",
+      "    LAST_TELEMETRY_CYCLE_TIME = datetime.datetime.utcnow()",
+      "",
+      "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+      "=========================== short test summary info ===========================",
+      "ERROR backend/tests/test_judge_wow.py",
+      "ERROR backend/tests/test_replay.py",
+      "!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!",
+      "======================= 111 warnings, 2 errors in 6.03s ======================="
+    ],
+    "frontend_build_exit_code": 0
+  },
+  "modification_audit": {
+    "tracked_files_modified_count": 45,
+    "modified_files": [
+      " M __pycache__/generate_honeypot_events.cpython-313.pyc",
+      " M __pycache__/seed_patients.cpython-313.pyc",
+      " M backend/app/__pycache__/main.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/auth_routes.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/detection.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/features.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/fec.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/honeypot.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/patients.cpython-313.pyc",
+      " M backend/app/api/routes/auth_routes.py",
+      " M backend/app/api/routes/detection.py",
+      " M backend/app/api/routes/features.py",
+      " M backend/app/api/routes/fec.py",
+      " M backend/app/api/routes/honeypot.py",
+      " M backend/app/api/routes/patients.py",
+      " M backend/app/db/__pycache__/models.cpython-313.pyc",
+      " M backend/app/db/__pycache__/synthetic_cohort_v1.cpython-313.pyc",
+      " M backend/app/db/models.py",
+      " M backend/app/main.py",
+      " M backend/app/security_engine/__pycache__/feature_engine.cpython-313.pyc",
+      " M backend/app/security_engine/__pycache__/fec_engine.cpython-313.pyc",
+      " M backend/app/security_engine/__pycache__/telemetry_generator.cpython-313.pyc",
+      " M backend/app/security_engine/feature_engine.py",
+      " M backend/app/security_engine/fec_engine.py",
+      " M backend/app/security_engine/telemetry_generator.py",
+      " M backend/healthshield.db",
+      " M backend/models/isolation_forest_metadata.json",
+      " M backend/models/ocsvm_metadata.json",
+      " M backend/models/xgboost_metadata.json",
+      " M backend/tests/__pycache__/test_honeypot_simulation.cpython-313-pytest-8.2.2.pyc",
+      " M backend/tests/__pycache__/test_honeypot_simulation.cpython-313-pytest-9.1.1.pyc",
+      " M backend/tests/test_honeypot_simulation.py",
+      " M frontend/src/App.tsx",
+      " M frontend/src/components/DashboardAccordionBar.tsx",
+      " M frontend/src/components/layout/Sidebar.tsx",
+      " M frontend/src/pages/CommandCenter.tsx",
+      " M frontend/src/pages/FeatureView.tsx",
+      " M frontend/src/pages/FecView.tsx",
+      " M frontend/src/pages/HoneypotSimulator.tsx",
+      " M frontend/src/pages/PatientDashboard.tsx",
+      " M generate_honeypot_events.py",
+      " M reports/full_system_validation.json",
+      " M reports/patient_detection_audit.csv",
+      " M reports/patient_detection_audit.json",
+      " M reports/patient_detection_audit.txt"
+    ]
+  }
+}

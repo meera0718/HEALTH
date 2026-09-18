@@ -1,0 +1,31 @@
+id,name,diagnosis,failed_logins,requests_per_minute,records_accessed,unique_endpoints,session_duration_min,device_changes,error_rate,unusual_access_time,endpoint_enumeration,age,gender,blood_group,doctor,department
+P001,Arthur Pendelton,Type 2 Diabetes,1,8,2,3,25,0,0.01,0,0,54,Male,A+,"Dr. Sarah Lin, MD",Endocrinology
+P002,Beatrice Vance,Hypertension,2,12,3,4,31,0,0.02,0,0,62,Female,O+,"Dr. Robert Chen, MD",Cardiology
+P003,Charles Montgomery,Asthma,0,6,1,2,18,0,0.01,0,0,29,Male,B+,"Dr. Elena Rostova, MD",Pulmonology
+P004,Diana Prince,Migraine,3,15,4,5,28,0,0.03,0,0,35,Female,AB+,"Dr. Marcus Thorne, MD",Neurology
+P005,Edward Rochester,Iron Deficiency Anemia,1,10,2,3,22,0,0.02,0,0,48,Male,O-,"Dr. Sarah Lin, MD",Hematology
+P006,Fiona Gallagher,Gastritis,2,14,3,4,35,0,0.02,0,0,41,Female,A-,"Dr. Robert Chen, MD",Gastroenterology
+P007,George Clark,Hypothyroidism,4,18,5,5,40,1,0.04,0,0,58,Male,B-,"Dr. Sarah Lin, MD",Endocrinology
+P008,Hannah Abbott,Seasonal Allergy,0,7,1,2,16,0,0.01,0,0,24,Female,O+,"Dr. Elena Rostova, MD",Allergy & Immunology
+P009,Ian Malcolm,Vitamin D Deficiency,3,16,3,4,29,0,0.03,0,0,51,Male,A+,"Dr. Marcus Thorne, MD",Internal Medicine
+P010,Julia Roberts,Chronic Kidney Disease,2,20,5,6,45,1,0.04,0,0,67,Female,AB-,"Dr. Robert Chen, MD",Nephrology
+P011,Kevin Bacon,Type 1 Diabetes,9,75,14,10,18,1,0.12,0,0,31,Male,O+,"Dr. Sarah Lin, MD",Endocrinology
+P012,Laura Palmer,Coronary Artery Disease,14,110,22,15,15,1,0.18,1,0,60,Female,A+,"Dr. Robert Chen, MD",Cardiology
+P013,Michael Corleone,Chronic Obstructive Pulmonary Disease,21,160,31,19,11,2,0.25,1,1,73,Male,B+,"Dr. Elena Rostova, MD",Pulmonology
+P014,Nancy Wheeler,Peptic Ulcer Disease,7,95,18,13,14,1,0.15,0,1,28,Female,O-,"Dr. Robert Chen, MD",Gastroenterology
+P015,Oscar Isaac,Psoriasis,12,130,26,17,12,2,0.21,1,1,44,Male,A-,"Dr. Marcus Thorne, MD",Dermatology
+P016,Penelope Cruz,Epilepsy,35,40,8,6,9,1,0.42,1,0,39,Female,AB+,"Dr. Marcus Thorne, MD",Neurology
+P017,Quentin Tarantino,Arthritis,48,55,11,7,8,2,0.51,1,0,61,Male,B+,"Dr. Sarah Lin, MD",Rheumatology
+P018,Rachel Green,Chronic Liver Disease,61,70,15,8,7,0,0.63,1,0,52,Female,O+,"Dr. Robert Chen, MD",Hepatology
+P019,Steve Rogers,Pneumonia,29,45,9,6,10,1,0.38,0,0,45,Male,A+,"Dr. Elena Rostova, MD",Pulmonology
+P020,Tony Stark,Heart Failure,55,62,13,9,6,2,0.57,1,0,56,Male,O+,"Dr. Robert Chen, MD",Cardiology
+P021,Uma Thurman,Influenza,5,210,72,24,6,2,0.19,1,1,33,Female,B-,"Dr. Sarah Lin, MD",Infectious Disease
+P022,Victor Vance,GERD,8,280,96,29,5,3,0.24,1,1,42,Male,A-,"Dr. Robert Chen, MD",Gastroenterology
+P023,Wanda Maximoff,Osteoporosis,11,340,125,33,4,3,0.31,1,1,65,Female,O-,"Dr. Sarah Lin, MD",Orthopedics
+P024,Xavier Charles,Anxiety Disorder,6,190,58,21,8,2,0.16,0,1,49,Male,AB+,"Dr. Marcus Thorne, MD",Psychiatry
+P025,Yennefer Vengerberg,Atopic Dermatitis,13,390,145,37,4,4,0.35,1,1,37,Female,A+,"Dr. Marcus Thorne, MD",Dermatology
+P026,Zelda Hyrule,Obesity,4,45,7,6,20,1,0.08,0,0,27,Female,O+,"Dr. Sarah Lin, MD",Nutrition & Bariatrics
+P027,Arya Stark,Polycystic Ovary Syndrome,18,145,32,18,10,2,0.27,1,1,23,Female,B+,"Dr. Sarah Lin, MD",Gynecology
+P028,Bruce Wayne,Chronic Back Pain,32,50,10,7,9,1,0.45,1,0,47,Male,O+,"Dr. Marcus Thorne, MD",Orthopedics
+P029,Clark Kent,Acid Reflux Disease,3,25,6,5,30,0,0.05,0,0,36,Male,A+,"Dr. Robert Chen, MD",Gastroenterology
+P030,Peter Parker,Parkinsonian Syndrome,24,225,81,27,6,3,0.29,1,1,68,Male,AB-,"Dr. Marcus Thorne, MD",Neurology

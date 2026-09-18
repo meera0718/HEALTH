@@ -1,0 +1,17 @@
+{
+  "anomalous_event_count": 0.21416005492210388,
+  "device_change_count": 0.11597280949354172,
+  "suspicious_download_count": 0.1015356257557869,
+  "data_export_count": 0.09211159497499466,
+  "error_rate": 0.08872824907302856,
+  "privilege_escalation_count": 0.0876471996307373,
+  "endpoint_discovery_count": 0.08150985091924667,
+  "failed_login_rate": 0.0635012686252594,
+  "request_rate": 0.06094396859407425,
+  "total_records_accessed": 0.04623764008283615,
+  "night_activity_count": 0.020547421649098396,
+  "unique_sessions": 0.010037028230726719,
+  "unique_endpoints": 0.007088395766913891,
+  "unique_devices": 0.005693479906767607,
+  "average_response_time_ms": 0.00428539514541626
+}
