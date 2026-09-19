@@ -19,6 +19,7 @@ import { HospitalDigitalTwin } from './pages/HospitalDigitalTwin';
 
 import GridDistortion from './components/GridDistortion';
 import { NotificationsDrawer } from './components/NotificationsDrawer';
+import { Chatbot } from './components/chatbot/Chatbot';
 
 import { auth, type UnauthorizedErrorPayload } from './lib/auth';
 import type { 
@@ -27,7 +28,7 @@ import type {
 } from './types';
 
 const TAB_ORDER = [
-  'command', 'pipeline', 'patients', 'honeypot', 'features', 'fec', 'devices', 'twin', 'report'
+  'command', 'pipeline', 'patients', 'honeypot', 'features', 'fec', 'devices', 'twin', 'report', 'ai-assistant'
 ];
 
 const slideVariants = {
@@ -331,10 +332,12 @@ export function App() {
         />
 
         {/* Accordion Gallery Dashboard Navigator */}
-        <DashboardAccordionBar
-          activeTab={activeTab}
-          onSelectTab={handleTabChange}
-        />
+        {activeTab !== 'ai-assistant' && (
+          <DashboardAccordionBar
+            activeTab={activeTab}
+            onSelectTab={handleTabChange}
+          />
+        )}
 
         {/* Animated Main Dashboard Viewport Container */}
         <main className="flex-1 overflow-y-auto pb-12 relative w-full overflow-x-hidden px-2 sm:px-4">
@@ -393,6 +396,10 @@ export function App() {
 
               {activeTab === 'report' && (
                 <SecurityReport />
+              )}
+
+              {activeTab === 'ai-assistant' && (
+                <Chatbot incidentId={selectedIncidentId} fullPage />
               )}
             </motion.div>
           </AnimatePresence>

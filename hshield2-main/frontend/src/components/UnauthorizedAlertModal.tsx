@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldAlert, AlertTriangle, ArrowRight, X } from 'lucide-react';
+import { ShieldAlert, AlertTriangle, X } from 'lucide-react';
 import type { UnauthorizedErrorPayload } from '../lib/auth';
 
 interface UnauthorizedAlertModalProps {
@@ -12,8 +12,7 @@ interface UnauthorizedAlertModalProps {
 export const UnauthorizedAlertModal: React.FC<UnauthorizedAlertModalProps> = ({
   isOpen,
   payload,
-  onClose,
-  onJumpToInvestigation
+  onClose
 }) => {
   if (!isOpen || !payload) return null;
 

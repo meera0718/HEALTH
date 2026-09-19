@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.db.database import engine, Base, SessionLocal
 from app.db.seeds import seed_database
-from app.api.routes import datasets, auth_routes, patients, deception, honeypot, features, fec, ml_ocsvm, ml_isolation_forest, ml_xgboost, detection, devices, reporting, health, fusion, vector_routes, digital_twin
+from app.api.routes import datasets, auth_routes, patients, deception, honeypot, features, fec, ml_ocsvm, ml_isolation_forest, ml_xgboost, detection, devices, reporting, health, fusion, vector_routes, digital_twin, chatbot
 
 # Initialize database tables
 import app.db.models
@@ -84,6 +84,7 @@ app.include_router(detection.router, prefix=settings.API_V1_STR, tags=["detectio
 app.include_router(vector_routes.router, prefix=settings.API_V1_STR, tags=["vector"])
 app.include_router(health.router, prefix=settings.API_V1_STR, tags=["health"])
 app.include_router(digital_twin.router, prefix=settings.API_V1_STR, tags=["digital-twin"])
+app.include_router(chatbot.router, prefix=settings.API_V1_STR, tags=["chatbot"])
 
 # Direct legacy / fallback aliases for root endpoints
 app.include_router(devices.router, prefix="/api", tags=["devices-legacy"])
@@ -103,6 +104,7 @@ app.include_router(detection.router, prefix="/api", tags=["detection-legacy"])
 app.include_router(vector_routes.router, prefix="/api", tags=["vector-legacy"])
 app.include_router(health.router, prefix="/api", tags=["health-legacy"])
 app.include_router(digital_twin.router, prefix="/api", tags=["digital-twin-legacy"])
+app.include_router(chatbot.router, prefix="/api", tags=["chatbot-legacy"])
 
 @app.get("/")
 def root():

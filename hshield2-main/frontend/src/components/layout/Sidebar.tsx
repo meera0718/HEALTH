@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   Shield, LayoutDashboard,
   ShieldAlert, UserCheck, LogOut, Cpu, X, Users, FileText, Activity,
-  Server, Boxes
+  Server, Boxes, Bot
 } from 'lucide-react';
 import { UserProfileModal } from '../UserProfileModal';
 import { auth } from '../../lib/auth';
@@ -34,6 +34,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'devices', label: '🛡 LIVE DEVICES', icon: Server },
     { id: 'twin', label: '🏥 3D DIGITAL TWIN', icon: Boxes },
     { id: 'report', label: '📄 SECURITY REPORT', icon: FileText },
+    { id: 'ai-assistant', label: 'AI ASSISTANT', icon: Bot },
   ];
 
   const handleSelect = (id: string) => {

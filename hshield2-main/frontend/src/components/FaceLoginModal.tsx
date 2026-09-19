@@ -17,14 +17,14 @@ export const FaceLoginModal: React.FC<FaceLoginModalProps> = ({
   onSecurityAlert
 }) => {
   const [selectedAccount, setSelectedAccount] = useState<string>('');
-  const [investigators, setInvestigators] = useState<Array<{account_id: string, email: string, display_id: string, full_name: string}>>([]);
+  const [investigators, setInvestigators] = useState<Array<{account_id: string, full_name: string}>>([]);
   
   useEffect(() => {
     if (isOpen) {
       auth.getInvestigators().then((invs) => {
         setInvestigators(invs);
         if (invs.length > 0 && !selectedAccount) {
-          setSelectedAccount(invs[0].email);
+          setSelectedAccount(invs[0].account_id);
         }
       });
     }
@@ -198,8 +198,8 @@ export const FaceLoginModal: React.FC<FaceLoginModalProps> = ({
 
         {/* Account Selector */}
         <div className="mb-4 space-y-1.5">
-          <label className="text-[10px] text-slate-400 uppercase tracking-widest font-bold block">
-            INVESTIGATOR EMAIL:
+            <label className="text-[10px] text-slate-400 uppercase tracking-widest font-bold block">
+            INVESTIGATOR ACCOUNT:
           </label>
           <div className="flex flex-col sm:flex-row gap-2">
             <select
@@ -209,8 +209,8 @@ export const FaceLoginModal: React.FC<FaceLoginModalProps> = ({
             >
               <optgroup label="Security Investigators">
                 {investigators.map((inv) => (
-                  <option key={inv.email} value={inv.email}>
-                    {inv.display_id} · {inv.full_name}
+                  <option key={inv.account_id} value={inv.account_id}>
+                    {inv.account_id} · {inv.full_name}
                   </option>
                 ))}
               </optgroup>
