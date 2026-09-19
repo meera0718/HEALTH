@@ -3,3 +3,4 @@ backend/healthshield.db
 backend/data/faces/
 node_modules/
 __pycache__/
+*.db
