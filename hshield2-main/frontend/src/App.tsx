@@ -330,7 +330,7 @@ export function App() {
           onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
         />
 
-        {/* Accordion Gallery Dashboard Navigator (Stable & Fixed) */}
+        {/* Accordion Gallery Dashboard Navigator */}
         <DashboardAccordionBar
           activeTab={activeTab}
           onSelectTab={handleTabChange}

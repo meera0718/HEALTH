@@ -6,6 +6,7 @@ from app.db.seeds import seed_database
 from app.api.routes import datasets, auth_routes, patients, deception, honeypot, features, fec, ml_ocsvm, ml_isolation_forest, ml_xgboost, detection, devices, reporting, health, fusion, vector_routes, digital_twin
 
 # Initialize database tables
+import app.db.models
 Base.metadata.create_all(bind=engine)
 
 # Ensure 'synthetic' column exists (SQLite lightweight migration)
