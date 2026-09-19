@@ -1,5 +1,2 @@
-backend/.env
-backend/healthshield.db
-backend/data/faces/
-node_modules/
-__pycache__/
+﻿backend/healthshield.db
+*.db
