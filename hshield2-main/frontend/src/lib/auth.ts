@@ -40,81 +40,51 @@ export const auth = {
         // ignore
       }
     }
-    return {
-      id: 'usr_789421',
-      email: 'investigator@gmail.com',
-      name: 'Dr. Alexander Doe',
-      role: 'INVESTIGATOR',
-      authorized: true
-    };
+    return null;
   },
 
   async loginWithCredentials(email: string, password: string): Promise<UserProfile> {
     const cleanEmail = email.trim().toLowerCase();
 
-    // 1. Check Authorized Doctor Demo Account
-    if ((cleanEmail === 'doctor_demo' || cleanEmail === 'doctor@gmail.com' || cleanEmail === 'doctor') && password === 'demo123') {
-      const token = `hsx_jwt_doctor_token_${Date.now()}`;
-      const profile: UserProfile = {
-        id: 'usr_doc_9021',
-        email: 'doctor_demo',
-        name: 'Dr. Sarah Lin, MD',
-        role: 'DOCTOR',
-        authorized: true,
-        token
-      };
-      localStorage.setItem(TOKEN_KEY, token);
-      localStorage.setItem(USER_KEY, JSON.stringify(profile));
-      return profile;
-    }
-
-    // 2. Check Authorized Security Investigator Account
-    if ((cleanEmail === 'investigator@gmail.com' || cleanEmail === 'investigator') && password === 'investigate@123') {
-      const token = `hsx_jwt_investigator_token_${Date.now()}`;
-      const profile: UserProfile = {
-        id: 'usr_789421',
-        email: 'investigator@gmail.com',
-        name: 'Dr. Alexander Doe',
-        role: 'INVESTIGATOR',
-        authorized: true,
-        token
-      };
-      localStorage.setItem(TOKEN_KEY, token);
-      localStorage.setItem(USER_KEY, JSON.stringify(profile));
-      return profile;
-    }
-
-    // 3. Unauthorized Access Attempt handling
-    const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false });
-    
-    // Asynchronously log to security access-attempts audit endpoint
+    // Use backend to securely authenticate via Supabase Token API and verify Investigator status
     try {
-      await fetch('/api/v1/security/access-attempts', {
+      const res = await fetch('/api/v1/auth/password-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          event_type: 'UNAUTHORIZED_LOGIN_ATTEMPT',
-          source: '192.168.1.105 (External Public IP)',
-          timestamp,
-          email_attempted: cleanEmail || 'unknown_user_47'
-        })
+        body: JSON.stringify({ email: cleanEmail, password })
       });
-    } catch {
-      // ignore offline fallback
+
+      if (!res.ok) {
+        let errorMsg = 'Account not registered';
+        try {
+          const errJson = await res.json();
+          if (errJson.detail) errorMsg = errJson.detail;
+        } catch (_) {}
+        const err = new Error(errorMsg);
+        
+        const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false });
+        const unauthPayload: UnauthorizedErrorPayload = {
+          isUnauthorizedAttempt: true,
+          account: cleanEmail || 'unknown_user_47',
+          status: 'ACCESS DENIED',
+          timestamp,
+          source: '192.168.1.105 (External Public IP)',
+          severity: 'HIGH'
+        };
+        (err as any).unauthPayload = unauthPayload;
+        throw err;
+      }
+
+      const data = await res.json();
+      const profile: UserProfile = data.user_profile;
+      localStorage.setItem(TOKEN_KEY, profile.token || `hsx_jwt_${cleanEmail}`);
+      localStorage.setItem(USER_KEY, JSON.stringify(profile));
+      return profile;
+
+    } catch (err: any) {
+      if (err.unauthPayload) throw err;
+      throw new Error(`UNAUTHORIZED ACCESS ATTEMPT DETECTED: Access denied for ${cleanEmail}`);
     }
-
-    const unauthPayload: UnauthorizedErrorPayload = {
-      isUnauthorizedAttempt: true,
-      account: cleanEmail || 'unknown_user_47',
-      status: 'ACCESS DENIED',
-      timestamp,
-      source: '192.168.1.105 (External Public IP)',
-      severity: 'HIGH'
-    };
-
-    const err = new Error(`UNAUTHORIZED ACCESS ATTEMPT DETECTED: Access denied for ${cleanEmail || 'unknown_user_47'}`);
-    (err as any).unauthPayload = unauthPayload;
-    throw err;
   },
 
   async registerFace(accountId: string, faceImageB64?: string): Promise<{ success: boolean; message: string }> {
@@ -212,16 +182,19 @@ export const auth = {
         return profile;
       }
     } catch {
-      const fallback: UserProfile = {
-        id: 'usr_789421',
-        email: 'investigator@gmail.com',
-        name: 'Dr. Alexander Doe',
-        role: 'INVESTIGATOR',
-        authorized: true
-      };
-      localStorage.setItem(USER_KEY, JSON.stringify(fallback));
-      return fallback;
+      // no fallback
     }
+    
+    // Check if there is a cached user profile from a successful login
+    const userStr = localStorage.getItem(USER_KEY);
+    if (userStr) {
+      try {
+        return JSON.parse(userStr);
+      } catch {
+        // ignore
+      }
+    }
+    
     return null;
   },
 
@@ -233,5 +206,55 @@ export const auth = {
     }
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+  },
+
+  async getInvestigators(): Promise<Array<{account_id: string, full_name: string}>> {
+    try {
+      const res = await fetch('/api/v1/auth/investigators');
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (_) {}
+    return [];
+  },
+
+  async addInvestigator(email: string, password: string, fullName: string): Promise<void> {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) throw new Error('Not authenticated');
+
+    const res = await fetch('/api/v1/auth/investigators', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ email, password, full_name: fullName })
+    });
+    if (!res.ok) {
+      let errorMsg = 'Failed to add investigator';
+      try {
+        const errJson = await res.json();
+        if (errJson.detail) errorMsg = errJson.detail;
+      } catch (_) {}
+      throw new Error(errorMsg);
+    }
+  },
+
+  async removeInvestigator(accountId: string): Promise<void> {
+    const token = this.getToken();
+    const res = await fetch(`/api/v1/auth/investigators/${encodeURIComponent(accountId)}`, {
+      method: 'DELETE',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
+    });
+    if (!res.ok) {
+      let errorMsg = 'Failed to remove investigator';
+      try {
+        const errJson = await res.json();
+        if (errJson.detail) errorMsg = errJson.detail;
+      } catch (_) {}
+      throw new Error(errorMsg);
+    }
   }
 };

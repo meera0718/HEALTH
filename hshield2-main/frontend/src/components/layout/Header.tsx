@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Bell, Search, ShieldCheck, UserCheck, Menu } from 'lucide-react';
 import { UserProfileModal } from '../UserProfileModal';
+import { AddInvestigatorModal } from '../AddInvestigatorModal';
+import { auth } from '../../lib/auth';
 
 interface HeaderProps {
   selectedIncidentId: string;
@@ -22,6 +24,10 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenMobileSidebar
 }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isAddInvestigatorOpen, setIsAddInvestigatorOpen] = useState(false);
+
+  const currentUser = auth.getCurrentUser();
+  const isInvestigator = currentUser?.role === 'INVESTIGATOR';
 
   return (
     <>
@@ -86,9 +92,18 @@ export const Header: React.FC<HeaderProps> = ({
               <UserCheck className="w-4 h-4" />
             </div>
             <span className="text-xs text-slate-200 font-semibold font-mono hidden xl:inline">
-              Dr. Alexander Doe
+              {currentUser?.name || 'UNKNOWN USER'}
             </span>
           </button>
+
+          {isInvestigator && (
+            <button
+              onClick={() => setIsAddInvestigatorOpen(true)}
+              className="ml-2 px-3 py-1.5 rounded-md bg-indigo-600/20 hover:bg-indigo-600/40 border border-indigo-500/40 text-indigo-300 text-xs font-mono font-bold transition-all cursor-pointer"
+            >
+              + ADD INVESTIGATOR
+            </button>
+          )}
         </div>
       </header>
 
@@ -97,6 +112,11 @@ export const Header: React.FC<HeaderProps> = ({
         isOpen={isProfileOpen}
         onClose={() => setIsProfileOpen(false)}
         onLogout={onLogout}
+      />
+
+      <AddInvestigatorModal
+        isOpen={isAddInvestigatorOpen}
+        onClose={() => setIsAddInvestigatorOpen(false)}
       />
     </>
   );

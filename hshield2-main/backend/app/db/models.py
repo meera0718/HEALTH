@@ -339,6 +339,12 @@ class UserFaceBiometric(Base):
     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow, nullable=False)
 
 
+class Investigator(Base):
+    __tablename__ = "investigators"
 
-
-
+    account_id = Column(String, primary_key=True, index=True) # e.g. HARSHITHA@GMAIL.COM, INVESTIGATOR@GMAIL.COM
+    email = Column(String, unique=True, index=True, nullable=True) # nullable=True initially for migration, but enforced at logic level
+    display_id = Column(String, unique=True, nullable=True) # e.g. INV-003
+    full_name = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, nullable=False)
+    created_by = Column(String, default="SYSTEM")

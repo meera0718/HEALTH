@@ -17,6 +17,14 @@ try:
 except Exception:
     pass
 
+# Ensure 'email' and 'display_id' columns exist in investigators table
+try:
+    with engine.begin() as conn:
+        conn.execute(text("ALTER TABLE investigators ADD COLUMN email VARCHAR"))
+        conn.execute(text("ALTER TABLE investigators ADD COLUMN display_id VARCHAR"))
+except Exception:
+    pass
+
 # Seed database on startup if empty
 db = SessionLocal()
 try:

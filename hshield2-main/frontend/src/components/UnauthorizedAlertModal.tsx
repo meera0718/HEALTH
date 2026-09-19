@@ -78,13 +78,7 @@ export const UnauthorizedAlertModal: React.FC<UnauthorizedAlertModalProps> = ({
 
         {/* Action Buttons */}
         <div className="space-y-3 pt-1">
-          <button
-            onClick={onJumpToInvestigation}
-            className="w-full py-3 px-5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-mono font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-rose-600/40 transition-all cursor-pointer hover:scale-[1.02]"
-          >
-            <span>INSPECT IN HEALTHSHIELD-X INVESTIGATION CONSOLE</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+
 
           <button
             onClick={onClose}

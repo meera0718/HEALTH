@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Camera, AlertCircle, RefreshCw, X, UserPlus, CheckCircle2 } from 'lucide-react';
 import { auth } from '../lib/auth';
+import { DEMO_MODE } from '../config';
 
 interface FaceRegistrationModalProps {
   isOpen: boolean;
@@ -13,8 +14,19 @@ export const FaceRegistrationModal: React.FC<FaceRegistrationModalProps> = ({
   onClose,
   onRegistrationSuccess
 }) => {
-  const [selectedAccount, setSelectedAccount] = useState<string>('doctor_demo');
-  const [customAccountId, setCustomAccountId] = useState<string>('');
+  const [selectedAccount, setSelectedAccount] = useState<string>('');
+  const [investigators, setInvestigators] = useState<Array<{account_id: string, email: string, display_id: string, full_name: string}>>([]);
+  
+  useEffect(() => {
+    if (isOpen) {
+      auth.getInvestigators().then((invs) => {
+        setInvestigators(invs);
+        if (invs.length > 0 && !selectedAccount) {
+          setSelectedAccount(invs[0].email);
+        }
+      });
+    }
+  }, [isOpen]);
 
   const [cameraStatus, setCameraStatus] = useState<'IDLE' | 'STARTING' | 'ACTIVE' | 'DENIED' | 'ERROR'>('IDLE');
   const [cameraError, setCameraError] = useState<string | null>(null);
@@ -27,7 +39,7 @@ export const FaceRegistrationModal: React.FC<FaceRegistrationModalProps> = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
-  const activeAccountId = selectedAccount === 'CUSTOM' ? customAccountId.trim() : selectedAccount;
+  const activeAccountId = selectedAccount;
 
   const startCamera = async () => {
     setCameraStatus('STARTING');
@@ -136,7 +148,7 @@ export const FaceRegistrationModal: React.FC<FaceRegistrationModalProps> = ({
         onRegistrationSuccess(activeAccountId);
       }, 1500);
     } catch (err: any) {
-      setErrorMessage(err.message || 'Facial template registration failed.');
+      setErrorMessage(!DEMO_MODE ? 'Enrollment failed.' : (err.message || 'Facial template registration failed.'));
     } finally {
       setRegistering(false);
     }
@@ -152,7 +164,7 @@ export const FaceRegistrationModal: React.FC<FaceRegistrationModalProps> = ({
           <div className="flex items-center gap-2 text-indigo-400">
             <UserPlus className="w-5 h-5 text-indigo-400" />
             <h3 className="text-sm font-bold text-white uppercase tracking-wider">
-              FACE BIOMETRIC REGISTRATION
+              BIOMETRIC ENROLLMENT
             </h3>
           </div>
           <button
@@ -184,7 +196,7 @@ export const FaceRegistrationModal: React.FC<FaceRegistrationModalProps> = ({
         {/* Account Selector */}
         <div className="mb-4 space-y-1.5">
           <label className="text-[10px] text-slate-400 uppercase tracking-widest font-bold block">
-            REGISTER FACE FOR ACCOUNT:
+            INVESTIGATOR EMAIL:
           </label>
           <div className="flex flex-col sm:flex-row gap-2">
             <select
@@ -192,32 +204,14 @@ export const FaceRegistrationModal: React.FC<FaceRegistrationModalProps> = ({
               onChange={(e) => setSelectedAccount(e.target.value)}
               className="bg-black/60 border border-slate-700 text-indigo-300 text-xs px-3 py-2 rounded-xl outline-none cursor-pointer flex-1 font-mono"
             >
-              <optgroup label="Doctors & Officers">
-                <option value="doctor_demo">Doctor Demo (Dr. Sarah Lin)</option>
-                <option value="investigator@gmail.com">Security Investigator (Dr. Alexander Doe)</option>
+              <optgroup label="Security Investigators">
+                {investigators.map((inv) => (
+                  <option key={inv.email} value={inv.email}>
+                    {inv.display_id} · {inv.full_name}
+                  </option>
+                ))}
               </optgroup>
-              <optgroup label="Cohort Patients (P001 - P030)">
-                <option value="P001">Patient P001 (Hypertension)</option>
-                <option value="P002">Patient P002 (Type 2 Diabetes)</option>
-                <option value="P003">Patient P003 (Coronary Artery Disease)</option>
-                <option value="P004">Patient P004 (Asthma)</option>
-                <option value="P005">Patient P005 (Chronic Kidney Disease)</option>
-                <option value="P010">Patient P010 (Arrhythmia)</option>
-                <option value="P015">Patient P015 (Heart Failure)</option>
-                <option value="P030">Patient P030 (Severe Cardiac Arrhythmia)</option>
-              </optgroup>
-              <option value="CUSTOM">Custom Account ID...</option>
             </select>
-
-            {selectedAccount === 'CUSTOM' && (
-              <input
-                type="text"
-                value={customAccountId}
-                onChange={(e) => setCustomAccountId(e.target.value)}
-                placeholder="e.g. P012 or doctor_demo"
-                className="bg-black/60 border border-slate-700 text-white text-xs px-3 py-2 rounded-xl outline-none font-mono flex-1"
-              />
-            )}
           </div>
         </div>
 
@@ -254,6 +248,10 @@ export const FaceRegistrationModal: React.FC<FaceRegistrationModalProps> = ({
                 <span className="w-2 h-2 rounded-full bg-indigo-400 animate-ping" />
                 <span>REGISTRATION MODE</span>
               </div>
+              <div className="absolute bottom-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-lg border border-white/10 text-[10px] text-slate-300 font-mono">
+                LIVENESS: <span className="text-cyan-400 font-bold">ACTIVE</span> · ENCRYPTED TEMPLATE
+              </div>
+
             </div>
           )}
 
@@ -317,6 +315,13 @@ export const FaceRegistrationModal: React.FC<FaceRegistrationModalProps> = ({
               </>
             )}
           </button>
+        </div>
+        
+        {/* Footer */}
+        <div className="mt-4 text-center">
+          <span className="text-[10px] text-slate-500 font-mono uppercase tracking-widest">
+            Access is logged and audited.
+          </span>
         </div>
       </div>
     </div>
