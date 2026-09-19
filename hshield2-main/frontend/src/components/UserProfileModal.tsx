@@ -13,9 +13,9 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({ isOpen, onCl
   if (!isOpen) return null;
 
   const currentUser = auth.getCurrentUser();
-  const email = currentUser?.email || 'investigator@gmail.com';
-  const role = currentUser?.role ? `${currentUser.role.replace('_', ' ')}` : 'LEAD CYBER FORENSICS INVESTIGATOR';
-  const name = currentUser?.name?.toUpperCase() || 'DR. ALEXANDER DOE';
+  const email = currentUser?.email || 'UNKNOWN EMAIL';
+  const role = currentUser?.role ? `${currentUser.role.replace('_', ' ')}` : 'INVESTIGATOR';
+  const name = currentUser?.name?.toUpperCase() || 'UNKNOWN USER';
 
   return (
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-2 sm:p-4">

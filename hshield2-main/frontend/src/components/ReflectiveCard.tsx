@@ -23,7 +23,7 @@ export interface ReflectiveCardProps {
 }
 
 export const ReflectiveCard: React.FC<ReflectiveCardProps> = ({
-  userName = 'ALEXANDER DOE',
+  userName = 'UNKNOWN USER',
   userRole = 'SENIOR INVESTIGATOR',
   idNumber = '8901-2345-6789',
   email = 'investigator@gmail.com',

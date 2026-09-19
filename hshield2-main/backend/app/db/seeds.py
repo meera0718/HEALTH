@@ -2,7 +2,7 @@ import json
 import datetime
 from sqlalchemy.orm import Session
 from app.db.models import (
-    Device, AuditLog, DecoyAsset, PatientRecord, Patient
+    Device, AuditLog, DecoyAsset, PatientRecord, Patient, Investigator
 )
 from app.security_engine.deception_engine.decoy_manager import DEFAULT_DECOYS
 from app.ml.dataset_generator import PATIENTS_30_DATA
@@ -93,5 +93,44 @@ def seed_database(db: Session):
                 last_seen=now_str
             )
             db.add(new_dev)
+    db.commit()
+
+    # Seed Investigators
+    investigators = [
+        {"email": "investigator@gmail.com", "display_id": "INV-001", "full_name": "Admin"},
+        {"email": "harshitha15727@gmail.com", "display_id": "INV-002", "full_name": "Harshitha"},
+        {"email": "hemamalathi2007@gmail.com", "display_id": "INV-003", "full_name": "Hemamalathi"},
+        {"email": "rkeerthana1798@gmail.com", "display_id": "INV-004", "full_name": "Keerthana"},
+        {"email": "leelameera3696@gmail.com", "display_id": "INV-005", "full_name": "Meera"}
+    ]
+    
+    # Keep only the new valid accounts, delete old ones
+    valid_accounts = [inv["email"].upper() for inv in investigators]
+    old_invs = db.query(Investigator).filter(~Investigator.account_id.in_(valid_accounts)).all()
+    
+    for old_inv in old_invs:
+        from app.db.models import UserFaceBiometric
+        # Remove faces for old investigators
+        face_records = db.query(UserFaceBiometric).filter(UserFaceBiometric.account_id == old_inv.account_id).all()
+        for fr in face_records:
+            db.delete(fr)
+        db.delete(old_inv)
+    db.commit()
+
+    for inv in investigators:
+        acc_id = inv["email"].upper()
+        existing = db.query(Investigator).filter(Investigator.account_id == acc_id).first()
+        if not existing:
+            db.add(Investigator(
+                account_id=acc_id,
+                email=inv["email"].lower(),
+                display_id=inv["display_id"],
+                full_name=inv["full_name"]
+            ))
+        else:
+            # Update existing with new fields just in case it was migrated
+            existing.email = inv["email"].lower()
+            existing.display_id = inv["display_id"]
+            existing.full_name = inv["full_name"]
     db.commit()
 

@@ -40,9 +40,9 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
     setErrorMessage(null);
     setEmailFieldError(null);
 
-    // Validate Gmail format
-    if (!email.toLowerCase().trim().endsWith('@gmail.com')) {
-      setEmailFieldError('Use your authorized Gmail address.');
+    // Basic email validation
+    if (!email.toLowerCase().trim().includes('@')) {
+      setEmailFieldError('Use a valid email address.');
       return;
     }
 
@@ -85,7 +85,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
         {/* Gmail Input */}
         <div>
           <label className="text-[10px] font-mono font-semibold text-white/70 uppercase tracking-widest block mb-1">
-            AUTHORIZED GMAIL
+            AUTHORIZED EMAIL
           </label>
           <div className="relative">
             <Mail className="w-4 h-4 text-white/50 absolute left-3 top-2.5" />
@@ -93,7 +93,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
               type="email"
               value={email}
               onChange={(e) => handleEmailChange(e.target.value)}
-              placeholder="investigator@gmail.com"
+              placeholder="investigator@email.com"
               autoComplete="email"
               required
               disabled={isAuthenticating || isAuthorized}

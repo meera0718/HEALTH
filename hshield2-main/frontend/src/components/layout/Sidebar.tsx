@@ -5,6 +5,7 @@ import {
   Server, Boxes
 } from 'lucide-react';
 import { UserProfileModal } from '../UserProfileModal';
+import { auth } from '../../lib/auth';
 
 interface SidebarProps {
   activeTab: string;
@@ -106,7 +107,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <UserCheck className="w-3.5 h-3.5" />
           </div>
           <div className="text-left font-mono text-[9px]">
-            <div className="font-bold text-slate-200">DR. ALEXANDER DOE</div>
+            <div className="font-bold text-slate-200 uppercase">{auth.getCurrentUser()?.name || 'UNKNOWN USER'}</div>
             <div className="text-cyan-400 text-[8px]">CLEARANCE BADGE →</div>
           </div>
         </button>
