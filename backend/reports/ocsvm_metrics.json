@@ -1,0 +1,13 @@
+{
+  "TN": 321,
+  "FP": 3,
+  "FN": 0,
+  "TP": 216,
+  "precision": 0.9863013698630136,
+  "recall": 1.0,
+  "f1": 0.993103448275862,
+  "accuracy": 0.9944444444444445,
+  "false_positive_rate": 0.009259259259259259,
+  "normal_detection_rate": 0.9907407407407407,
+  "anomaly_detection_rate": 1.0
+}

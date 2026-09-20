@@ -1,0 +1,261 @@
+{
+  "runtime": {
+    "health": 200,
+    "openapi": 200
+  },
+  "fresh_matrix": [
+    {
+      "test": "BF-1",
+      "event_id": "EVT-SIM-09C1D424",
+      "patient_id": "P003",
+      "logins": 1,
+      "requests": 2,
+      "records": 10,
+      "stored_logins": 1,
+      "stored_requests": 2,
+      "stored_records": 10,
+      "baseline_fec": 84.1,
+      "fl_comp": 1.0,
+      "req_comp": 0.5,
+      "rec_comp": 0.2,
+      "err_comp": 2.0,
+      "reconstructed_adj": 3.7,
+      "reconstructed_fec": 87.8,
+      "db_fec": 87.8,
+      "detection_api_fec": 87.8,
+      "fec_api_fec": 87.8,
+      "ui_fec": 87.8,
+      "threat_index": 76.1,
+      "match": true
+    },
+    {
+      "test": "BF-2",
+      "event_id": "EVT-SIM-B4208CF5",
+      "patient_id": "P003",
+      "logins": 3,
+      "requests": 5,
+      "records": 25,
+      "stored_logins": 3,
+      "stored_requests": 5,
+      "stored_records": 25,
+      "baseline_fec": 84.1,
+      "fl_comp": 3.0,
+      "req_comp": 2.0,
+      "rec_comp": 0.5,
+      "err_comp": 2.0,
+      "reconstructed_adj": 7.5,
+      "reconstructed_fec": 91.6,
+      "db_fec": 91.6,
+      "detection_api_fec": 91.6,
+      "fec_api_fec": 91.6,
+      "ui_fec": 91.6,
+      "threat_index": 76.1,
+      "match": true
+    },
+    {
+      "test": "BF-3",
+      "event_id": "EVT-SIM-776198A8",
+      "patient_id": "P003",
+      "logins": 5,
+      "requests": 10,
+      "records": 50,
+      "stored_logins": 5,
+      "stored_requests": 10,
+      "stored_records": 50,
+      "baseline_fec": 84.1,
+      "fl_comp": 5.0,
+      "req_comp": 4.5,
+      "rec_comp": 1.0,
+      "err_comp": 2.0,
+      "reconstructed_adj": 12.5,
+      "reconstructed_fec": 96.6,
+      "db_fec": 96.6,
+      "detection_api_fec": 96.6,
+      "fec_api_fec": 96.6,
+      "ui_fec": 96.6,
+      "threat_index": 76.1,
+      "match": true
+    },
+    {
+      "test": "BF-4",
+      "event_id": "EVT-SIM-7389AC74",
+      "patient_id": "P003",
+      "logins": 8,
+      "requests": 20,
+      "records": 100,
+      "stored_logins": 8,
+      "stored_requests": 20,
+      "stored_records": 100,
+      "baseline_fec": 84.1,
+      "fl_comp": 8.0,
+      "req_comp": 9.5,
+      "rec_comp": 2.0,
+      "err_comp": 2.0,
+      "reconstructed_adj": 21.5,
+      "reconstructed_fec": 100.0,
+      "db_fec": 100.0,
+      "detection_api_fec": 100.0,
+      "fec_api_fec": 100.0,
+      "ui_fec": 100.0,
+      "threat_index": 76.0,
+      "match": true
+    },
+    {
+      "test": "BF-5",
+      "event_id": "EVT-SIM-D2A15E08",
+      "patient_id": "P003",
+      "logins": 12,
+      "requests": 30,
+      "records": 200,
+      "stored_logins": 12,
+      "stored_requests": 30,
+      "stored_records": 200,
+      "baseline_fec": 84.1,
+      "fl_comp": 12.0,
+      "req_comp": 10.0,
+      "rec_comp": 4.0,
+      "err_comp": 2.0,
+      "reconstructed_adj": 28.0,
+      "reconstructed_fec": 100.0,
+      "db_fec": 100.0,
+      "detection_api_fec": 100.0,
+      "fec_api_fec": 100.0,
+      "ui_fec": 100.0,
+      "threat_index": 75.8,
+      "match": true
+    }
+  ],
+  "differentiation": {
+    "unique_scores": 4,
+    "scores": [
+      87.8,
+      91.6,
+      96.6,
+      100.0,
+      100.0
+    ],
+    "increasing": true
+  },
+  "determinism": {
+    "eid1": "EVT-SIM-1DF571B1",
+    "eid2": "EVT-SIM-6C978289",
+    "fec1": 96.6,
+    "fec2": 96.6,
+    "match": true
+  },
+  "cross_patient": [
+    {
+      "patient_id": "P003",
+      "event_id": "EVT-SIM-3A242B23",
+      "baseline_fec": 84.1,
+      "event_adjustment": 12.5,
+      "event_fec": 96.6
+    },
+    {
+      "patient_id": "P004",
+      "event_id": "EVT-SIM-9D7BB289",
+      "baseline_fec": 71.2,
+      "event_adjustment": 12.5,
+      "event_fec": 83.7
+    },
+    {
+      "patient_id": "P005",
+      "event_id": "EVT-SIM-5FBB1760",
+      "baseline_fec": 46.0,
+      "event_adjustment": 12.5,
+      "event_fec": 58.5
+    }
+  ],
+  "scrambled_query": {
+    "all_correct": true,
+    "trace": [
+      {
+        "requested": "EVT-SIM-D2A15E08",
+        "returned": "EVT-SIM-D2A15E08",
+        "fec": 100.0,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-09C1D424",
+        "returned": "EVT-SIM-09C1D424",
+        "fec": 87.8,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-7389AC74",
+        "returned": "EVT-SIM-7389AC74",
+        "fec": 100.0,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-B4208CF5",
+        "returned": "EVT-SIM-B4208CF5",
+        "fec": 91.6,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-776198A8",
+        "returned": "EVT-SIM-776198A8",
+        "fec": 96.6,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-09C1D424",
+        "returned": "EVT-SIM-09C1D424",
+        "fec": 87.8,
+        "match": true
+      },
+      {
+        "requested": "EVT-SIM-D2A15E08",
+        "returned": "EVT-SIM-D2A15E08",
+        "fec": 100.0,
+        "match": true
+      }
+    ]
+  },
+  "duplication_test": {
+    "total_duplicates": 0,
+    "checks": [
+      {
+        "event_id": "EVT-SIM-09C1D424",
+        "se": 1,
+        "ml": 1,
+        "fu": 1,
+        "fec": 1,
+        "clean": true
+      },
+      {
+        "event_id": "EVT-SIM-B4208CF5",
+        "se": 1,
+        "ml": 1,
+        "fu": 1,
+        "fec": 1,
+        "clean": true
+      },
+      {
+        "event_id": "EVT-SIM-776198A8",
+        "se": 1,
+        "ml": 1,
+        "fu": 1,
+        "fec": 1,
+        "clean": true
+      },
+      {
+        "event_id": "EVT-SIM-7389AC74",
+        "se": 1,
+        "ml": 1,
+        "fu": 1,
+        "fec": 1,
+        "clean": true
+      },
+      {
+        "event_id": "EVT-SIM-D2A15E08",
+        "se": 1,
+        "ml": 1,
+        "fu": 1,
+        "fec": 1,
+        "clean": true
+      }
+    ]
+  }
+}

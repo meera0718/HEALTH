@@ -1,0 +1,31 @@
+.waves {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.waves::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: #38bdf8;
+  border-radius: 50%;
+  transform: translate3d(calc(var(--x, -0.5rem) - 50%), calc(var(--y, 50%) - 50%), 0);
+  will-change: transform;
+  opacity: 0.3;
+}
+
+.waves-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

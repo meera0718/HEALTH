@@ -1,0 +1,214 @@
+{
+  "p003_brute_force_events": [
+    {
+      "index": 1,
+      "event_id": "EVT-SIM-A3440BF1",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "failed_login_attempts": 1,
+      "baseline_fec": 84.0,
+      "event_fec_score": 87.0,
+      "event_adjustment": 3.0,
+      "threat_index": 76.1,
+      "fusion_result": "THREAT",
+      "api_fec_score": 87.0,
+      "api_baseline_fec": 84.0,
+      "api_scope": "EVENT"
+    },
+    {
+      "index": 2,
+      "event_id": "EVT-SIM-BEE06A45",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "failed_login_attempts": 3,
+      "baseline_fec": 84.0,
+      "event_fec_score": 89.0,
+      "event_adjustment": 5.0,
+      "threat_index": 76.1,
+      "fusion_result": "THREAT",
+      "api_fec_score": 89.0,
+      "api_baseline_fec": 84.0,
+      "api_scope": "EVENT"
+    },
+    {
+      "index": 3,
+      "event_id": "EVT-SIM-6172DAE0",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "failed_login_attempts": 5,
+      "baseline_fec": 84.0,
+      "event_fec_score": 91.0,
+      "event_adjustment": 7.0,
+      "threat_index": 76.1,
+      "fusion_result": "THREAT",
+      "api_fec_score": 91.0,
+      "api_baseline_fec": 84.0,
+      "api_scope": "EVENT"
+    },
+    {
+      "index": 4,
+      "event_id": "EVT-SIM-78390292",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "failed_login_attempts": 8,
+      "baseline_fec": 84.0,
+      "event_fec_score": 94.0,
+      "event_adjustment": 10.0,
+      "threat_index": 76.1,
+      "fusion_result": "THREAT",
+      "api_fec_score": 94.0,
+      "api_baseline_fec": 84.0,
+      "api_scope": "EVENT"
+    },
+    {
+      "index": 5,
+      "event_id": "EVT-SIM-22D8A03F",
+      "patient_id": "P003",
+      "scenario": "BRUTE_FORCE",
+      "failed_login_attempts": 12,
+      "baseline_fec": 84.0,
+      "event_fec_score": 98.0,
+      "event_adjustment": 14.0,
+      "threat_index": 76.1,
+      "fusion_result": "THREAT",
+      "api_fec_score": 98.0,
+      "api_baseline_fec": 84.0,
+      "api_scope": "EVENT"
+    }
+  ],
+  "determinism_test": {
+    "eid1": "EVT-SIM-1DF53463",
+    "eid2": "EVT-SIM-B841F802",
+    "fec1": 91.0,
+    "fec2": 91.0,
+    "match": true
+  },
+  "cross_event_isolation": {
+    "all_isolated": true,
+    "trace": [
+      {
+        "requested_event_id": "EVT-SIM-22D8A03F",
+        "response_event_id": "EVT-SIM-22D8A03F",
+        "expected_fec": 98.0,
+        "returned_fec": 98.0,
+        "match": true
+      },
+      {
+        "requested_event_id": "EVT-SIM-A3440BF1",
+        "response_event_id": "EVT-SIM-A3440BF1",
+        "expected_fec": 87.0,
+        "returned_fec": 87.0,
+        "match": true
+      },
+      {
+        "requested_event_id": "EVT-SIM-78390292",
+        "response_event_id": "EVT-SIM-78390292",
+        "expected_fec": 94.0,
+        "returned_fec": 94.0,
+        "match": true
+      },
+      {
+        "requested_event_id": "EVT-SIM-BEE06A45",
+        "response_event_id": "EVT-SIM-BEE06A45",
+        "expected_fec": 89.0,
+        "returned_fec": 89.0,
+        "match": true
+      },
+      {
+        "requested_event_id": "EVT-SIM-6172DAE0",
+        "response_event_id": "EVT-SIM-6172DAE0",
+        "expected_fec": 91.0,
+        "returned_fec": 91.0,
+        "match": true
+      },
+      {
+        "requested_event_id": "EVT-SIM-A3440BF1",
+        "response_event_id": "EVT-SIM-A3440BF1",
+        "expected_fec": 87.0,
+        "returned_fec": 87.0,
+        "match": true
+      },
+      {
+        "requested_event_id": "EVT-SIM-22D8A03F",
+        "response_event_id": "EVT-SIM-22D8A03F",
+        "expected_fec": 98.0,
+        "returned_fec": 98.0,
+        "match": true
+      }
+    ]
+  },
+  "cross_patient_test": [
+    {
+      "patient_id": "P003",
+      "event_id": "EVT-SIM-3E36B1AB",
+      "baseline_fec": 84.0,
+      "event_fec_score": 91.0,
+      "event_adjustment": 7.0
+    },
+    {
+      "patient_id": "P004",
+      "event_id": "EVT-SIM-10A0C06A",
+      "baseline_fec": 70.6,
+      "event_fec_score": 77.6,
+      "event_adjustment": 7.0
+    },
+    {
+      "patient_id": "P005",
+      "event_id": "EVT-SIM-62853E2E",
+      "baseline_fec": 43.5,
+      "event_fec_score": 50.5,
+      "event_adjustment": 7.0
+    }
+  ],
+  "regression_and_modification": {
+    "pytest_return_code": 1,
+    "tracked_modified_count": 45,
+    "modified_files": [
+      " M __pycache__/generate_honeypot_events.cpython-313.pyc",
+      " M __pycache__/seed_patients.cpython-313.pyc",
+      " M backend/app/__pycache__/main.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/auth_routes.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/detection.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/features.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/fec.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/honeypot.cpython-313.pyc",
+      " M backend/app/api/routes/__pycache__/patients.cpython-313.pyc",
+      " M backend/app/api/routes/auth_routes.py",
+      " M backend/app/api/routes/detection.py",
+      " M backend/app/api/routes/features.py",
+      " M backend/app/api/routes/fec.py",
+      " M backend/app/api/routes/honeypot.py",
+      " M backend/app/api/routes/patients.py",
+      " M backend/app/db/__pycache__/models.cpython-313.pyc",
+      " M backend/app/db/__pycache__/synthetic_cohort_v1.cpython-313.pyc",
+      " M backend/app/db/models.py",
+      " M backend/app/main.py",
+      " M backend/app/security_engine/__pycache__/feature_engine.cpython-313.pyc",
+      " M backend/app/security_engine/__pycache__/fec_engine.cpython-313.pyc",
+      " M backend/app/security_engine/__pycache__/telemetry_generator.cpython-313.pyc",
+      " M backend/app/security_engine/feature_engine.py",
+      " M backend/app/security_engine/fec_engine.py",
+      " M backend/app/security_engine/telemetry_generator.py",
+      " M backend/healthshield.db",
+      " M backend/models/isolation_forest_metadata.json",
+      " M backend/models/ocsvm_metadata.json",
+      " M backend/models/xgboost_metadata.json",
+      " M backend/tests/__pycache__/test_honeypot_simulation.cpython-313-pytest-8.2.2.pyc",
+      " M backend/tests/__pycache__/test_honeypot_simulation.cpython-313-pytest-9.1.1.pyc",
+      " M backend/tests/test_honeypot_simulation.py",
+      " M frontend/src/App.tsx",
+      " M frontend/src/components/DashboardAccordionBar.tsx",
+      " M frontend/src/components/layout/Sidebar.tsx",
+      " M frontend/src/pages/CommandCenter.tsx",
+      " M frontend/src/pages/FeatureView.tsx",
+      " M frontend/src/pages/FecView.tsx",
+      " M frontend/src/pages/HoneypotSimulator.tsx",
+      " M frontend/src/pages/PatientDashboard.tsx",
+      " M generate_honeypot_events.py",
+      " M reports/full_system_validation.json",
+      " M reports/patient_detection_audit.csv",
+      " M reports/patient_detection_audit.json",
+      " M reports/patient_detection_audit.txt"
+    ]
+  }
+}

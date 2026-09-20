@@ -1,0 +1,2407 @@
+From f9e1c2f19e9e74d32466901d66b416c46cdd4b2f Mon Sep 17 00:00:00 2001
+From: harshitha-b007 <harshitha15727@gmail.com>
+Date: Sat, 19 Sep 2026 12:31:52 +0530
+Subject: [PATCH] Refine Command Centre layout, restore SOC accordion
+ navigator, and polish single-viewport login page
+
+---
+ hshield2-main/backend/app/main.py             |    1 +
+ hshield2-main/backend/requirements.txt        |    1 +
+ hshield2-main/frontend/src/App.tsx            |    2 +-
+ .../frontend/src/components/LoginPanel.tsx    |   58 +-
+ .../frontend/src/components/SecureHero.tsx    |   32 +-
+ .../frontend/src/components/SecureNavbar.tsx  |   59 +-
+ .../src/components/TelemetryStatus.tsx        |   35 +-
+ .../frontend/src/pages/CommandCenter.tsx      | 1632 +++++++----------
+ .../frontend/src/pages/SecureGateway.tsx      |   67 +-
+ 9 files changed, 733 insertions(+), 1154 deletions(-)
+
+diff --git a/hshield2-main/backend/app/main.py b/hshield2-main/backend/app/main.py
+index 6a59e8a..b5c6f42 100644
+--- a/hshield2-main/backend/app/main.py
++++ b/hshield2-main/backend/app/main.py
+@@ -6,6 +6,7 @@ from app.db.seeds import seed_database
+ from app.api.routes import datasets, auth_routes, patients, deception, honeypot, features, fec, ml_ocsvm, ml_isolation_forest, ml_xgboost, detection, devices, reporting, health, fusion, vector_routes, digital_twin
+ 
+ # Initialize database tables
++import app.db.models
+ Base.metadata.create_all(bind=engine)
+ 
+ # Ensure 'synthetic' column exists (SQLite lightweight migration)
+diff --git a/hshield2-main/backend/requirements.txt b/hshield2-main/backend/requirements.txt
+index b841d30..031abc6 100644
+--- a/hshield2-main/backend/requirements.txt
++++ b/hshield2-main/backend/requirements.txt
+@@ -11,3 +11,4 @@ scikit-learn>=1.4.0
+ xgboost>=2.0.0
+ joblib>=1.3.0
+ numpy>=1.26.0
++python-multipart>=0.0.9
+diff --git a/hshield2-main/frontend/src/App.tsx b/hshield2-main/frontend/src/App.tsx
+index 6e88ede..690ace9 100644
+--- a/hshield2-main/frontend/src/App.tsx
++++ b/hshield2-main/frontend/src/App.tsx
+@@ -330,7 +330,7 @@ export function App() {
+           onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
+         />
+ 
+-        {/* Accordion Gallery Dashboard Navigator (Stable & Fixed) */}
++        {/* Accordion Gallery Dashboard Navigator */}
+         <DashboardAccordionBar
+           activeTab={activeTab}
+           onSelectTab={handleTabChange}
+diff --git a/hshield2-main/frontend/src/components/LoginPanel.tsx b/hshield2-main/frontend/src/components/LoginPanel.tsx
+index 3696ceb..b75cc58 100644
+--- a/hshield2-main/frontend/src/components/LoginPanel.tsx
++++ b/hshield2-main/frontend/src/components/LoginPanel.tsx
+@@ -58,37 +58,37 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
+   const isAuthorized = gatewayState === 'AUTHORIZED';
+ 
+   return (
+-    <div className="liquid-glass rounded-3xl p-6 md:p-8 w-[min(420px,calc(100vw-32px))] border border-white/15 shadow-2xl backdrop-blur-xl relative z-20">
++    <div className="liquid-glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 w-[min(400px,calc(100vw-32px))] border border-white/15 shadow-2xl backdrop-blur-xl relative z-20">
+       {/* Panel Header */}
+-      <div className="mb-6 text-center border-b border-white/10 pb-4">
+-        <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 border border-white/20 mb-2.5 text-indigo-400">
+-          <ShieldCheck className="w-5 h-5 text-indigo-300" />
++      <div className="mb-3 sm:mb-4 text-center border-b border-white/10 pb-2 sm:pb-2.5">
++        <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/10 border border-white/20 mb-1 text-indigo-400">
++          <ShieldCheck className="w-4 h-4 text-indigo-300" />
+         </div>
+-        <h2 className="font-bold text-white text-base md:text-lg tracking-wider font-mono uppercase">
++        <h2 className="font-bold text-white text-sm sm:text-base tracking-wider font-mono uppercase">
+           SECURE ACCESS
+         </h2>
+-        <p className="text-white/50 text-xs mt-0.5 font-sans">
++        <p className="text-white/50 text-[11px] font-sans">
+           Authorized personnel only.
+         </p>
+       </div>
+ 
+       {/* Error Alert Box */}
+       {errorMessage && (
+-        <div className="mb-4 p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2.5 font-sans">
++        <div className="mb-3 p-2.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2 font-sans">
+           <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+           <span className="leading-snug">{errorMessage}</span>
+         </div>
+       )}
+ 
+       {/* Form Inputs */}
+-      <form onSubmit={handleSubmit} className={`space-y-4 ${isAuthenticating ? 'opacity-50 pointer-events-none blur-[1px]' : ''}`}>
++      <form onSubmit={handleSubmit} className={`space-y-2.5 ${isAuthenticating ? 'opacity-50 pointer-events-none blur-[1px]' : ''}`}>
+         {/* Gmail Input */}
+         <div>
+-          <label className="text-[10px] font-mono font-semibold text-white/70 uppercase tracking-widest block mb-1.5">
++          <label className="text-[10px] font-mono font-semibold text-white/70 uppercase tracking-widest block mb-1">
+             AUTHORIZED GMAIL
+           </label>
+           <div className="relative">
+-            <Mail className="w-4 h-4 text-white/50 absolute left-3.5 top-3.5" />
++            <Mail className="w-4 h-4 text-white/50 absolute left-3 top-2.5" />
+             <input
+               type="email"
+               value={email}
+@@ -97,7 +97,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
+               autoComplete="email"
+               required
+               disabled={isAuthenticating || isAuthorized}
+-              className={`w-full bg-white/[0.03] border text-xs text-white pl-10 pr-3.5 py-3 rounded-xl focus:outline-none transition-colors placeholder-white/30 font-mono ${
++              className={`w-full bg-white/[0.03] border text-xs text-white pl-9 pr-3 py-2 sm:py-2.5 rounded-xl focus:outline-none transition-colors placeholder-white/30 font-mono ${
+                 emailFieldError
+                   ? 'border-rose-500/60 focus:border-rose-500'
+                   : 'border-white/15 focus:border-indigo-400/60'
+@@ -105,7 +105,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
+             />
+           </div>
+           {emailFieldError && (
+-            <span className="text-[11px] text-rose-400 mt-1.5 block font-sans font-medium">
++            <span className="text-[10px] text-rose-400 mt-1 block font-sans font-medium">
+               {emailFieldError}
+             </span>
+           )}
+@@ -113,11 +113,11 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
+ 
+         {/* Password Input */}
+         <div>
+-          <label className="text-[10px] font-mono font-semibold text-white/70 uppercase tracking-widest block mb-1.5">
++          <label className="text-[10px] font-mono font-semibold text-white/70 uppercase tracking-widest block mb-1">
+             AUTHORIZED PASSWORD
+           </label>
+           <div className="relative">
+-            <LockKeyhole className="w-4 h-4 text-white/50 absolute left-3.5 top-3.5" />
++            <LockKeyhole className="w-4 h-4 text-white/50 absolute left-3 top-2.5" />
+             <input
+               type={showPassword ? 'text' : 'password'}
+               value={password}
+@@ -126,15 +126,15 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
+               autoComplete="current-password"
+               required
+               disabled={isAuthenticating || isAuthorized}
+-              className="w-full bg-white/[0.03] border border-white/15 text-xs text-white pl-10 pr-10 py-3 rounded-xl focus:outline-none focus:border-indigo-400/60 transition-colors placeholder-white/30 font-mono"
++              className="w-full bg-white/[0.03] border border-white/15 text-xs text-white pl-9 pr-9 py-2 sm:py-2.5 rounded-xl focus:outline-none focus:border-indigo-400/60 transition-colors placeholder-white/30 font-mono"
+             />
+             <button
+               type="button"
+               onClick={() => setShowPassword(!showPassword)}
+               aria-label="Toggle password visibility"
+-              className="absolute right-3 top-3 text-white/40 hover:text-white/80 p-0.5 rounded transition-colors"
++              className="absolute right-2.5 top-2.5 text-white/40 hover:text-white/80 p-0.5 rounded transition-colors"
+             >
+-              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
++              {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+             </button>
+           </div>
+         </div>
+@@ -143,7 +143,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
+         <button
+           type="submit"
+           disabled={isAuthenticating || isAuthorized}
+-          className={`w-full mt-2 py-3.5 rounded-xl font-bold text-xs tracking-wider font-mono flex items-center justify-center gap-2 transition-all shadow-xl cursor-pointer ${
++          className={`w-full mt-1.5 py-2.5 sm:py-3 rounded-xl font-bold text-xs tracking-wider font-mono flex items-center justify-center gap-2 transition-all shadow-xl cursor-pointer ${
+             isAuthorized
+               ? 'bg-emerald-600 text-white border border-emerald-400/50'
+               : isAuthenticating
+@@ -153,39 +153,39 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
+         >
+           {isAuthenticating ? (
+             <>
+-              <RefreshCw className="w-4 h-4 animate-spin text-indigo-300" />
++              <RefreshCw className="w-3.5 h-3.5 animate-spin text-indigo-300" />
+               <span>VERIFYING CREDENTIALS...</span>
+             </>
+           ) : isAuthorized ? (
+             <>
+-              <ShieldCheck className="w-4 h-4 text-emerald-300" />
++              <ShieldCheck className="w-3.5 h-3.5 text-emerald-300" />
+               <span>ACCESS GRANTED — ENTERING CONSOLE</span>
+             </>
+           ) : (
+             <>
+-              <ShieldCheck className="w-4 h-4 text-indigo-400" />
++              <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
+               <span>AUTHENTICATE & ENTER</span>
+             </>
+           )}
+         </button>
+ 
+         {(onOpenFaceLogin || onOpenFaceRegister) && (
+-          <div className="pt-2">
+-            <div className="relative flex py-2 items-center">
++          <div className="pt-1">
++            <div className="relative flex py-1.5 items-center">
+               <div className="flex-grow border-t border-white/10"></div>
+-              <span className="flex-shrink mx-3 text-[10px] font-mono text-white/40 uppercase font-semibold">OR OPTIONAL</span>
++              <span className="flex-shrink mx-2 text-[9px] font-mono text-white/40 uppercase font-semibold">OR OPTIONAL</span>
+               <div className="flex-grow border-t border-white/10"></div>
+             </div>
+ 
+-            <div className="flex flex-col sm:flex-row items-center gap-2">
++            <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2">
+               {onOpenFaceLogin && (
+                 <button
+                   type="button"
+                   onClick={onOpenFaceLogin}
+                   disabled={isAuthenticating || isAuthorized}
+-                  className="w-full py-2.5 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-500/40 text-cyan-300 font-mono font-bold text-[11px] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-lg hover:border-cyan-400 disabled:opacity-50"
++                  className="w-full py-2 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-500/40 text-cyan-300 font-mono font-bold text-[10px] sm:text-[11px] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-lg hover:border-cyan-400 disabled:opacity-50"
+                 >
+-                  <ScanFace className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
++                  <ScanFace className="w-3 h-3 text-cyan-400 animate-pulse" />
+                   <span>LOGIN WITH FACE</span>
+                 </button>
+               )}
+@@ -195,9 +195,9 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
+                   type="button"
+                   onClick={onOpenFaceRegister}
+                   disabled={isAuthenticating || isAuthorized}
+-                  className="w-full py-2.5 rounded-xl bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/40 text-indigo-300 font-mono font-bold text-[11px] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-lg hover:border-indigo-400 disabled:opacity-50"
++                  className="w-full py-2 rounded-xl bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/40 text-indigo-300 font-mono font-bold text-[10px] sm:text-[11px] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-lg hover:border-indigo-400 disabled:opacity-50"
+                 >
+-                  <UserPlus className="w-3.5 h-3.5 text-indigo-400" />
++                  <UserPlus className="w-3 h-3 text-indigo-400" />
+                   <span>REGISTER FACE</span>
+                 </button>
+               )}
+diff --git a/hshield2-main/frontend/src/components/SecureHero.tsx b/hshield2-main/frontend/src/components/SecureHero.tsx
+index 3a095b2..9313527 100644
+--- a/hshield2-main/frontend/src/components/SecureHero.tsx
++++ b/hshield2-main/frontend/src/components/SecureHero.tsx
+@@ -1,6 +1,5 @@
+ import React from 'react';
+ import { motion } from 'motion/react';
+-import { SecurityStatus } from './SecurityStatus';
+ import { LoginPanel } from './LoginPanel';
+ import type { GatewayState } from './AccessButton';
+ 
+@@ -22,38 +21,25 @@ export const SecureHero: React.FC<SecureHeroProps> = ({
+   onOpenFaceRegister
+ }) => {
+   return (
+-    <section className="relative flex-1 flex flex-col items-center justify-center px-6 z-10 py-4">
+-      <div className="relative z-10 text-center max-w-5xl mx-auto flex flex-col items-center justify-center w-full">
+-        {/* Top Security Status Indicator */}
+-        <SecurityStatus />
+-
+-        {/* Cinematic Hero Heading in Instrument Serif */}
++    <section className="relative flex flex-col items-center justify-center px-4 z-10 w-full shrink-0">
++      <div className="relative z-10 text-center max-w-4xl mx-auto flex flex-col items-center justify-center w-full">
++        {/* Cinematic Hero Tagline in Instrument Serif */}
+         <motion.h1
+-          initial={{ opacity: 0, y: 20 }}
++          initial={{ opacity: 0, y: 15 }}
+           animate={{ opacity: 1, y: 0 }}
+-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
++          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+           style={{ fontFamily: "'Instrument Serif', serif" }}
+-          className="text-2xl sm:text-4xl md:text-[64px] leading-[1.1] sm:leading-[1.05] font-normal tracking-[-0.02em] mb-3 bg-gradient-to-b from-white via-white/95 to-white/70 bg-clip-text text-transparent max-w-4xl"
++          className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] leading-tight font-normal tracking-[-0.01em] mb-2 sm:mb-3 bg-gradient-to-b from-white via-white/95 to-white/70 bg-clip-text text-transparent"
+         >
+-          See What Happened. <br className="hidden md:block" />
++          See What Happened. <br className="hidden sm:inline" />
+           Prove What Happened.
+         </motion.h1>
+ 
+-        {/* Supporting Copy */}
+-        <motion.p
+-          initial={{ opacity: 0, y: 15 }}
+-          animate={{ opacity: 1, y: 0 }}
+-          transition={{ delay: 0.3, duration: 0.8 }}
+-          className="text-white/55 text-xs md:text-sm max-w-[560px] mb-6 font-normal leading-relaxed"
+-        >
+-          Investigation, forensic evidence analysis, and defense validation in one controlled environment.
+-        </motion.p>
+-
+         {/* Secure Gmail + Password Authentication Panel */}
+         <motion.div
+-          initial={{ opacity: 0, y: 20 }}
++          initial={{ opacity: 0, y: 15 }}
+           animate={{ opacity: 1, y: 0 }}
+-          transition={{ delay: 0.5, duration: 0.8 }}
++          transition={{ delay: 0.2, duration: 0.7 }}
+           className="w-full flex justify-center"
+         >
+           <LoginPanel
+diff --git a/hshield2-main/frontend/src/components/SecureNavbar.tsx b/hshield2-main/frontend/src/components/SecureNavbar.tsx
+index d58d000..a9ff741 100644
+--- a/hshield2-main/frontend/src/components/SecureNavbar.tsx
++++ b/hshield2-main/frontend/src/components/SecureNavbar.tsx
+@@ -1,64 +1,41 @@
+ import React from 'react';
+ import { motion } from 'motion/react';
+-import { ShieldCheck, LockKeyhole } from 'lucide-react';
++import { ShieldCheck } from 'lucide-react';
+ 
+ interface SecureNavbarProps {
+   onUnauthorizedClick?: () => void;
+ }
+ 
+-export const SecureNavbar: React.FC<SecureNavbarProps> = ({ onUnauthorizedClick }) => {
+-  const navLinks = ['SECURITY', 'INVESTIGATION', 'EVIDENCE', 'VALIDATION'];
+-
++export const SecureNavbar: React.FC<SecureNavbarProps> = () => {
+   return (
+     <motion.nav
+       initial={{ y: -20, opacity: 0 }}
+       animate={{ y: 0, opacity: 1 }}
+       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+-      className="relative z-20 px-3 py-4 sm:px-6 sm:py-6 w-full"
++      className="relative z-20 px-3 py-2 sm:px-6 sm:py-3 w-full shrink-0"
+     >
+-      <div className="liquid-glass rounded-full px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between max-w-6xl mx-auto border border-white/10 shadow-2xl">
++      <div className="liquid-glass rounded-full px-4 sm:px-6 py-2 flex items-center justify-between max-w-6xl mx-auto border border-white/10 shadow-2xl">
+         {/* Left Side: Brand Logo */}
+-        <div className="flex items-center gap-4 md:gap-8">
+-          <div className="flex items-center gap-2">
+-            <div className="p-1.5 rounded-lg bg-white/10 text-white flex items-center justify-center">
+-              <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+-            </div>
+-            <div className="flex items-center gap-1.5">
+-              <span className="text-white font-semibold tracking-wide text-xs sm:text-sm md:text-base font-sans">
+-                HEALTHSHIELD-X
+-              </span>
+-              <span className="text-[9px] sm:text-[10px] text-white/60 font-mono font-bold bg-white/10 px-1.5 py-0.5 rounded">
+-                2.0
+-              </span>
+-            </div>
++        <div className="flex items-center gap-2">
++          <div className="p-1.5 rounded-lg bg-white/10 text-white flex items-center justify-center">
++            <ShieldCheck className="w-4 h-4 text-white" />
+           </div>
+-
+-          {/* Nav Links (Desktop) */}
+-          <div className="hidden md:flex items-center gap-8">
+-            {navLinks.map((link) => (
+-              <button
+-                key={link}
+-                onClick={onUnauthorizedClick}
+-                className="text-white/60 hover:text-white transition-colors duration-300 text-xs font-medium tracking-widest uppercase cursor-pointer"
+-              >
+-                {link}
+-              </button>
+-            ))}
++          <div className="flex items-center gap-1.5">
++            <span className="text-white font-semibold tracking-wide text-xs sm:text-sm font-sans">
++              HEALTHSHIELD-X
++            </span>
++            <span className="text-[9px] sm:text-[10px] text-white/60 font-mono font-bold bg-white/10 px-1.5 py-0.5 rounded">
++              2.0
++            </span>
+           </div>
+         </div>
+ 
+-        {/* Right Side: System Status & Security Pill */}
+-        <div className="flex items-center gap-2 sm:gap-4">
+-          <div className="hidden sm:flex items-center gap-2 text-[11px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full">
+-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
++        {/* Right Side: System Operational Status */}
++        <div className="flex items-center gap-2">
++          <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full">
++            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+             <span className="font-semibold tracking-wider">SYSTEM OPERATIONAL</span>
+           </div>
+-
+-          <div className="glass-pill px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-[11px] sm:text-xs font-mono font-medium text-white/90 border border-white/10 flex items-center gap-1.5">
+-            <LockKeyhole className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-indigo-400" />
+-            <span className="tracking-wide hidden xs:inline">AUTHORIZED</span>
+-            <span className="tracking-wide xs:hidden">AUTH</span>
+-          </div>
+         </div>
+       </div>
+     </motion.nav>
+diff --git a/hshield2-main/frontend/src/components/TelemetryStatus.tsx b/hshield2-main/frontend/src/components/TelemetryStatus.tsx
+index d765261..8aa6ae3 100644
+--- a/hshield2-main/frontend/src/components/TelemetryStatus.tsx
++++ b/hshield2-main/frontend/src/components/TelemetryStatus.tsx
+@@ -12,32 +12,29 @@ export const TelemetryStatus: React.FC = () => {
+ 
+   return (
+     <motion.div
+-      initial={{ opacity: 0, y: 15 }}
++      initial={{ opacity: 0, y: 10 }}
+       animate={{ opacity: 1, y: 0 }}
+-      transition={{ delay: 0.8, duration: 0.7 }}
+-      className="w-full pb-6 px-6 relative z-10 flex flex-col items-center gap-3 select-none"
++      transition={{ delay: 0.4, duration: 0.6 }}
++      className="w-full shrink-0 py-2 sm:py-2.5 px-4 relative z-10 flex items-center justify-center select-none"
+     >
+-      {/* Telemetry Signal Pills */}
+-      <div className="flex flex-wrap items-center justify-center gap-3">
+-        {telemetryItems.map((item) => {
++      {/* Compact Horizontal Status Row */}
++      <div className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-3 gap-y-1 text-[10px] sm:text-[11px] font-mono text-white/50 tracking-wider">
++        {telemetryItems.map((item, idx) => {
+           const Icon = item.icon;
+           return (
+-            <div
+-              key={item.label}
+-              className="glass-pill px-3.5 py-1 flex items-center gap-2 border border-white/10 text-[11px] font-mono text-white/70 backdrop-blur-md"
+-            >
+-              <Icon className={`w-3.5 h-3.5 ${item.color}`} />
+-              <span className="text-white/40">{item.label}</span>
+-              <span className="font-semibold text-white/90">{item.status}</span>
+-            </div>
++            <React.Fragment key={item.label}>
++              <span className="inline-flex items-center gap-1.5">
++                <Icon className={`w-3 h-3 ${item.color}`} />
++                <span className="text-white/40">{item.label}</span>
++                <span className="font-semibold text-white/80">{item.status}</span>
++              </span>
++              {idx < telemetryItems.length - 1 && (
++                <span className="text-white/20 select-none">·</span>
++              )}
++            </React.Fragment>
+           );
+         })}
+       </div>
+-
+-      {/* Bottom Status Bar */}
+-      <div className="text-[10px] font-mono text-white/30 tracking-[0.25em] uppercase text-center font-medium">
+-        HEALTHSHIELD-X 2.0 &nbsp;|&nbsp; SECURE INVESTIGATION ENVIRONMENT &nbsp;|&nbsp; CONTROLLED ACCESS
+-      </div>
+     </motion.div>
+   );
+ };
+diff --git a/hshield2-main/frontend/src/pages/CommandCenter.tsx b/hshield2-main/frontend/src/pages/CommandCenter.tsx
+index f1850a3..6ab736c 100644
+--- a/hshield2-main/frontend/src/pages/CommandCenter.tsx
++++ b/hshield2-main/frontend/src/pages/CommandCenter.tsx
+@@ -1,15 +1,11 @@
+ import React, { useState, useEffect, useRef } from 'react';
+ import { 
+-  Cpu, Radio, RefreshCw, Terminal, ChevronRight, ChevronDown, Search, ShieldCheck, 
+-  TrendingUp, Users, Network
++  Cpu, RefreshCw, Terminal, ShieldCheck, 
++  Network, Boxes, AlertTriangle, ArrowRight, Search, ShieldAlert
+ } from 'lucide-react';
+ import { useCommandCenterData } from '../hooks/useCommandCenterData';
+ import { 
+-  PatientSafetyImpactCard,
+-  impactLevelColors,
+-  resolveAffectedService,
+   resolveWhySentence,
+-  resolveResponseSentence,
+   resolveDeviceLabel
+ } from '../components/common/PatientSafetyImpactCard';
+ 
+@@ -21,27 +17,116 @@ interface CommandCenterProps {
+   activityLogs?: any[];
+ }
+ 
+-export const CommandCenter: React.FC<CommandCenterProps> = ({ onSelectTab, onSelectEvent, onSelectIncident }) => {
++// Attack type normalization
++function normalizeAttackType(scenario?: string, eventType?: string): string {
++  const str = `${scenario || ''} ${eventType || ''}`.toUpperCase().replace(/[-_]/g, ' ');
++  if (str.includes('EXFIL') || str.includes('EXPORT') || str.includes('DATA DUMP')) return 'DATA_EXFILTRATION';
++  if (str.includes('BRUTE') || str.includes('PASSWORD') || str.includes('CREDENTIAL')) return 'BRUTE_FORCE';
++  if (str.includes('RECON') || str.includes('DISCOVERY') || str.includes('PORT SCAN') || str.includes('ENUMERATION')) return 'RECONNAISSANCE';
++  if (str.includes('PRIVILEGE') || str.includes('ELEVAT') || str.includes('ADMIN ACCESS') || str.includes('ABUSE')) return 'PRIVILEGE_ABUSE';
++  if (str.includes('SUSPICIOUS DATA') || str.includes('UNAUTHORIZED ACCESS') || str.includes('RECORD ACCESS')) return 'SUSPICIOUS_DATA_ACCESS';
++  return (scenario || eventType || 'BRUTE_FORCE').toUpperCase().replace(/ /g, '_');
++}
++
++function formatAttackTypeLabel(attackType: string): string {
++  switch (attackType) {
++    case 'DATA_EXFILTRATION': return 'DATA EXFILTRATION';
++    case 'BRUTE_FORCE': return 'BRUTE FORCE';
++    case 'RECONNAISSANCE': return 'RECONNAISSANCE';
++    case 'PRIVILEGE_ABUSE': return 'PRIVILEGE ABUSE';
++    case 'SUSPICIOUS_DATA_ACCESS': return 'SUSPICIOUS DATA ACCESS';
++    default: return attackType.replace(/_/g, ' ');
++  }
++}
++
++// Dynamically attack-aware WHY generator
++function getDynamicWhySentence(attackType: string, endpoint?: string, deviceLabel?: string, whySentenceFallback?: string): string {
++  switch (attackType) {
++    case 'BRUTE_FORCE':
++      return 'Unusual authentication activity detected on a clinically critical device.';
++    case 'DATA_EXFILTRATION':
++      return 'Abnormally high volume of outbound record transfers exceeding baseline telemetry.';
++    case 'RECONNAISSANCE':
++      return 'Systematic API endpoint enumeration and port discovery scanning internal hospital infrastructure.';
++    case 'PRIVILEGE_ABUSE':
++      return 'Unauthorized administrative elevation and role escalation attempt bypassing access control.';
++    case 'SUSPICIOUS_DATA_ACCESS':
++      return 'Anomalous query pattern accessing protected patient electronic records outside clinical hours.';
++    default:
++      return whySentenceFallback || `Anomalous activity detected targeting ${endpoint || 'clinical endpoint'} on ${deviceLabel || 'monitored asset'}.`;
++  }
++}
++
++// Dynamically clinical-aware IMPACT generator
++function getDynamicImpactSentence(patientImpact: any, incidentContext: any, deviceLabel: string): string {
++  const dCrit = (patientImpact?.device_criticality || 'LOW').toUpperCase();
++  const pDep = (patientImpact?.patient_dependency || 'LOW').toUpperCase();
++  const zone = incidentContext?.hospital_zone || '';
++  const isIcu = zone === 'ZONE-ICU' || dCrit === 'CRITICAL';
++
++  if (isIcu) {
++    return 'ICU monitoring device with critical patient dependency.';
++  }
++  if (dCrit === 'HIGH' || pDep === 'HIGH') {
++    return 'Bedside clinical telemetry unit with direct inpatient dependency.';
++  }
++  if (dCrit === 'MODERATE') {
++    return `Diagnostic support terminal (${deviceLabel}) with clinical workflow queuing dependency.`;
++  }
++  return 'Administrative endpoint with zero direct patient care dependency.';
++}
++
++// Dynamically attack-aware & clinical-preservation-aware RESPONSE generator
++function getDynamicResponseSentence(attackType: string, patientImpact: any): string {
++  const dCrit = (patientImpact?.device_criticality || 'LOW').toUpperCase();
++  const isClinical = dCrit === 'CRITICAL' || dCrit === 'HIGH' || dCrit === 'MODERATE';
++
++  switch (attackType) {
++    case 'BRUTE_FORCE':
++      return isClinical
++        ? 'Restrict suspicious network communication while preserving clinical operation.'
++        : 'Quarantine host from network perimeter and revoke compromised authentication tokens.';
++    case 'DATA_EXFILTRATION':
++      return isClinical
++        ? 'Throttle egress data transfer channel while preserving real-time bedside telemetry.'
++        : 'Block outbound data export gateway and enforce forensic packet capture.';
++    case 'RECONNAISSANCE':
++      return isClinical
++        ? 'Apply microsegmentation firewall rules while preserving diagnostic telemetry routes.'
++        : 'Isolate scanning IP and terminate unauthorized port probe sessions.';
++    case 'PRIVILEGE_ABUSE':
++      return isClinical
++        ? 'Revoke administrative session privileges while maintaining baseline clinical software execution.'
++        : 'Revoke elevated tokens immediately and isolate user account from administrative domain.';
++    case 'SUSPICIOUS_DATA_ACCESS':
++      return isClinical
++        ? 'Restrict record access permissions while preserving emergency clinical chart viewing.'
++        : 'Suspend unauthorized database query session and preserve immutable audit logs.';
++    default:
++      return isClinical
++        ? 'Restrict suspicious network communication while preserving clinical operation.'
++        : 'Quarantine host and preserve digital evidence for forensic review.';
++  }
++}
++
++export const CommandCenter: React.FC<CommandCenterProps> = ({ 
++  onSelectTab, 
++  onSelectEvent, 
++  onSelectIncident 
++}) => {
+   const { 
+-    health, reporting, detections, events, decoys, devices, 
+-    telemetryStatus, loading, refreshNow, lastSync 
++    health, reporting, detections, events, devices, 
++    loading, refreshNow, lastSync 
+   } = useCommandCenterData(5000);
+ 
+   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
+   const [patientDetailData, setPatientDetailData] = useState<any | null>(null);
+-  const [patientFecData, setPatientFecData] = useState<any | null>(null);
+   const [loadingDetail, setLoadingDetail] = useState<boolean>(false);
+-  const [forensicError, setForensicError] = useState<string | null>(null);
+   const [isForensicDrawerOpen, setIsForensicDrawerOpen] = useState<boolean>(false);
+   const [searchQuery, setSearchQuery] = useState<string>('');
+ 
+-  // Collapsible Secondary Investigation Details (collapsed by default for 5-10s glanceability)
+-  const [showAttackPathDetails, setShowAttackPathDetails] = useState<boolean>(false);
+-  const [showBlastRadiusDetails, setShowBlastRadiusDetails] = useState<boolean>(false);
+-
+   // Vector Intelligence State for Compact Card
+-  const [vectorData, setVectorData] = useState<any | null>(null);
+   const [similarityData, setSimilarityData] = useState<any | null>(null);
+ 
+   // Async Race Protection Refs
+@@ -52,15 +137,12 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onSelectTab, onSel
+   const loadEventDetails = async (evtId: string, patientId?: string) => {
+     latestInspectedEventIdRef.current = evtId;
+     setLoadingDetail(true);
+-    setForensicError(null);
+ 
+     loadVectorSummary(evtId);
+ 
+-    // Bounded retry logic for fresh Honeypot events (up to 3 attempts with 300ms delay)
++    // Bounded retry logic for fresh Honeypot events
+     let pipe = null;
+     let vec = null;
+-    let lastStatus = 200;
+-    let lastErrDetail = '';
+ 
+     for (let attempt = 1; attempt <= 3; attempt++) {
+       if (latestInspectedEventIdRef.current !== evtId) return;
+@@ -75,18 +157,14 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onSelectTab, onSel
+ 
+         if (pipeRes.ok) {
+           pipe = await pipeRes.json();
+-        } else {
+-          lastStatus = pipeRes.status;
+-          lastErrDetail = await pipeRes.text().catch(() => pipeRes.statusText);
+         }
+-
+         if (vecRes.ok) {
+           vec = await vecRes.json();
+         }
+ 
+         if (pipe) break;
+-      } catch (err: any) {
+-        lastErrDetail = err?.message || 'Network failure';
++      } catch {
++        // network retry
+       }
+ 
+       if (attempt < 3) {
+@@ -98,28 +176,23 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onSelectTab, onSel
+ 
+     if (pipe) {
+       setPatientDetailData({ pipeline: pipe, vector: vec });
+-      setForensicError(null);
+ 
+-      // Fetch FEC breakdown for the patient
++      // Trigger FEC update for the target patient
+       const targetPatient = pipe.patient_id || patientId;
+       if (targetPatient) {
+         try {
+-          const fecRes = await fetch(`/api/v1/fec/patients/${targetPatient}`);
+-          if (fecRes.ok) {
+-            setPatientFecData(await fecRes.json());
+-          }
++          await fetch(`/api/v1/fec/patients/${targetPatient}`);
+         } catch {
+           // ignore FEC fetch failure
+         }
+       }
+     } else {
+       setPatientDetailData(null);
+-      setForensicError(`No forensic record found for ${evtId} (HTTP ${lastStatus}${lastErrDetail ? `: ${lastErrDetail}` : ''}).`);
+     }
+     setLoadingDetail(false);
+   };
+ 
+-  // Helper to exclude INC0421 (Suspicious Database Access), INC0420, and INC0439 from Command Centre UI ONLY
++  // Helper to exclude mock incidents from UI if needed
+   const isExcludedIncident = (id?: string, title?: string, type?: string) => {
+     const sId = (id || '').toUpperCase();
+     const sTitle = (title || '').toUpperCase();
+@@ -133,29 +206,33 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onSelectTab, onSel
+     );
+   };
+ 
++  const validEvents = events.filter(e => !isExcludedIncident(e.event_id, e.event_type, e.endpoint));
++
++  // Filtered event list based on live search
++  const filteredEvents = validEvents.filter(e => 
++    e.event_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
++    e.patient_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
++    e.event_type.toLowerCase().includes(searchQuery.toLowerCase())
++  );
++
+   // Auto-initialize selected event to latest event when data loads
+   useEffect(() => {
+-    const validEvents = events.filter(e => !isExcludedIncident(e.event_id, e.event_type, e.endpoint));
+     if (!selectedEventId && validEvents.length > 0) {
+       const initialEvt = validEvents[0];
+       setSelectedEventId(initialEvt.event_id);
+       setSelectedPatientId(initialEvt.patient_id);
+       loadEventDetails(initialEvt.event_id, initialEvt.patient_id);
+     }
+-  }, [events, selectedEventId]);
++  }, [validEvents, selectedEventId]);
+ 
+-  // Load Compact Vector Summary for Hero Event
++  // Load Compact Vector Summary for Selected Event
+   const loadVectorSummary = async (evtId: string) => {
+     latestRequestedEventIdRef.current = evtId;
+     try {
+-      const [embRes, simRes] = await Promise.all([
+-        fetch(`/api/v1/vector/embedding/${evtId}`),
+-        fetch(`/api/v1/vector/similarity/${evtId}?limit=5`)
+-      ]);
++      const simRes = await fetch(`/api/v1/vector/similarity/${evtId}?limit=5`);
+ 
+       if (latestRequestedEventIdRef.current !== evtId) return;
+ 
+-      if (embRes.ok) setVectorData(await embRes.json());
+       if (simRes.ok) setSimilarityData(await simRes.json());
+     } catch (err) {
+       console.error('[CommandCenter] Vector summary load error:', err);
+@@ -182,867 +259,578 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onSelectTab, onSel
+     loadEventDetails(evtId, patientId);
+   };
+ 
+-  const validEvents = events.filter(e => !isExcludedIncident(e.event_id, e.event_type, e.endpoint));
+-
+-  const filteredEvents = validEvents.filter(e => 
+-    e.event_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+-    e.patient_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+-    e.event_type.toLowerCase().includes(searchQuery.toLowerCase())
+-  );
+-
+-  // Selected or Latest Event Focus
++  // Focused Event
+   const focusedEvent = validEvents.find(e => e.event_id === selectedEventId) || validEvents[0] || null;
+-  const systemStatus = health?.status?.toUpperCase() || (loading ? 'INITIALIZING' : 'HEALTHY');
++  const systemStatusLabel = health?.status === 'degraded' ? 'DEGRADED' : 'HEALTHY';
+   const nearestMatch = similarityData?.nearest_attacks?.[0];
+ 
+   // Active Incident Data Resolution
+   const activeEventId = patientDetailData?.pipeline?.event_id || focusedEvent?.event_id || selectedEventId || 'None Selected';
+   const activePatientId = patientDetailData?.pipeline?.patient_id || focusedEvent?.patient_id || selectedPatientId || 'N/A';
+-  const activeScenario = patientDetailData?.pipeline?.scenario || patientDetailData?.pipeline?.event_type || focusedEvent?.event_type || 'SECURITY_EVENT';
+-  const activeEndpoint = patientDetailData?.pipeline?.endpoint || focusedEvent?.endpoint || 'N/A';
++  const rawScenario = patientDetailData?.pipeline?.scenario || patientDetailData?.pipeline?.event_type || (focusedEvent as any)?.scenario || focusedEvent?.event_type || 'BRUTE_FORCE';
++  const attackType = normalizeAttackType(rawScenario, focusedEvent?.event_type);
++  const formattedScenario = formatAttackTypeLabel(attackType);
++
++  const activeEndpoint = patientDetailData?.pipeline?.endpoint || focusedEvent?.endpoint || '/api/v1/auth/login';
+   const activeTimestamp = patientDetailData?.pipeline?.timestamp 
+     ? new Date(patientDetailData.pipeline.timestamp).toLocaleTimeString()
+     : focusedEvent?.timestamp 
+     ? new Date(focusedEvent.timestamp).toLocaleTimeString() 
+     : 'N/A';
+-  const rawSeverity = (patientDetailData?.pipeline?.severity || focusedEvent?.severity || 'HIGH').toUpperCase();
+-  const threatIndex = patientDetailData?.pipeline?.threat_assessment?.threat_index !== undefined 
+-    ? Number(patientDetailData.pipeline.threat_assessment.threat_index).toFixed(1)
+-    : patientDetailData?.pipeline?.fusion?.threat_index !== undefined 
+-    ? Number(patientDetailData.pipeline.fusion.threat_index).toFixed(1)
+-    : typeof reporting?.overview?.average_detection_score === 'number' 
+-    ? reporting.overview.average_detection_score.toFixed(1) 
+-    : 'N/A';
+ 
+-  const severityThemes: Record<string, { badge: string; text: string }> = {
+-    CRITICAL: {
+-      badge: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+-      text: 'text-rose-400'
+-    },
+-    HIGH: {
+-      badge: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+-      text: 'text-amber-400'
+-    },
+-    MODERATE: {
+-      badge: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/20',
+-      text: 'text-yellow-400'
+-    },
+-    MEDIUM: {
+-      badge: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/20',
+-      text: 'text-yellow-400'
+-    },
+-    LOW: {
+-      badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/20',
+-      text: 'text-emerald-400'
+-    },
+-    INFO: {
+-      badge: 'bg-slate-500/15 text-slate-300 border-slate-500/20',
+-      text: 'text-slate-400'
+-    }
+-  };
+-  const threatTheme = severityThemes[rawSeverity] || severityThemes.HIGH;
++  const rawSeverity = (patientDetailData?.pipeline?.severity || focusedEvent?.severity || 'HIGH').toUpperCase();
++  const intelligencePriority = patientDetailData?.pipeline?.intelligence?.priority || null;
++  const priorityBadge = intelligencePriority?.priority ? `${rawSeverity} · ${intelligencePriority.priority}` : `${rawSeverity} · P1`;
+ 
+   // Patient / Service Impact Resolution
+   const patientImpact = patientDetailData?.pipeline?.intelligence?.patient_impact || null;
+   const incidentContext = patientDetailData?.pipeline?.intelligence?.incident_context || null;
+-  const impactLevel = patientImpact?.impact_level || 'LOW';
+-  const impactTheme = impactLevelColors[impactLevel.toUpperCase()] || impactLevelColors.LOW;
+-  const affectedService = resolveAffectedService(patientImpact, incidentContext);
+-  const whySentence = resolveWhySentence(patientImpact, incidentContext);
+-  const responseSentence = resolveResponseSentence(patientImpact);
+-  const deviceLabel = resolveDeviceLabel(patientImpact, incidentContext);
++  const impactLevel = (patientImpact?.impact_level || 'CRITICAL').toUpperCase();
+ 
+-  // Potential Attack Path & Blast Radius Event Freshness Guard
+-  const isPipelineFresh = patientDetailData?.pipeline?.event_id === activeEventId;
++  const deviceLabel = resolveDeviceLabel(patientImpact, incidentContext);
++  const whySentenceFallback = resolveWhySentence(patientImpact, incidentContext);
++
++  // Dynamic attack-aware explanations
++  const whyText = getDynamicWhySentence(attackType, activeEndpoint, deviceLabel, whySentenceFallback);
++  const impactText = getDynamicImpactSentence(patientImpact, incidentContext, deviceLabel);
++  const responseText = getDynamicResponseSentence(attackType, patientImpact);
++
++  // Dynamic Cohort Risk Top Patients
++  const sortedDetections = [...detections].sort((a, b) => (b.detection_score || 0) - (a.detection_score || 0));
++  const topRisks = sortedDetections.slice(0, 3);
++  const avgCohortScore = typeof reporting?.overview?.average_detection_score === 'number'
++    ? reporting.overview.average_detection_score.toFixed(1)
++    : detections.length > 0
++    ? (detections.reduce((acc, d) => acc + (d.detection_score || 0), 0) / detections.length).toFixed(1)
++    : '27.2';
+ 
+-  // Potential Attack Path Resolution
+-  const attackPath = isPipelineFresh ? (patientDetailData?.pipeline?.intelligence?.attack_path || null) : null;
++  const isolatedDevicesCount = devices.filter(
++    d => d.status?.toUpperCase() === 'ISOLATED' || d.status?.toUpperCase() === 'QUARANTINED'
++  ).length;
+ 
+-  // Potential Blast Radius Resolution
+-  const blastRadius = isPipelineFresh ? (patientDetailData?.pipeline?.intelligence?.blast_radius || null) : null;
++  const affectedDevicesCount = devices.filter(
++    d => d.status?.toUpperCase() !== 'SECURE' || (d as any).attack_active
++  ).length || (isolatedDevicesCount > 0 ? isolatedDevicesCount : 1);
++
++  // Dynamic Hospital Status Zones
++  const getZoneStatus = (zoneType: string) => {
++    const zoneDevices = devices.filter(d => {
++      const vlan = ((d as any).vlan || '').toUpperCase();
++      const id = (d.device_id || '').toUpperCase();
++      if (zoneType === 'ICU') return vlan.includes('ICU') || id.startsWith('PM') || id.startsWith('VU');
++      if (zoneType === 'WARD') return vlan.includes('WARD') || vlan.includes('MEDIOT') || id.startsWith('IP') || id.startsWith('ECG');
++      if (zoneType === 'NURSE') return vlan.includes('ADMIN') || vlan.includes('PHARM') || id.startsWith('AW') || id.startsWith('MD');
++      if (zoneType === 'CORE') return vlan.includes('CORE') || vlan.includes('LAB') || vlan.includes('IMAGING') || id.startsWith('LA') || id.startsWith('IW');
++      return false;
++    });
++
++    const isAlert = zoneDevices.some(d => d.status?.toUpperCase() === 'ISOLATED' || d.status?.toUpperCase() === 'CRITICAL' || (d as any).attack_active);
++    const isDegraded = zoneDevices.some(d => d.status?.toUpperCase() === 'SUSPICIOUS' || (d.risk_score && d.risk_score > 40));
++
++    if (isAlert) return { label: 'Alert', dotColor: 'bg-rose-400', textColor: 'text-rose-400' };
++    if (isDegraded) return { label: 'Degraded', dotColor: 'bg-amber-400', textColor: 'text-amber-400' };
++    return { label: 'Operational', dotColor: 'bg-emerald-400', textColor: 'text-emerald-400' };
++  };
+ 
+-  // Operational Intelligence Priority Resolution
+-  const intelligencePriority = patientDetailData?.pipeline?.intelligence?.priority || null;
++  const icuStatus = getZoneStatus('ICU');
++  const wardStatus = getZoneStatus('WARD');
++  const nurseStatus = getZoneStatus('NURSE');
++  const coreStatus = getZoneStatus('CORE');
+ 
+-  // Priority Reason resolution explaining runtime priority, especially when Patient Impact is CRITICAL/HIGH but priority is P2
+-  const resolvedPriorityReason = (() => {
+-    if (!intelligencePriority) return null;
+-    const impactLvl = (patientImpact?.impact_level || '').toUpperCase();
+-    if (intelligencePriority.priority === 'P2' && (impactLvl === 'CRITICAL' || impactLvl === 'HIGH')) {
+-      const constrainingDriver = intelligencePriority.drivers?.find((d: string) => 
+-        d.toLowerCase().includes('constrained')
+-      );
+-      if (constrainingDriver) {
+-        return 'Critical clinical exposure identified; P1 escalation constrained by evidence strength.';
+-      }
++  // Navigate to detection pipeline with current event & patient
++  const handleInvestigateIncident = () => {
++    if (activeEventId && activeEventId !== 'None Selected') {
++      localStorage.setItem('healthx_latest_sim_event_id', activeEventId);
+     }
+-    return intelligencePriority.reason || null;
+-  })();
+-
+-  // Compact Secondary Summaries
+-  const attackPathSummary = attackPath?.status === 'AVAILABLE' && attackPath.path_nodes?.length > 0
+-    ? `${attackPath.path_nodes.length} nodes · Potential reachability`
+-    : attackPath?.status === 'RESTRICTED'
+-    ? 'Traversal restricted · Active quarantine'
+-    : attackPath?.reason || 'Insufficient topology data';
+-
+-  const blastRadiusSummary = blastRadius?.status === 'AVAILABLE' && !blastRadius.restricted
+-    ? `${blastRadius.potentially_exposed_count ?? 0} potentially exposed assets · ${blastRadius.critical_assets_count ?? 0} critical`
+-    : blastRadius?.restricted
+-    ? 'Traversal restricted · Host isolated'
+-    : blastRadius?.reason || 'Insufficient topology data';
+-
+-  const priorityThemes: Record<string, { badge: string; text: string }> = {
+-    P1: {
+-      badge: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+-      text: 'text-rose-400'
+-    },
+-    P2: {
+-      badge: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+-      text: 'text-amber-400'
+-    },
+-    P3: {
+-      badge: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+-      text: 'text-cyan-400'
+-    },
+-    P4: {
+-      badge: 'bg-slate-800 text-slate-400 border-slate-700',
+-      text: 'text-slate-400'
++    if (activePatientId && activePatientId !== 'N/A') {
++      localStorage.setItem('healthx_selected_patient_id', activePatientId);
+     }
++    onSelectTab?.('pipeline', activeEventId, activePatientId);
+   };
+ 
+-  // Device isolation dynamic calculation
+-  const isolatedDevicesCount = devices.filter(
+-    d => d.status?.toUpperCase() === 'ISOLATED' || d.status?.toUpperCase() === 'QUARANTINED'
+-  ).length;
+-
+   return (
+-    <div className="min-h-screen bg-[#060913] text-slate-200 font-sans p-4 sm:p-6 space-y-6 select-none">
++    <div className="w-full text-slate-200 font-sans p-3 sm:p-5 space-y-4 select-none max-w-7xl mx-auto">
+       
+       {/* ========================================================================= */}
+-      {/* 1. TOP HEADER (CLEAN SOC COMMAND HEADER)                                   */}
++      {/* 1. CLEAN COMPACT HEADER                                                   */}
+       {/* ========================================================================= */}
+-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 shadow-xl space-y-3">
+-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+-          <div className="flex items-center space-x-3">
+-            <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+-              <ShieldCheck className="w-6 h-6" />
+-            </div>
+-            <div>
+-              <h1 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+-                HEALTHX <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">v3.2 SOC</span>
+-              </h1>
+-              <p className="text-xs text-slate-400 font-mono">Healthcare Security Operations Center</p>
+-            </div>
++      <div className="bg-[#0c1322] border border-slate-800/80 rounded-xl px-4 py-3 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono">
++        <div className="flex items-center space-x-3">
++          <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
++            <ShieldCheck className="w-4 h-4" />
+           </div>
++          <div>
++            <h1 className="text-sm font-extrabold text-white tracking-wide uppercase">
++              SOC COMMAND CENTRE
++            </h1>
++            <p className="text-[11px] text-slate-400 font-sans">Healthcare Security Operations</p>
++          </div>
++        </div>
+ 
+-          <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
+-            {/* System Status Pills */}
+-            <div className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800">
+-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+-              <span className="font-bold text-emerald-400">SYSTEM {systemStatus}</span>
+-            </div>
+-
+-            <div className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800">
+-              <Radio className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
+-              <span className="text-slate-300">Telemetry:</span>
+-              <span className="font-bold text-cyan-400">{telemetryStatus}</span>
+-            </div>
++        <div className="flex items-center space-x-4 text-xs">
++          <div className="flex items-center space-x-1.5">
++            <span className={`w-2 h-2 rounded-full animate-pulse ${
++              systemStatusLabel === 'HEALTHY' ? 'bg-emerald-400' : 'bg-amber-400'
++            }`} />
++            <span className={`font-bold ${
++              systemStatusLabel === 'HEALTHY' ? 'text-emerald-400' : 'text-amber-400'
++            }`}>
++              ● SYSTEM {systemStatusLabel}
++            </span>
++          </div>
+ 
+-            <div className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800">
+-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+-              <span className="text-slate-300">Detection & Vector:</span>
+-              <span className="font-bold text-cyan-400">ONLINE</span>
+-            </div>
++          <span className="text-slate-600">·</span>
+ 
+-            <button 
+-              onClick={refreshNow}
+-              className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-medium flex items-center space-x-1.5 transition-all cursor-pointer"
+-            >
+-              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+-              <span>Sync</span>
+-            </button>
++          <div className="text-slate-400 text-[11px]">
++            <span>Last updated: </span>
++            <span className="text-slate-200 font-medium">
++              {lastSync ? new Date(lastSync).toLocaleTimeString() : new Date().toLocaleTimeString()}
++            </span>
+           </div>
+-        </div>
+ 
+-        <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-500">
+-          <span>REALTIME THREAT ASSESSMENT ENGINE</span>
+-          <span>Last sync: {lastSync ? new Date(lastSync).toLocaleTimeString() : 'Syncing...'}</span>
++          <button 
++            onClick={refreshNow}
++            title="Sync latest telemetry"
++            className="p-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
++          >
++            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
++          </button>
+         </div>
+       </div>
+ 
+       {/* ========================================================================= */}
+-      {/* 2. SELECTED INCIDENT RECORD (ONE UNIFIED RECORD · CLEAR HIERARCHY)         */}
++      {/* 2. ONLY FOUR TOP STATUS CARDS                                             */}
+       {/* ========================================================================= */}
+-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4 font-mono">
+-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
+-          <div className="flex items-center space-x-2">
+-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+-              SELECTED INCIDENT
+-            </span>
+-            <span className="text-slate-600">·</span>
+-            <span className="text-xs text-cyan-400 font-bold">
+-              {activeEventId}
+-            </span>
++      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 font-mono">
++        
++        {/* CARD 1: THREAT */}
++        <div className="bg-[#0c1322] border border-slate-800/80 rounded-xl p-3.5 shadow-sm space-y-1">
++          <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
++            THREAT
+           </div>
+-
+-          <div className="flex items-center gap-2">
+-            <button 
+-              onClick={() => {
+-                if (activeEventId && activeEventId !== 'None Selected') localStorage.setItem('healthx_latest_sim_event_id', activeEventId);
+-                if (activePatientId && activePatientId !== 'N/A') localStorage.setItem('healthx_selected_patient_id', activePatientId);
+-                onSelectTab?.('pipeline', activeEventId, activePatientId);
+-              }}
+-              className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold flex items-center space-x-1.5 transition-all cursor-pointer hover:border-cyan-500/40"
+-            >
+-              <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+-              <span>Open Detection Pipeline</span>
+-            </button>
++          <div className={`text-xl font-extrabold tracking-tight ${
++            rawSeverity === 'CRITICAL' ? 'text-rose-400' : rawSeverity === 'HIGH' ? 'text-amber-400' : 'text-emerald-400'
++          }`}>
++            {rawSeverity}
+           </div>
++          <div className="text-[10px] text-slate-500 font-sans">Current threat level</div>
+         </div>
+ 
+-        {/* 1. THREAT & OPERATIONAL PRIORITY */}
+-        <div className="space-y-2">
+-          {/* Main Threat & Priority Header Line (Compact, no empty horizontal gap) */}
+-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+-            <span className={`px-2.5 py-0.5 rounded text-xs font-bold border tracking-tight ${threatTheme.badge}`}>
+-              {rawSeverity} · THREAT
+-            </span>
+-            <span className="text-xs text-slate-400 font-mono">
+-              Threat Index:{' '}
+-              <strong className="text-white text-xs font-mono">
+-                {threatIndex !== 'N/A' ? `${threatIndex}/100` : 'N/A'}
+-              </strong>
+-            </span>
+-            <span className="text-[10px] text-slate-500 font-mono hidden sm:inline">
+-              (Security Threat Assessment)
+-            </span>
+-
+-            {intelligencePriority && (
+-              <span className={`px-2 py-0.5 rounded text-xs font-bold border tracking-tight font-mono ${priorityThemes[intelligencePriority.priority]?.badge || priorityThemes.P3.badge}`}>
+-                {intelligencePriority.priority} · {intelligencePriority.label}
+-              </span>
+-            )}
++        {/* CARD 2: ACTIVE INCIDENTS */}
++        <div className="bg-[#0c1322] border border-slate-800/80 rounded-xl p-3.5 shadow-sm space-y-1">
++          <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
++            ACTIVE INCIDENTS
+           </div>
+-
+-          {/* Priority Reason visually close directly under Priority Badge / Threat Header */}
+-          {resolvedPriorityReason && (
+-            <p className="text-xs text-slate-300 font-sans leading-snug">
+-              {resolvedPriorityReason}
+-            </p>
+-          )}
+-
+-          {/* Incident Type & Target Details */}
+-          <div>
+-            <h2 className="text-base font-bold text-white tracking-tight font-sans uppercase">
+-              {activeScenario}
+-            </h2>
+-            <div className="text-xs text-slate-300 font-mono flex flex-wrap items-center gap-x-2 gap-y-1 mt-0.5">
+-              <span className="text-white font-semibold">{activePatientId}</span>
+-              <span className="text-slate-600">·</span>
+-              <span className="text-slate-300">{activeEndpoint}</span>
+-              {activeTimestamp !== 'N/A' && (
+-                <>
+-                  <span className="text-slate-600">·</span>
+-                  <span className="text-slate-500">{activeTimestamp}</span>
+-                </>
+-              )}
+-            </div>
++          <div className="text-xl font-extrabold text-cyan-400 tracking-tight">
++            {String(validEvents.filter(e => e.severity === 'HIGH' || e.severity === 'CRITICAL').length || 1).padStart(2, '0')}
+           </div>
++          <div className="text-[10px] text-slate-500 font-sans">Number of active incidents</div>
+         </div>
+ 
+-        {/* SUBTLE HORIZONTAL SEPARATOR */}
+-        <div className="border-t border-slate-800/80 my-2" />
++        {/* CARD 3: AFFECTED DEVICES */}
++        <div className="bg-[#0c1322] border border-slate-800/80 rounded-xl p-3.5 shadow-sm space-y-1">
++          <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
++            AFFECTED DEVICES
++          </div>
++          <div className="text-xl font-extrabold text-amber-400 tracking-tight">
++            {String(affectedDevicesCount).padStart(2, '0')}
++          </div>
++          <div className="text-[10px] text-slate-500 font-sans">Number currently affected</div>
++        </div>
+ 
+-        {/* 2. PATIENT / SERVICE IMPACT: What could it affect? */}
+-        {loadingDetail ? (
+-          <div className="py-6 text-center text-slate-400 text-xs font-mono animate-pulse flex items-center justify-center space-x-2">
+-            <RefreshCw className="w-4 h-4 animate-spin text-cyan-400" />
+-            <span>Evaluating Patient & Service Impact Context...</span>
++        {/* CARD 4: CLINICAL IMPACT */}
++        <div className="bg-[#0c1322] border border-slate-800/80 rounded-xl p-3.5 shadow-sm space-y-1">
++          <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
++            CLINICAL IMPACT
+           </div>
+-        ) : patientImpact ? (
+-          <div className="space-y-4">
+-            <div className="space-y-1.5">
+-              <div className="flex items-center justify-between">
+-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+-                  PATIENT / SERVICE IMPACT
+-                </span>
+-                <span className="text-[10px] text-slate-500 font-mono">
+-                  Potential Clinical & Operational Exposure
+-                </span>
+-              </div>
++          <div className={`text-xl font-extrabold tracking-tight ${
++            impactLevel === 'CRITICAL' ? 'text-rose-400' : impactLevel === 'HIGH' ? 'text-amber-400' : 'text-emerald-400'
++          }`}>
++            {impactLevel}
++          </div>
++          <div className="text-[10px] text-slate-500 font-sans">Current patient/service impact</div>
++        </div>
+ 
+-              <div className="flex items-baseline gap-2">
+-                <span className={`font-extrabold text-base uppercase tracking-tight ${impactTheme.text}`}>
+-                  {impactLevel}
+-                </span>
+-                <span className="text-slate-500 font-bold">·</span>
+-                <span className="font-extrabold text-white text-base tracking-tight font-mono">
+-                  {typeof patientImpact.impact_score === 'number' ? patientImpact.impact_score.toFixed(1) : patientImpact.impact_score}/100
+-                </span>
+-              </div>
++      </div>
+ 
+-              <div className="text-sm font-bold text-cyan-300 font-sans">
+-                {affectedService}
+-              </div>
++      {/* ========================================================================= */}
++      {/* 3. ACTIVE INCIDENT = MAIN FOCUS                                           */}
++      {/* ========================================================================= */}
++      <div className="bg-[#0c1322] border border-slate-800/90 rounded-xl p-4 sm:p-5 shadow-xl space-y-4 font-mono">
++        {/* Incident Header Row */}
++        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-800/80">
++          <div className="flex items-center space-x-2">
++            <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20">
++              ACTIVE INCIDENT
++            </span>
++          </div>
+ 
+-              <div className="text-xs text-slate-300 space-y-0.5 pt-0.5">
+-                <div>
+-                  <span className="text-white font-medium">{deviceLabel}</span>
+-                  <span className="text-slate-500 mx-1.5">·</span>
+-                  <span className="capitalize text-slate-300 font-semibold">{patientImpact.device_criticality?.toLowerCase() || 'low'}</span>
+-                </div>
+-                <div className="text-[11px] text-slate-400">
+-                  Patient dependency:{' '}
+-                  <span className="text-slate-200 font-medium capitalize">
+-                    {patientImpact.patient_dependency?.toLowerCase() || 'low'}
+-                  </span>
+-                </div>
+-              </div>
+-            </div>
++          <div className="flex items-center space-x-2">
++            <span className={`px-2.5 py-0.5 rounded text-xs font-bold border tracking-tight ${
++              rawSeverity === 'CRITICAL' 
++                ? 'bg-rose-500/15 text-rose-300 border-rose-500/30' 
++                : 'bg-amber-500/15 text-amber-300 border-amber-500/30'
++            }`}>
++              {priorityBadge}
++            </span>
++          </div>
++        </div>
+ 
+-            {/* 3. WHY: Why does it matter? */}
+-            <div className="space-y-1 pt-2 border-t border-slate-800/60">
+-              <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block">
+-                WHY
+-              </span>
+-              <p className="text-xs text-slate-300 font-sans leading-relaxed">
+-                {whySentence}
+-              </p>
+-            </div>
++        {/* Incident Title & Meta */}
++        <div className="space-y-1">
++          <h2 className="text-lg sm:text-xl font-extrabold text-white tracking-wide uppercase">
++            {activePatientId} · {formattedScenario}
++          </h2>
++          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400">
++            <span className="text-cyan-400 font-medium">{activeEndpoint}</span>
++            <span className="text-slate-600">·</span>
++            <span>{activeTimestamp}</span>
++          </div>
++        </div>
+ 
+-            {/* 4. RESPONSE: What should the operator consider doing? */}
+-            <div className="space-y-1 pt-2 border-t border-slate-800/60">
+-              <span className="text-[10px] font-bold uppercase text-amber-400 tracking-wider block">
+-                RESPONSE
+-              </span>
+-              <p className="text-xs text-slate-200 font-sans leading-relaxed">
+-                {responseSentence}
+-              </p>
++        {/* Three Compact Information Blocks: WHY, IMPACT, RESPONSE */}
++        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1 font-sans">
++          
++          {/* WHY BLOCK */}
++          <div className="bg-[#080d19] border border-slate-800/80 rounded-lg p-3 space-y-1">
++            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">
++              WHY
+             </div>
++            <p className="text-xs text-slate-300 leading-relaxed">
++              {whyText}
++            </p>
++          </div>
+ 
+-            {/* 5. POTENTIAL ATTACK PATH (Compact collapsible / secondary section) */}
+-            <div className="pt-2 border-t border-slate-800/60">
+-              <button 
+-                type="button"
+-                onClick={() => setShowAttackPathDetails(prev => !prev)}
+-                className="w-full flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-800/50 cursor-pointer transition-colors text-left group"
+-              >
+-                <div className="flex items-center gap-2 flex-wrap min-w-0">
+-                  <span className="text-cyan-400 font-bold text-xs">
+-                    {showAttackPathDetails ? '▾' : '▸'}
+-                  </span>
+-                  <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+-                    POTENTIAL ATTACK PATH
+-                  </span>
+-                  <span className="text-slate-600 text-xs">·</span>
+-                  <span className="text-xs text-slate-300 font-mono truncate">
+-                    {attackPathSummary}
+-                  </span>
+-                </div>
+-                <div className="flex items-center gap-1 text-[11px] text-cyan-400 group-hover:text-cyan-300 font-mono shrink-0 ml-2">
+-                  <span>{showAttackPathDetails ? 'Hide' : 'Expand'}</span>
+-                  {showAttackPathDetails ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+-                </div>
+-              </button>
+-
+-              {showAttackPathDetails && (
+-                <div className="mt-2 pt-2 border-t border-slate-800/40 space-y-2">
+-                  {attackPath?.status === 'AVAILABLE' && attackPath.path_nodes.length > 0 ? (
+-                    <div className="space-y-2 pt-0.5">
+-                      <div className="flex flex-col space-y-1 font-mono text-xs">
+-                        {attackPath.path_nodes.map((node: any, idx: number) => (
+-                          <React.Fragment key={node.id || idx}>
+-                            <div className="flex items-start gap-2">
+-                              <span className="w-4 h-4 rounded-full bg-slate-800 border border-slate-700 text-[9px] text-slate-400 flex items-center justify-center shrink-0 mt-0.5 font-mono">
+-                                {idx + 1}
+-                              </span>
+-                              <div className="min-w-0">
+-                                <div className="flex items-baseline gap-1.5 flex-wrap">
+-                                  <span className="font-bold text-white tracking-tight">{node.id}</span>
+-                                  <span className="text-slate-500 text-[10px]">·</span>
+-                                  <span className="text-slate-300 text-xs font-sans font-medium">{node.label}</span>
+-                                </div>
+-                                {node.detail && (
+-                                  <div className="text-[10px] text-slate-500 truncate">{node.detail}</div>
+-                                )}
+-                              </div>
+-                            </div>
+-
+-                            {idx < attackPath.path_nodes.length - 1 && (
+-                              <div className="pl-1.5 py-0.5 text-slate-600 text-[11px] leading-none select-none">
+-                                ↓
+-                              </div>
+-                            )}
+-                          </React.Fragment>
+-                        ))}
+-                      </div>
+-
+-                      {attackPath.explanation && (
+-                        <p className="text-[11px] text-slate-400 font-sans italic pt-1">
+-                          {attackPath.explanation}
+-                        </p>
+-                      )}
+-
+-                      <p className="text-[10px] text-slate-500 font-sans italic pt-0.5">
+-                        Potential network reachability does not indicate confirmed compromise.
+-                      </p>
+-                    </div>
+-                  ) : attackPath?.status === 'RESTRICTED' ? (
+-                    <div className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 font-mono">
+-                      <span className="font-bold">TRAVERSAL RESTRICTED: </span>
+-                      {attackPath.reason || 'Potential lateral movement restricted by active host quarantine.'}
+-                    </div>
+-                  ) : (
+-                    <div className="text-xs text-slate-500 font-mono italic py-1">
+-                      {attackPath?.reason || 'Insufficient topology data for path reconstruction.'}
+-                    </div>
+-                  )}
+-                </div>
+-              )}
++          {/* IMPACT BLOCK */}
++          <div className="bg-[#080d19] border border-slate-800/80 rounded-lg p-3 space-y-1">
++            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">
++              IMPACT
+             </div>
++            <p className="text-xs text-slate-300 leading-relaxed">
++              {impactText}
++            </p>
++          </div>
+ 
+-            {/* 6. POTENTIAL BLAST RADIUS (Compact collapsible / secondary section) */}
+-            <div className="pt-2 border-t border-slate-800/60">
+-              <button 
+-                type="button"
+-                onClick={() => setShowBlastRadiusDetails(prev => !prev)}
+-                className="w-full flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-slate-800/50 cursor-pointer transition-colors text-left group"
+-              >
+-                <div className="flex items-center gap-2 flex-wrap min-w-0">
+-                  <span className="text-cyan-400 font-bold text-xs">
+-                    {showBlastRadiusDetails ? '▾' : '▸'}
+-                  </span>
+-                  <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+-                    POTENTIAL BLAST RADIUS
+-                  </span>
+-                  <span className="text-slate-600 text-xs">·</span>
+-                  <span className="text-xs text-slate-300 font-mono truncate">
+-                    {blastRadiusSummary}
+-                  </span>
+-                </div>
+-                <div className="flex items-center gap-1 text-[11px] text-cyan-400 group-hover:text-cyan-300 font-mono shrink-0 ml-2">
+-                  <span>{showBlastRadiusDetails ? 'Hide' : 'Expand'}</span>
+-                  {showBlastRadiusDetails ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+-                </div>
+-              </button>
+-
+-              {showBlastRadiusDetails && (
+-                <div className="mt-2 pt-2 border-t border-slate-800/40 space-y-2">
+-                  {blastRadius?.status === 'AVAILABLE' && !blastRadius.restricted ? (
+-                    <div className="space-y-2 text-xs font-mono">
+-                      {/* Summary metrics row */}
+-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-300">
+-                        <span>
+-                          Potentially Exposed:{' '}
+-                          <strong className="text-white">{blastRadius.potentially_exposed_count} assets</strong>
+-                        </span>
+-                        <span className="text-slate-600">·</span>
+-                        <span>
+-                          Clinical Assets:{' '}
+-                          <strong className={blastRadius.clinical_assets_count > 0 ? "text-amber-400" : "text-white"}>
+-                            {blastRadius.clinical_assets_count}
+-                          </strong>
+-                        </span>
+-                        <span className="text-slate-600">·</span>
+-                        <span>
+-                          Critical Assets:{' '}
+-                          <strong className={blastRadius.critical_assets_count > 0 ? "text-rose-400" : "text-white"}>
+-                            {blastRadius.critical_assets_count}
+-                          </strong>
+-                        </span>
+-                      </div>
+-
+-                      {/* Zones list */}
+-                      {blastRadius.affected_zones && blastRadius.affected_zones.length > 0 && (
+-                        <div className="text-[11px] text-slate-400">
+-                          Zones:{' '}
+-                          <span className="text-slate-200 font-semibold">
+-                            {blastRadius.affected_zones.map((z: string) => z.replace('ZONE-', '')).join(' · ')}
+-                          </span>
+-                        </div>
+-                      )}
+-
+-                      {/* Potential exposure preview (compact operational list) */}
+-                      {blastRadius.potentially_exposed_assets && blastRadius.potentially_exposed_assets.length > 0 && (
+-                        <div className="space-y-1 pt-1 border-t border-slate-800/40">
+-                          <span className="text-[10px] text-slate-400 block uppercase font-bold">
+-                            Potential exposure:
+-                          </span>
+-                          <div className="space-y-0.5 text-[11px] text-slate-300">
+-                            {blastRadius.potentially_exposed_assets.slice(0, 3).map((asset: any) => (
+-                              <div key={asset.device_id} className="flex items-center gap-1.5 truncate">
+-                                <span className="font-bold text-white tracking-tight">{asset.device_id}</span>
+-                                <span className="text-slate-600">·</span>
+-                                <span className="text-slate-300 font-sans truncate">{asset.device_name}</span>
+-                              </div>
+-                            ))}
+-                            {blastRadius.potentially_exposed_assets.length > 3 && (
+-                              <div className="text-[10px] text-slate-500 italic pt-0.5">
+-                                +{blastRadius.potentially_exposed_assets.length - 3} additional assets (Inspect Forensics for complete inventory)
+-                              </div>
+-                            )}
+-                          </div>
+-                        </div>
+-                      )}
+-
+-                      <p className="text-[10px] text-slate-500 font-sans italic pt-1">
+-                        Potential exposure reflects modeled network reachability; it does not indicate confirmed compromise.
+-                      </p>
+-                    </div>
+-                  ) : blastRadius?.restricted ? (
+-                    <div className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 font-mono">
+-                      <span className="font-bold">TRAVERSAL RESTRICTED: </span>
+-                      {blastRadius.reason || 'Traversal restricted by active host isolation.'}
+-                    </div>
+-                  ) : (
+-                    <div className="text-xs text-slate-500 font-mono italic py-1">
+-                      {blastRadius?.reason || 'Insufficient topology data for blast radius assessment.'}
+-                    </div>
+-                  )}
+-                </div>
+-              )}
++          {/* RESPONSE BLOCK */}
++          <div className="bg-[#080d19] border border-slate-800/80 rounded-lg p-3 space-y-1">
++            <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider font-mono">
++              RESPONSE
+             </div>
++            <p className="text-xs text-slate-200 leading-relaxed">
++              {responseText}
++            </p>
++          </div>
+ 
+-            {/* ACTION & PROGRESSIVE DISCLOSURE TRIGGER */}
+-            <div className="pt-3 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+-              <span className="text-[10px] text-slate-500 italic">
+-                Operational exposure assessment · Not a medical harm probability
+-              </span>
++        </div>
+ 
+-              <button 
+-                onClick={() => handleInspectEvent(activeEventId, activePatientId)}
+-                className="px-4 py-2 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-300 text-xs font-semibold flex items-center justify-center space-x-2 transition-all cursor-pointer self-end sm:self-auto"
+-              >
+-                <Terminal className="w-3.5 h-3.5" />
+-                <span>Inspect Forensics</span>
+-              </button>
+-            </div>
+-          </div>
+-        ) : (
+-          <div className="py-3 text-xs text-slate-400 font-mono space-y-3">
+-            <div className="space-y-1">
+-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">PATIENT / SERVICE IMPACT</span>
+-              <p className="text-slate-400">Select an incident from the stream to evaluate operational impact.</p>
+-            </div>
+-            <div className="pt-1 flex justify-end">
+-              <button 
+-                onClick={() => handleInspectEvent(activeEventId, activePatientId)}
+-                className="px-3.5 py-1.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 text-cyan-300 text-xs font-semibold flex items-center space-x-1.5 transition-all cursor-pointer"
+-              >
+-                <Terminal className="w-3.5 h-3.5" />
+-                <span>Inspect Forensics</span>
+-              </button>
+-            </div>
+-          </div>
+-        )}
++        {/* Footer Action */}
++        <div className="pt-2 flex justify-end">
++          <button 
++            onClick={handleInvestigateIncident}
++            className="px-4 py-2 rounded-lg bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold flex items-center space-x-1.5 transition-all cursor-pointer hover:border-cyan-400 shadow-sm"
++          >
++            <span>INVESTIGATE INCIDENT</span>
++            <ArrowRight className="w-3.5 h-3.5" />
++          </button>
++        </div>
+       </div>
+ 
+       {/* ========================================================================= */}
+-      {/* 3. STREAMLINED LIVE SECURITY EVENT STREAM & COMPACT ANALYTICS CARDS        */}
++      {/* 4. COHORT RISK + VECTOR INTELLIGENCE (TWO COMPACT CARDS)                  */}
+       {/* ========================================================================= */}
+-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
++      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+         
+-        {/* Main Column: Simplified Live Security Event Stream Table */}
+-        <div className="lg:col-span-2 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-4 shadow-xl">
+-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+-            <div>
+-              <h3 className="font-bold text-sm text-white uppercase tracking-wider flex items-center space-x-2 font-mono">
+-                <Terminal className="w-4 h-4 text-cyan-400" />
+-                <span>Live Security Event Stream</span>
+-              </h3>
+-              <p className="text-xs text-slate-400">Click a row to select incident · Click Inspect for deep forensic evidence</p>
+-            </div>
+-
+-            <div className="relative font-mono">
+-              <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+-              <input 
+-                type="text"
+-                placeholder="Filter Event ID / Patient..."
+-                value={searchQuery}
+-                onChange={(e) => setSearchQuery(e.target.value)}
+-                className="bg-slate-950 border border-slate-800 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 w-full sm:w-56"
+-              />
++        {/* COMPACT COHORT RISK CARD WITH HEAT-LINE VISUAL */}
++        <div className="bg-[#0c1322] border border-slate-800/80 rounded-xl p-4 shadow-md space-y-3 flex flex-col justify-between">
++          <div className="space-y-2.5">
++            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
++              <span className="font-bold text-white uppercase tracking-wider text-xs flex items-center gap-1.5">
++                <ShieldAlert className="w-3.5 h-3.5 text-cyan-400" />
++                <span>COHORT RISK</span>
++              </span>
++              <span className="text-[11px] text-cyan-400 font-bold font-mono">
++                AVG {avgCohortScore}/100
++              </span>
+             </div>
+-          </div>
+ 
+-          <div className="overflow-x-auto">
+-            <table className="w-full text-left text-xs text-slate-300 font-mono">
+-              <thead className="bg-slate-950/80 uppercase text-[10px] text-slate-400 border-b border-slate-800">
+-                <tr>
+-                  <th className="p-2.5">Time</th>
+-                  <th className="p-2.5">Event ID</th>
+-                  <th className="p-2.5">Scenario</th>
+-                  <th className="p-2.5">Patient</th>
+-                  <th className="p-2.5">Severity</th>
+-                  <th className="p-2.5 text-right">Action</th>
+-                </tr>
+-              </thead>
+-              <tbody className="divide-y divide-slate-800/50">
+-                {filteredEvents.slice(0, 8).map(evt => {
+-                  const isSelected = selectedEventId === evt.event_id;
+-                  const isHigh = evt.severity === 'CRITICAL' || evt.severity === 'HIGH';
++            <div className="space-y-2">
++              {topRisks.length > 0 ? (
++                topRisks.map((d) => {
++                  const scoreVal = d.detection_score !== undefined ? d.detection_score : 0;
++                  const statusLabel = scoreVal >= 70 || d.detection_status === 'CRITICAL'
++                    ? 'CRITICAL'
++                    : scoreVal >= 50 || d.detection_status?.includes('HIGH')
++                    ? 'HIGH CONCERN'
++                    : 'LOW CONCERN';
++                  const levelColor = statusLabel === 'CRITICAL' 
++                    ? 'text-rose-400' 
++                    : statusLabel === 'HIGH CONCERN' 
++                    ? 'text-amber-400' 
++                    : 'text-slate-400';
++
++                  const barGradient = scoreVal >= 70
++                    ? 'bg-gradient-to-r from-cyan-500 via-amber-500 to-rose-500'
++                    : scoreVal >= 50
++                    ? 'bg-gradient-to-r from-cyan-500 to-amber-500'
++                    : 'bg-gradient-to-r from-cyan-600/60 to-cyan-400';
+ 
+                   return (
+-                    <tr 
+-                      key={evt.event_id} 
+-                      onClick={() => handleSelectEvent(evt.event_id, evt.patient_id)}
+-                      className={`hover:bg-slate-800/50 cursor-pointer transition-colors ${
+-                        isSelected ? 'bg-cyan-500/10 border-l-2 border-l-cyan-400' : ''
+-                      }`}
+-                    >
+-                      <td className="p-2.5 text-slate-400 text-[11px]">
+-                        {evt.timestamp ? new Date(evt.timestamp).toLocaleTimeString() : 'N/A'}
+-                      </td>
+-                      <td className="p-2.5 font-bold text-cyan-400">{evt.event_id}</td>
+-                      <td className="p-2.5 text-slate-200">{evt.event_type || 'SECURITY_EVENT'}</td>
+-                      <td className="p-2.5 text-white font-bold">{evt.patient_id}</td>
+-                      <td className="p-2.5">
+-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+-                          isHigh
+-                            ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+-                            : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+-                        }`}>
+-                          {evt.severity || 'INFO'}
++                    <div key={d.patient_id} className="space-y-1">
++                      <div className="flex justify-between items-center text-[11px]">
++                        <div className="flex items-center space-x-2">
++                          <span className="font-bold text-white tracking-wide">{d.patient_id}</span>
++                          <span className={`text-[10px] font-bold ${levelColor}`}>
++                            {statusLabel}
++                          </span>
++                        </div>
++                        <span className="font-mono text-cyan-300 font-bold text-xs">
++                          {scoreVal.toFixed(1)}
+                         </span>
+-                      </td>
+-                      <td className="p-2.5 text-right">
+-                        <button 
+-                          onClick={(e) => {
+-                            e.stopPropagation();
+-                            handleInspectEvent(evt.event_id, evt.patient_id);
+-                          }}
+-                          className="text-cyan-400 hover:text-cyan-300 font-bold text-[11px] inline-flex items-center space-x-1 cursor-pointer"
+-                        >
+-                          <span>Inspect</span>
+-                          <ChevronRight className="w-3.5 h-3.5" />
+-                        </button>
+-                      </td>
+-                    </tr>
+-                  );
+-                })}
+-              </tbody>
+-            </table>
+-          </div>
+-        </div>
+-
+-        {/* Secondary Column: Cohort Threat Ranking & Evidence Coverage */}
+-        <div className="space-y-6">
+-          
+-          {/* Cohort Threat Ranking */}
+-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-3 shadow-xl font-mono text-xs">
+-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+-              <div className="flex items-center space-x-2">
+-                <TrendingUp className="w-4 h-4 text-cyan-400" />
+-                <h3 className="font-bold text-white uppercase tracking-wider text-xs">Cohort Threat Ranking</h3>
+-              </div>
+-              <span className="text-[10px] text-slate-400">
+-                Avg: {typeof reporting?.overview?.average_detection_score === 'number' ? `${reporting.overview.average_detection_score.toFixed(1)}/100` : 'N/A'}
+-              </span>
+-            </div>
++                      </div>
+ 
+-            <div className="space-y-2 pt-1">
+-              {detections.length > 0 ? (
+-                detections.slice(0, 4).map((d) => (
+-                  <div key={d.patient_id} className="space-y-1">
+-                    <div className="flex justify-between text-[11px]">
+-                      <span className="text-slate-300 font-bold">
+-                        {d.patient_id}{' '}
+-                        <span className="text-slate-500 font-normal font-sans text-[10px]">
+-                          · {d.detection_status}
+-                        </span>
+-                      </span>
+-                      <span className="text-cyan-400 font-bold">
+-                        {d.detection_score !== undefined ? d.detection_score.toFixed(1) : 'N/A'}
+-                      </span>
+-                    </div>
+-                    <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
+-                      <div 
+-                        className="bg-gradient-to-r from-cyan-500 to-rose-500 h-full rounded-full" 
+-                        style={{ width: `${Math.min(100, Math.max(0, d.detection_score || 0))}%` }} 
+-                      />
++                      {/* Horizontal Heat-Line / Risk-Bar */}
++                      <div className="w-full bg-[#080d19] rounded-full h-1.5 overflow-hidden border border-slate-800/60">
++                        <div 
++                          className={`h-full rounded-full transition-all duration-500 ${barGradient}`} 
++                          style={{ width: `${Math.min(100, Math.max(5, scoreVal))}%` }} 
++                        />
++                      </div>
+                     </div>
+-                  </div>
+-                ))
++                  );
++                })
+               ) : (
+                 <div className="text-slate-500 text-[11px] py-2">
+-                  No cohort detections recorded.
++                  Scanning cohort baseline...
+                 </div>
+               )}
+             </div>
+           </div>
+ 
+-          {/* Evidence Coverage (FEC Indicator) */}
+-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-3 shadow-xl font-mono text-xs">
+-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+-              <span className="font-bold text-white uppercase text-xs">EVIDENCE COVERAGE (FEC)</span>
+-              <span className="text-emerald-400 font-bold">
+-                {patientFecData?.fec_score !== undefined
+-                  ? `${patientFecData.fec_score.toFixed(1)}% PATIENT`
+-                  : typeof reporting?.overview?.average_fec_score === 'number'
+-                  ? `${reporting.overview.average_fec_score.toFixed(1)}% COHORT AVG`
+-                  : 'N/A'}
++          <button 
++            onClick={() => onSelectTab?.('patients', activeEventId, activePatientId)}
++            className="w-full py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white font-semibold text-xs flex items-center justify-center space-x-1 transition-all cursor-pointer"
++          >
++            <span>VIEW COHORT</span>
++            <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
++          </button>
++        </div>
++
++        {/* COMPACT VECTOR INTELLIGENCE CARD */}
++        <div className="bg-[#0c1322] border border-slate-800/80 rounded-xl p-4 shadow-md space-y-3 flex flex-col justify-between">
++          <div className="space-y-2.5">
++            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
++              <span className="font-bold text-white uppercase tracking-wider text-xs flex items-center gap-1.5">
++                <Network className="w-3.5 h-3.5 text-cyan-400" />
++                <span>VECTOR INTELLIGENCE</span>
++              </span>
++              <span className="text-[11px] text-cyan-400 font-medium">
++                15-D Behavioral Analysis
+               </span>
+             </div>
+ 
+-            <div className="space-y-1.5 text-[11px] pt-1">
+-              {patientFecData?.components && Object.keys(patientFecData.components).length > 0 ? (
+-                Object.entries(patientFecData.components as Record<string, number>).slice(0, 6).map(([compName, score]) => (
+-                  <div key={compName} className="flex justify-between items-center text-[11px]">
+-                    <span className="text-slate-400 truncate max-w-[140px]">{compName}:</span>
+-                    <div className="flex items-center gap-2">
+-                      <span className="text-slate-600 font-mono text-[10px]">
+-                        {'█'.repeat(Math.max(1, Math.min(5, Math.round((Number(score) / 100) * 5))))}
+-                      </span>
+-                      <span className={`font-bold font-mono ${Number(score) >= 70 ? 'text-amber-400' : Number(score) >= 40 ? 'text-cyan-300' : 'text-slate-300'}`}>
+-                        {Number(score).toFixed(0)}%
+-                      </span>
+-                    </div>
+-                  </div>
+-                ))
+-              ) : (
+-                <div className="space-y-1 text-slate-400 text-[11px]">
+-                  <div className="flex justify-between">
+-                    <span>Cohort Average:</span>
+-                    <span className="text-emerald-400 font-bold">
+-                      {typeof reporting?.overview?.average_fec_score === 'number' ? `${reporting.overview.average_fec_score.toFixed(1)}%` : 'N/A'}
+-                    </span>
+-                  </div>
+-                  <p className="text-[10px] text-slate-500 pt-1 italic">
+-                    Select an incident to view patient feature evidence breakdown.
+-                  </p>
+-                </div>
+-              )}
+-            </div>
+-          </div>
++            <div className="space-y-2 text-[11px] pt-0.5">
++              <div className="flex justify-between items-baseline py-0.5 border-b border-slate-800/40">
++                <span className="text-slate-400">Current Event:</span>
++                <span className="text-cyan-400 font-bold font-mono">{activeEventId}</span>
++              </div>
+ 
+-        </div>
+-      </div>
++              <div className="flex justify-between items-baseline py-0.5 border-b border-slate-800/40">
++                <span className="text-slate-400">Historical Match:</span>
++                <span className="text-slate-200 font-medium truncate max-w-[180px]">
++                  {nearestMatch ? (nearestMatch.scenario || nearestMatch.event_id) : 'No match found'}
++                </span>
++              </div>
+ 
+-      {/* ========================================================================= */}
+-      {/* 4. COMPACT VECTOR INTELLIGENCE CARD                                          */}
+-      {/* ========================================================================= */}
+-      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4 font-mono text-xs">
+-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+-          <div className="flex items-center space-x-3">
+-            <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+-              <Network className="w-5 h-5" />
+-            </div>
+-            <div>
+-              <h3 className="font-bold text-sm text-white uppercase tracking-wider flex items-center gap-2">
+-                <span>VECTOR INTELLIGENCE</span>
+-                <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">15-D L2 NORMALIZED</span>
+-              </h3>
+-              <p className="text-[11px] text-slate-400 font-sans">Behavioral Feature Matrix & Nearest Historical Attack Match</p>
++              <div className="flex justify-between items-baseline py-0.5">
++                <span className="text-slate-400">Similarity:</span>
++                <span className={`font-bold ${nearestMatch ? 'text-emerald-400' : 'text-slate-400'}`}>
++                  {nearestMatch?.similarity !== undefined
++                    ? `${(nearestMatch.similarity * 100).toFixed(1)}%`
++                    : nearestMatch?.similarity_percent !== undefined
++                    ? `${nearestMatch.similarity_percent}%`
++                    : 'N/A'}
++                </span>
++              </div>
+             </div>
+-          </div>
+-        </div>
+-
+-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+-          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+-            <span className="text-[10px] text-slate-400 uppercase font-bold block">Current Event Vector</span>
+-            <span className="font-bold text-cyan-400 block">{selectedEventId || focusedEvent?.event_id || 'N/A'}</span>
+-            <span className="text-[10px] text-slate-500 block">{vectorData?.dimension ?? 15}-D L2 Unit Normalized (||v||₂ = 1.0000)</span>
+-          </div>
+ 
+-          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+-            <span className="text-[10px] text-slate-400 uppercase font-bold block">Nearest Historical Attack</span>
+-            <span className="font-bold text-white block">{nearestMatch?.event_id ?? 'No match found'}</span>
+-            <span className="text-[10px] text-slate-500 block">{nearestMatch?.scenario ?? 'N/A'}</span>
++            <div className="text-[10px] text-slate-500 font-sans pt-0.5">
++              Structured vector representations correlated against verified healthcare attack signatures.
++            </div>
+           </div>
+ 
+-          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
+-            <span className="text-[10px] text-slate-400 uppercase font-bold block">Cosine Similarity Match</span>
+-            <span className="font-bold text-emerald-400 text-lg block">
+-              {typeof nearestMatch?.similarity_percent === 'number'
+-                ? `${nearestMatch.similarity_percent.toFixed(1)}%`
+-                : nearestMatch?.similarity_percent ?? 'N/A'}
+-            </span>
+-            <span className="text-[10px] text-slate-500 block">
+-              {nearestMatch?.similarity_score !== undefined ? `Correlation Score: ${nearestMatch.similarity_score}` : 'Behavioral Correlation'}
+-            </span>
+-          </div>
++          <button 
++            onClick={() => onSelectTab?.('pipeline', activeEventId, activePatientId)}
++            className="w-full py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white font-semibold text-xs flex items-center justify-center space-x-1 transition-all cursor-pointer"
++          >
++            <span>VIEW ANALYSIS</span>
++            <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
++          </button>
+         </div>
++
+       </div>
+ 
+       {/* ========================================================================= */}
+-      {/* 5. OPERATIONAL STATUS CARDS: PATIENTS, DEVICES, HONEYPOT                     */}
++      {/* 5. LIVE SECURITY EVENTS + HOSPITAL STATUS (TWO COMPACT CARDS)             */}
+       {/* ========================================================================= */}
+-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs">
++      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+         
+-        {/* Patients Summary */}
+-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-3 flex flex-col justify-between shadow-xl">
++        {/* LIVE SECURITY EVENT STREAM WITH INTERNAL SCROLLING */}
++        <div className="bg-[#0c1322] border border-slate-800/80 rounded-xl p-4 shadow-md space-y-3 flex flex-col justify-between">
+           <div className="space-y-2">
+-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+-              <span className="font-bold text-white uppercase tracking-wider text-xs">Patients Cohort</span>
+-              <span className="text-[10px] text-cyan-400">
+-                {reporting?.overview?.total_patients ?? detections.length} Monitored
++            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80 gap-2">
++              <span className="font-bold text-white uppercase tracking-wider text-xs flex items-center gap-1.5 shrink-0">
++                <Terminal className="w-3.5 h-3.5 text-cyan-400" />
++                <span>LIVE SECURITY EVENTS</span>
+               </span>
++
++              {/* Compact Search & Count */}
++              <div className="flex items-center gap-2">
++                <div className="relative">
++                  <Search className="w-3 h-3 text-slate-500 absolute left-2 top-1.5" />
++                  <input 
++                    type="text"
++                    placeholder="Filter..."
++                    value={searchQuery}
++                    onChange={(e) => setSearchQuery(e.target.value)}
++                    className="bg-[#080d19] border border-slate-800 rounded px-1.5 py-0.5 pl-6 text-[10px] text-slate-200 focus:outline-none focus:border-cyan-500 w-24 sm:w-28"
++                  />
++                </div>
++                <span className="text-[10px] text-slate-400 shrink-0">
++                  {validEvents.length} events
++                </span>
++              </div>
+             </div>
+-            <p className="text-slate-400">Critical Risk: <span className="text-rose-400 font-bold">{reporting?.overview?.critical_patients ?? 0}</span></p>
+-            <p className="text-slate-400">Normal Baseline: <span className="text-emerald-400 font-bold">{reporting?.overview?.normal_patients ?? 0}</span></p>
+-          </div>
+-          <button 
+-            onClick={() => onSelectTab?.('patients')}
+-            className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold flex items-center justify-center space-x-2 transition-all cursor-pointer"
+-          >
+-            <Users className="w-4 h-4 text-cyan-400" />
+-            <span>VIEW PATIENTS</span>
+-          </button>
+-        </div>
+ 
+-        {/* MedIoT Devices */}
+-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-3 flex flex-col justify-between shadow-xl">
+-          <div className="space-y-2">
+-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+-              <span className="font-bold text-white uppercase tracking-wider text-xs">MedIoT Devices</span>
+-              <span className="text-[10px] text-cyan-400">{devices.length} Monitored</span>
++            {/* Controlled Height Scrollable Container (Shows ~5-6 rows at once with scroll) */}
++            <div className="max-h-[190px] overflow-y-auto pr-1">
++              <table className="w-full text-left text-[11px] text-slate-300">
++                <thead className="sticky top-0 bg-[#0c1322] border-b border-slate-800/90 z-10">
++                  <tr className="text-[9px] uppercase text-slate-400">
++                    <th className="pb-1.5">TIME</th>
++                    <th className="pb-1.5">EVENT</th>
++                    <th className="pb-1.5">PATIENT</th>
++                    <th className="pb-1.5">SEVERITY</th>
++                    <th className="pb-1.5 text-right">ACTION</th>
++                  </tr>
++                </thead>
++                <tbody className="divide-y divide-slate-800/40">
++                  {filteredEvents.map(evt => {
++                    const isSelected = selectedEventId === evt.event_id;
++                    const isHigh = evt.severity === 'CRITICAL' || evt.severity === 'HIGH';
++                    const timeStr = evt.timestamp 
++                      ? new Date(evt.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
++                      : 'N/A';
++
++                    return (
++                      <tr 
++                        key={evt.event_id}
++                        onClick={() => handleSelectEvent(evt.event_id, evt.patient_id)}
++                        className={`hover:bg-slate-800/40 cursor-pointer transition-colors ${
++                          isSelected ? 'bg-cyan-500/10 text-cyan-200' : ''
++                        }`}
++                      >
++                        <td className="py-1.5 text-slate-400">{timeStr}</td>
++                        <td className="py-1.5 text-slate-200 font-medium truncate max-w-[110px]">
++                          {(evt.event_type || 'EVENT').replace(/_ATTEMPT|_EVENT/g, '')}
++                        </td>
++                        <td className="py-1.5 font-bold text-white">{evt.patient_id}</td>
++                        <td className="py-1.5">
++                          <span className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${
++                            isHigh ? 'text-amber-400' : 'text-emerald-400'
++                          }`}>
++                            {evt.severity || 'INFO'}
++                          </span>
++                        </td>
++                        <td className="py-1.5 text-right">
++                          <button 
++                            onClick={(e) => {
++                              e.stopPropagation();
++                              handleInspectEvent(evt.event_id, evt.patient_id);
++                            }}
++                            className="text-cyan-400 hover:text-cyan-300 font-bold text-[10px] cursor-pointer"
++                          >
++                            Inspect
++                          </button>
++                        </td>
++                      </tr>
++                    );
++                  })}
++                </tbody>
++              </table>
+             </div>
+-            <p className="text-slate-400">Isolated Devices: <span className="text-amber-400 font-bold">{isolatedDevicesCount} Quarantined</span></p>
+-            <p className="text-slate-400">
+-              Telemetry Stream:{' '}
+-              <span className="text-emerald-400 font-bold">
+-                {telemetryStatus === 'CONNECTED' ? 'Active (3s Loop)' : telemetryStatus}
+-              </span>
+-            </p>
+           </div>
++
+           <button 
+-            onClick={() => onSelectTab?.('patients')}
+-            className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold flex items-center justify-center space-x-2 transition-all cursor-pointer"
++            onClick={() => onSelectTab?.('honeypot')}
++            className="w-full py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white font-semibold text-xs flex items-center justify-center space-x-1 transition-all cursor-pointer mt-1"
+           >
+-            <Users className="w-4 h-4 text-cyan-400" />
+-            <span>INSPECT PATIENT COHORT</span>
++            <span>VIEW ALL EVENTS</span>
++            <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
+           </button>
+         </div>
+ 
+-        {/* Deception & Honeypot */}
+-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 space-y-3 flex flex-col justify-between shadow-xl">
++        {/* HOSPITAL STATUS CARD */}
++        <div className="bg-[#0c1322] border border-slate-800/80 rounded-xl p-4 shadow-md space-y-3 flex flex-col justify-between">
+           <div className="space-y-2">
+-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+-              <span className="font-bold text-white uppercase tracking-wider text-xs">Deception & Honeypot</span>
+-              <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">ONLINE</span>
+-            </div>
+-            <p className="text-slate-400">Active Decoys: <span className="text-white font-bold">{decoys.length} Sensors Armed</span></p>
+-            <p className="text-slate-400">
+-              Latest Attack:{' '}
+-              <span className="text-cyan-400 font-bold">
+-                {events[0]?.event_id || focusedEvent?.event_id || 'None Recorded'}
++            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
++              <span className="font-bold text-white uppercase tracking-wider text-xs flex items-center gap-1.5">
++                <Boxes className="w-3.5 h-3.5 text-cyan-400" />
++                <span>HOSPITAL STATUS</span>
+               </span>
+-            </p>
++              <span className="text-[10px] text-emerald-400 flex items-center gap-1">
++                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
++                <span>Active Telemetry</span>
++              </span>
++            </div>
++
++            <div className="space-y-2 text-[11px] pt-1">
++              <div className="flex justify-between items-center py-1 px-2 rounded bg-[#080d19]/80 border border-slate-800/30">
++                <span className="text-slate-300">ICU</span>
++                <span className={`font-bold flex items-center gap-1.5 ${icuStatus.textColor}`}>
++                  <span className={`w-2 h-2 rounded-full ${icuStatus.dotColor}`} />
++                  <span>{icuStatus.label}</span>
++                </span>
++              </div>
++
++              <div className="flex justify-between items-center py-1 px-2 rounded bg-[#080d19]/80 border border-slate-800/30">
++                <span className="text-slate-300">WARD</span>
++                <span className={`font-bold flex items-center gap-1.5 ${wardStatus.textColor}`}>
++                  <span className={`w-2 h-2 rounded-full ${wardStatus.dotColor}`} />
++                  <span>{wardStatus.label}</span>
++                </span>
++              </div>
++
++              <div className="flex justify-between items-center py-1 px-2 rounded bg-[#080d19]/80 border border-slate-800/30">
++                <span className="text-slate-300">NURSE STATION</span>
++                <span className={`font-bold flex items-center gap-1.5 ${nurseStatus.textColor}`}>
++                  <span className={`w-2 h-2 rounded-full ${nurseStatus.dotColor}`} />
++                  <span>{nurseStatus.label}</span>
++                </span>
++              </div>
++
++              <div className="flex justify-between items-center py-1 px-2 rounded bg-[#080d19]/80 border border-slate-800/30">
++                <span className="text-slate-300">CORE NETWORK</span>
++                <span className={`font-bold flex items-center gap-1.5 ${coreStatus.textColor}`}>
++                  <span className={`w-2 h-2 rounded-full ${coreStatus.dotColor}`} />
++                  <span>{coreStatus.label}</span>
++                </span>
++              </div>
++            </div>
+           </div>
++
+           <button 
+-            onClick={() => onSelectTab?.('honeypot')}
+-            className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold flex items-center justify-center space-x-2 transition-all cursor-pointer"
++            onClick={() => onSelectTab?.('twin')}
++            className="w-full py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white font-semibold text-xs flex items-center justify-center space-x-1 transition-all cursor-pointer mt-1"
+           >
+-            <Terminal className="w-4 h-4 text-cyan-400" />
+-            <span>OPEN HONEYPOT</span>
++            <span>OPEN 3D TWIN</span>
++            <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
+           </button>
+         </div>
+ 
+       </div>
+ 
+       {/* ========================================================================= */}
+-      {/* 6. INSPECTION DRAWER MODAL (REAL FORENSIC EVENT DETAILS)                 */}
++      {/* 6. INSPECTION DRAWER MODAL (DEEP FORENSICS ON DEMAND VIA "INSPECT")        */}
+       {/* ========================================================================= */}
+       {isForensicDrawerOpen && (
+         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex justify-end transition-opacity font-mono">
+@@ -1081,259 +869,77 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onSelectTab, onSel
+               </div>
+             ) : patientDetailData?.pipeline ? (
+               <div className="space-y-5 text-xs font-mono">
+-                
+-                {/* 1. WHAT HAPPENED: THREAT & PRIORITY HEADER */}
++                {/* Threat & Priority Summary */}
+                 <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
+                   <div className="flex items-center justify-between">
+-                    <span className={`px-2.5 py-0.5 rounded text-xs font-bold border tracking-tight ${threatTheme.badge}`}>
+-                      {rawSeverity} · THREAT
+-                    </span>
+-                    <span className="text-xs text-slate-400">
+-                      Threat Index: <strong className="text-rose-400">{threatIndex !== 'N/A' ? `${threatIndex}/100` : 'N/A'}</strong>
+-                    </span>
++                    <span className="text-xs font-bold text-white uppercase">{rawSeverity} THREAT</span>
++                    <span className="text-cyan-400 font-bold">{activePatientId}</span>
+                   </div>
+-
+-                  {intelligencePriority && (
+-                    <div className="flex items-center gap-2 pt-1">
+-                      <span className={`px-2 py-0.5 rounded text-[11px] font-bold border tracking-tight font-mono ${priorityThemes[intelligencePriority.priority]?.badge || priorityThemes.P3.badge}`}>
+-                        INTELLIGENCE PRIORITY: {intelligencePriority.priority} · {intelligencePriority.label}
+-                      </span>
+-                    </div>
+-                  )}
+-
+-                  <h4 className="text-sm font-bold text-white font-sans uppercase">
+-                    {patientDetailData.pipeline.scenario || patientDetailData.pipeline.event_type}
+-                  </h4>
+-
+-                  {resolvedPriorityReason && (
+-                    <p className="text-xs text-slate-300 font-sans italic">
+-                      {resolvedPriorityReason}
+-                    </p>
+-                  )}
+-
+-                  {intelligencePriority?.drivers && intelligencePriority.drivers.length > 0 && (
+-                    <div className="pt-2 border-t border-slate-800/60">
+-                      <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">
+-                        PRIORITY DRIVERS
+-                      </span>
+-                      <ul className="space-y-0.5 text-xs text-slate-300">
+-                        {intelligencePriority.drivers.map((d: string, idx: number) => (
+-                          <li key={idx} className="flex items-center gap-1.5">
+-                            <span className="text-cyan-400 font-bold">•</span>
+-                            <span>{d}</span>
+-                          </li>
+-                        ))}
+-                      </ul>
+-                    </div>
+-                  )}
+-
+-                  <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-400 pt-1">
+-                    <div>Event ID: <span className="text-cyan-400 font-bold">{activeEventId}</span></div>
+-                    <div>Target Asset: <span className="text-white font-bold">{activePatientId}</span></div>
+-                    <div>Endpoint: <span className="text-slate-300">{patientDetailData.pipeline.endpoint || activeEndpoint}</span></div>
+-                    <div>Timestamp: <span className="text-slate-300">{activeTimestamp}</span></div>
++                  <div className="text-slate-300 text-xs font-sans">
++                    {whyText}
+                   </div>
+                 </div>
+ 
+-                {/* 2. WHAT COULD IT AFFECT, WHY, RESPONSE: PATIENT / SERVICE IMPACT */}
+-                {patientDetailData.pipeline?.intelligence?.patient_impact && (
+-                  <PatientSafetyImpactCard 
+-                    patientImpact={patientDetailData.pipeline.intelligence.patient_impact}
+-                    incidentContext={patientDetailData.pipeline.intelligence.incident_context}
+-                  />
+-                )}
+-
+-                {/* POTENTIAL ATTACK PATH IN DRAWER */}
+-                {attackPath && (
+-                  <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-3 font-mono">
+-                    <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+-                      <span className="font-bold text-white text-xs uppercase">Potential Attack Path Topology</span>
+-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+-                        attackPath.status === 'AVAILABLE' 
+-                          ? 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30' 
+-                          : attackPath.status === 'RESTRICTED'
+-                          ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+-                          : 'bg-slate-800 text-slate-400 border-slate-700'
+-                      }`}>
+-                        {attackPath.status}
++                {/* Pipeline Stage Details */}
++                <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-3">
++                  <div className="font-bold text-white text-xs uppercase border-b border-slate-800 pb-2">
++                    Detection Pipeline Verification
++                  </div>
++                  <div className="grid grid-cols-2 gap-3 text-[11px]">
++                    <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
++                      <span className="text-slate-400 block text-[10px]">One-Class SVM</span>
++                      <span className="text-amber-400 font-bold">
++                        {patientDetailData.pipeline.ocsvm?.classification || 'NORMAL'}
+                       </span>
+                     </div>
+-
+-                    {attackPath.status === 'AVAILABLE' && attackPath.path_nodes.length > 0 ? (
+-                      <div className="space-y-2">
+-                        {attackPath.path_nodes.map((node: any, idx: number) => (
+-                          <div key={node.id || idx} className="flex items-start gap-2.5 text-xs">
+-                            <span className="w-5 h-5 rounded-full bg-slate-800 text-[10px] text-cyan-400 flex items-center justify-center shrink-0 mt-0.5 border border-slate-700">
+-                              {idx + 1}
+-                            </span>
+-                            <div>
+-                              <div className="font-bold text-white flex items-center gap-2">
+-                                <span>{node.id}</span>
+-                                <span className="text-[10px] font-sans px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60">
+-                                  {node.type}
+-                                </span>
+-                              </div>
+-                              <div className="text-slate-300 font-sans">{node.label}</div>
+-                              {node.detail && <div className="text-[11px] text-slate-500">{node.detail}</div>}
+-                            </div>
+-                          </div>
+-                        ))}
+-                      </div>
+-                    ) : (
+-                      <div className="text-xs text-slate-500 italic">
+-                        {attackPath.reason || 'Insufficient topology data for path reconstruction.'}
+-                      </div>
+-                    )}
+-                  </div>
+-                )}
+-
+-                {/* POTENTIAL BLAST RADIUS IN DRAWER */}
+-                {blastRadius && (
+-                  <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-3 font-mono">
+-                    <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+-                      <span className="font-bold text-white text-xs uppercase">Potential Blast Radius Exposure</span>
+-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+-                        blastRadius.status === 'AVAILABLE' && !blastRadius.restricted
+-                          ? 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30' 
+-                          : blastRadius.restricted
+-                          ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+-                          : 'bg-slate-800 text-slate-400 border-slate-700'
+-                      }`}>
+-                        {blastRadius.restricted ? 'RESTRICTED' : blastRadius.status}
++                    <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
++                      <span className="text-slate-400 block text-[10px]">Isolation Forest</span>
++                      <span className="text-amber-400 font-bold">
++                        {patientDetailData.pipeline.isolation_forest?.classification || 'NORMAL'}
+                       </span>
+                     </div>
+-
+-                    {blastRadius.status === 'AVAILABLE' && !blastRadius.restricted && blastRadius.potentially_exposed_assets.length > 0 ? (
+-                      <div className="space-y-3">
+-                        <div className="grid grid-cols-3 gap-2 text-center text-xs">
+-                          <div className="bg-slate-950 p-2 rounded-lg border border-slate-800">
+-                            <span className="text-[10px] text-slate-500 block">Exposed Assets</span>
+-                            <span className="font-bold text-white">{blastRadius.potentially_exposed_count}</span>
+-                          </div>
+-                          <div className="bg-slate-950 p-2 rounded-lg border border-slate-800">
+-                            <span className="text-[10px] text-slate-500 block">Clinical Assets</span>
+-                            <span className="font-bold text-amber-400">{blastRadius.clinical_assets_count}</span>
+-                          </div>
+-                          <div className="bg-slate-950 p-2 rounded-lg border border-slate-800">
+-                            <span className="text-[10px] text-slate-500 block">Critical Assets</span>
+-                            <span className="font-bold text-rose-400">{blastRadius.critical_assets_count}</span>
+-                          </div>
+-                        </div>
+-
+-                        <div className="space-y-1.5">
+-                          <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+-                            Potentially Reachable Assets
+-                          </span>
+-                          <div className="divide-y divide-slate-800/50">
+-                            {blastRadius.potentially_exposed_assets.map((asset: any) => (
+-                              <div key={asset.device_id} className="py-1.5 flex justify-between items-center text-xs">
+-                                <div>
+-                                  <div className="flex items-center gap-1.5">
+-                                    <span className="font-bold text-white">{asset.device_id}</span>
+-                                    <span className="text-slate-500 text-[10px]">·</span>
+-                                    <span className="text-slate-300 font-sans">{asset.device_name}</span>
+-                                  </div>
+-                                  <div className="text-[10px] text-slate-500">
+-                                    {asset.zone} · {asset.vlan} · {asset.asset_category}
+-                                  </div>
+-                                </div>
+-                                <span className="px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 text-[9px] font-bold">
+-                                  {asset.reachability}
+-                                </span>
+-                              </div>
+-                            ))}
+-                          </div>
+-                        </div>
+-
+-                        {blastRadius.services_at_exposure && blastRadius.services_at_exposure.length > 0 && (
+-                          <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+-                            <span className="font-bold text-slate-300">Services at Potential Exposure: </span>
+-                            {blastRadius.services_at_exposure.join(', ')}
+-                          </div>
+-                        )}
+-                      </div>
+-                    ) : blastRadius.restricted ? (
+-                      <div className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 font-mono">
+-                        <span className="font-bold">TRAVERSAL RESTRICTED: </span>
+-                        {blastRadius.reason || 'Traversal restricted by active host isolation.'}
+-                      </div>
+-                    ) : (
+-                      <div className="text-xs text-slate-500 italic">
+-                        {blastRadius.reason || 'Insufficient topology data for blast radius assessment.'}
+-                      </div>
+-                    )}
+-                  </div>
+-                )}
+-
+-                {/* 3. SUPPORTING TECHNICAL EVIDENCE (PROGRESSIVE DISCLOSURE) */}
+-                <div className="space-y-4 pt-2 border-t border-slate-800/80">
+-                  <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+-                    Supporting Technical Evidence & Signals
+-                  </div>
+-
+-                  {/* ML Detection Models & Fusion Agreement */}
+-                  <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-3">
+-                    <div className="flex justify-between items-center">
+-                      <span className="font-bold text-white text-xs uppercase">ML Detection Models & Fusion</span>
+-                      <span className="text-[10px] text-cyan-300">
+-                        Agreement: {patientDetailData.pipeline.fusion?.model_agreement || 'N/A'}
++                    <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
++                      <span className="text-slate-400 block text-[10px]">XGBoost Classification</span>
++                      <span className="text-cyan-400 font-bold">
++                        {patientDetailData.pipeline.xgboost?.classification || 'NORMAL'}
+                       </span>
+                     </div>
+-                    <div className="grid grid-cols-3 gap-2 text-center">
+-                      <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+-                        <span className="text-[10px] text-slate-500 block">OCSVM</span>
+-                        <span className="font-bold text-amber-400">
+-                          {patientDetailData.pipeline.ocsvm?.classification || patientDetailData.pipeline.ocsvm?.prediction || 'N/A'}
+-                        </span>
+-                      </div>
+-                      <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+-                        <span className="text-[10px] text-slate-500 block">Iso Forest</span>
+-                        <span className="font-bold text-rose-400">
+-                          {patientDetailData.pipeline.isolation_forest?.classification || patientDetailData.pipeline.isolation_forest?.prediction || 'N/A'}
+-                        </span>
+-                      </div>
+-                      <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+-                        <span className="text-[10px] text-slate-500 block">XGBoost</span>
+-                        <span className="font-bold text-cyan-400">
+-                          {patientDetailData.pipeline.xgboost?.classification || 'N/A'}
+-                        </span>
+-                      </div>
++                    <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
++                      <span className="text-slate-400 block text-[10px]">Fusion Consensus</span>
++                      <span className="text-emerald-400 font-bold">
++                        {patientDetailData.pipeline.fusion?.model_agreement || '3/3'} Agreement
++                      </span>
+                     </div>
+                   </div>
++                </div>
+ 
+-                  {/* Forensic Telemetry Context */}
++                {/* Patient Safety Rationale */}
++                {patientImpact?.rationale && (
+                   <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
+-                    <h4 className="text-xs font-bold text-white uppercase tracking-wider">Forensic Telemetry Context</h4>
+-                    <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-300">
+-                      <div>FEC Score: <strong className="text-amber-400">{patientDetailData.pipeline.fec?.fec_score !== undefined ? `${patientDetailData.pipeline.fec.fec_score}%` : 'N/A'}</strong></div>
+-                      <div>Source IP: <strong className="text-cyan-300">{patientDetailData.pipeline.source_ip || 'N/A'}</strong></div>
+-                      <div>Fusion Result: <strong className="text-rose-400">{patientDetailData.pipeline.fusion?.result || 'N/A'}</strong></div>
+-                      <div>Evidence Strength: <strong className="text-emerald-400">{patientDetailData.pipeline.threat_assessment?.evidence_strength || 'N/A'}</strong></div>
++                    <div className="font-bold text-white text-xs uppercase border-b border-slate-800 pb-2">
++                      Clinical Safety Rationale
+                     </div>
++                    <ul className="space-y-1.5 text-[11px] text-slate-300 font-sans">
++                      {patientImpact.rationale.map((r: string, i: number) => (
++                        <li key={i} className="flex items-start gap-2">
++                          <span className="text-cyan-400 font-mono mt-0.5">▪</span>
++                          <span>{r}</span>
++                        </li>
++                      ))}
++                    </ul>
+                   </div>
+-
+-                  {/* 15-D Behavioral Vector Embedding */}
+-                  {patientDetailData.vector && (
+-                    <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
+-                      <h4 className="text-xs font-bold text-cyan-400 uppercase tracking-wider">
+-                        15-D L2 Behavioral Vector Embedding
+-                      </h4>
+-                      <div className="p-3 bg-slate-950 rounded-lg text-[11px] text-cyan-300 break-all leading-relaxed border border-slate-900 font-mono">
+-                        [{patientDetailData.vector.embedding_vector?.map((v: number) => v.toFixed(4)).join(', ')}]
+-                      </div>
+-                    </div>
+-                  )}
+-                </div>
+-
++                )}
+               </div>
+             ) : (
+-              <div className="p-8 text-center text-rose-400 text-xs bg-slate-950/80 rounded-xl border border-slate-800 font-mono">
+-                {forensicError || `No forensic record found for ${selectedEventId}.`}
++              <div className="p-8 text-center text-slate-400 space-y-2">
++                <AlertTriangle className="w-6 h-6 text-amber-400 mx-auto" />
++                <p>No extended forensic record available for this event.</p>
+               </div>
+             )}
+           </div>
+         </div>
+       )}
++
+     </div>
+   );
+ };
+diff --git a/hshield2-main/frontend/src/pages/SecureGateway.tsx b/hshield2-main/frontend/src/pages/SecureGateway.tsx
+index 03e63a1..a515ef1 100644
+--- a/hshield2-main/frontend/src/pages/SecureGateway.tsx
++++ b/hshield2-main/frontend/src/pages/SecureGateway.tsx
+@@ -86,15 +86,15 @@ export const SecureGateway: React.FC<SecureGatewayProps> = ({ onAccessGranted, o
+   };
+ 
+   return (
+-    <main className="relative bg-black min-h-screen w-full flex flex-col overflow-x-hidden overflow-y-auto selection:bg-white selection:text-black font-sans pb-8">
++    <main className="relative bg-black min-h-screen lg:h-screen lg:max-h-screen w-full flex flex-col justify-between overflow-x-hidden overflow-y-auto lg:overflow-hidden selection:bg-white selection:text-black font-sans">
+       {/* Cinematic HLS Mux Background Video */}
+       <BackgroundVideo />
+ 
+       {/* Top Navbar */}
+-      <SecureNavbar onUnauthorizedClick={() => triggerSecurityAlert('/restricted-nav')} />
++      <SecureNavbar />
+ 
+       {/* Center Hero with Authentication Panel */}
+-      <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-3 sm:px-4 py-4">
++      <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-3 sm:px-4 py-1 sm:py-2 min-h-0">
+         <SecureHero
+           gatewayState={gatewayState}
+           onLoginSubmit={handleLoginSubmit}
+@@ -104,31 +104,42 @@ export const SecureGateway: React.FC<SecureGatewayProps> = ({ onAccessGranted, o
+           onOpenFaceRegister={() => setIsFaceRegisterOpen(true)}
+         />
+ 
+-        {/* Demo Preset Buttons for Quick Testing */}
+-        <div className="mt-4 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2 max-w-lg w-full font-mono text-[11px]">
+-          <button
+-            onClick={() => handleLoginSubmit('investigator@gmail.com', 'investigate@123')}
+-            className="w-full sm:w-auto px-3 py-2 sm:py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all"
+-          >
+-            <UserCheck className="w-3.5 h-3.5" />
+-            <span>INVESTIGATOR DEMO LOGIN</span>
+-          </button>
+-
+-          <button
+-            onClick={() => handleLoginSubmit('doctor_demo', 'demo123')}
+-            className="w-full sm:w-auto px-3 py-2 sm:py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all"
+-          >
+-            <UserCheck className="w-3.5 h-3.5" />
+-            <span>DOCTOR DEMO LOGIN</span>
+-          </button>
+-
+-          <button
+-            onClick={() => handleLoginSubmit('unknown_user_47', 'wrong_pass')}
+-            className="w-full sm:w-auto px-3 py-2 sm:py-1.5 rounded-lg bg-rose-600/20 hover:bg-rose-600/30 border border-rose-500/40 text-rose-300 font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all animate-pulse"
+-          >
+-            <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />
+-            <span>SIMULATE UNAUTHORIZED LOGIN</span>
+-          </button>
++        {/* Demonstration Access Controls */}
++        <div className="mt-2.5 sm:mt-3 flex flex-col items-center justify-center gap-1.5 sm:gap-2 max-w-md w-full font-mono text-[10px] sm:text-[11px] pt-2 sm:pt-2.5 border-t border-white/10 shrink-0">
++          <div className="text-[9px] sm:text-[10px] font-mono tracking-[0.2em] text-white/40 uppercase font-semibold text-center">
++            DEMONSTRATION ACCESS
++          </div>
++
++          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 w-full">
++            <button
++              type="button"
++              onClick={() => handleLoginSubmit('investigator@gmail.com', 'investigate@123')}
++              className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all text-[10px] sm:text-[11px]"
++            >
++              <UserCheck className="w-3 h-3 text-indigo-400" />
++              <span>INVESTIGATOR DEMO LOGIN</span>
++            </button>
++
++            <button
++              type="button"
++              onClick={() => handleLoginSubmit('doctor_demo', 'demo123')}
++              className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all text-[10px] sm:text-[11px]"
++            >
++              <UserCheck className="w-3 h-3 text-emerald-400" />
++              <span>DOCTOR DEMO LOGIN</span>
++            </button>
++          </div>
++
++          <div className="w-full flex justify-center">
++            <button
++              type="button"
++              onClick={() => handleLoginSubmit('unknown_user_47', 'wrong_pass')}
++              className="px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-lg bg-rose-600/20 hover:bg-rose-600/30 border border-rose-500/40 text-rose-300 font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all text-[10px] sm:text-[11px] animate-pulse"
++            >
++              <ShieldAlert className="w-3 h-3 text-rose-400" />
++              <span>SIMULATE UNAUTHORIZED LOGIN</span>
++            </button>
++          </div>
+         </div>
+       </div>
+ 
+-- 
+2.44.0.windows.1
+

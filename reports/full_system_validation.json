@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-08-28T13:21:00.537488Z",
+  "summary": {
+    "total_tests": 14,
+    "passed": 14,
+    "failed": 0,
+    "warnings": 0
+  },
+  "results": {
+    "Patient Records": "PASS",
+    "Honeypot": "PASS",
+    "Feature Engine": "PASS",
+    "FEC Engine": "PASS",
+    "One-Class SVM": "PASS",
+    "Isolation Forest": "PASS",
+    "XGBoost": "PASS",
+    "Detection Fusion": "PASS",
+    "Command Centre": "PASS",
+    "Investigation": "PASS",
+    "Analytics": "PASS",
+    "Reporting": "PASS",
+    "End-to-End Pipeline": "PASS",
+    "Data Consistency": "PASS"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "model_name": "One-Class SVM",
+  "model_version": "ocsvm_v1",
+  "features": [
+    "failed_login_rate",
+    "request_rate",
+    "total_records_accessed",
+    "unique_endpoints",
+    "endpoint_discovery_count",
+    "suspicious_download_count",
+    "data_export_count",
+    "privilege_escalation_count",
+    "device_change_count",
+    "night_activity_count",
+    "error_rate",
+    "anomalous_event_count",
+    "unique_sessions",
+    "unique_devices",
+    "average_response_time_ms"
+  ],
+  "scaler": "StandardScaler",
+  "kernel": "rbf",
+  "nu": 0.01,
+  "gamma": "0.01",
+  "training_row_count": 2520,
+  "normal_training_count": 1512,
+  "random_seed": 42,
+  "training_timestamp": "2026-08-28T13:19:10.949839",
+  "validation_metrics": {
+    "TN": 318,
+    "FP": 6,
+    "FN": 0,
+    "TP": 216,
+    "precision": 0.972972972972973,
+    "recall": 1.0,
+    "f1": 0.9863013698630136,
+    "accuracy": 0.9888888888888889,
+    "false_positive_rate": 0.018518518518518517,
+    "normal_detection_rate": 0.9814814814814815,
+    "anomaly_detection_rate": 1.0
+  },
+  "normalization_bounds": {
+    "dmin": -5.030105448330622,
+    "dmax": 1.503353042969933
+  }
+}

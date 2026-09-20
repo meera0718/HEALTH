@@ -1,0 +1,16 @@
+{
+  "ocsvm": {
+    "dmin": -3.8815467747778967,
+    "dmax": 3.713985998682094
+  },
+  "isolation_forest": {
+    "smin": -0.08541847244165368,
+    "smax": 0.19317749040819687
+  },
+  "classes": [
+    "benign",
+    "brute_force",
+    "reconnaissance",
+    "suspicious_data_access"
+  ]
+}

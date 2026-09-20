@@ -1,0 +1,496 @@
+{
+    "audit_meta": {
+        "total_patients": 30,
+        "unique_fec_scores": 1,
+        "unique_ocsvm_scores": 1,
+        "unique_iforest_scores": 1,
+        "unique_xgboost_classes": 1,
+        "unique_final_scores": 1,
+        "duplicate_final_scores": 29,
+        "formula_mismatches": 0,
+        "invalid_scores": 0,
+        "api_failures": 0
+    },
+    "patients": [
+        {
+            "patient_id": "P001",
+            "diagnosis": "Type 2 Diabetes",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P002",
+            "diagnosis": "Hypertension",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P003",
+            "diagnosis": "Asthma",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P004",
+            "diagnosis": "Migraine",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P005",
+            "diagnosis": "Iron Deficiency Anemia",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P006",
+            "diagnosis": "Hypothyroidism",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P007",
+            "diagnosis": "Osteoarthritis",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P008",
+            "diagnosis": "Chronic Kidney Disease",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P009",
+            "diagnosis": "Coronary Artery Disease",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P010",
+            "diagnosis": "GERD",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P011",
+            "diagnosis": "Epilepsy",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P012",
+            "diagnosis": "Psoriasis",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P013",
+            "diagnosis": "Rheumatoid Arthritis",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P014",
+            "diagnosis": "COPD",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P015",
+            "diagnosis": "Fatty Liver Disease",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P016",
+            "diagnosis": "Vitamin D Deficiency",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P017",
+            "diagnosis": "Hyperlipidemia",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P018",
+            "diagnosis": "Irritable Bowel Syndrome",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P019",
+            "diagnosis": "Osteoporosis",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P020",
+            "diagnosis": "Sleep Apnea",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P021",
+            "diagnosis": "Allergic Rhinitis",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P022",
+            "diagnosis": "Eczema",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P023",
+            "diagnosis": "PCOS",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P024",
+            "diagnosis": "Chronic Sinusitis",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P025",
+            "diagnosis": "Anemia",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P026",
+            "diagnosis": "Obesity",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P027",
+            "diagnosis": "Chronic Back Pain",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P028",
+            "diagnosis": "Glaucoma",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P029",
+            "diagnosis": "Fibromyalgia",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        },
+        {
+            "patient_id": "P030",
+            "diagnosis": "Parkinsonian Syndrome",
+            "fec_score": 0.0,
+            "ocsvm_anomaly_score": 74.0,
+            "isolation_forest_anomaly_score": 56.3,
+            "xgboost_predicted_class": "NORMAL",
+            "xgboost_suspiciousness_score": 0.4,
+            "detection_score": 26.2,
+            "detection_status": "LOW CONCERN",
+            "model_agreement": "1/2 (DISAGREE)",
+            "evidence_strength": "MODERATE",
+            "detection_reasons": [
+                "One-Class SVM identified deviation from normal behaviour"
+            ]
+        }
+    ]
+}

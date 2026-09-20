@@ -1,0 +1,26 @@
+HEALTH SHIELD X BEHAVIOURAL THREAT MONITORING AUDIT SUMMARY
+===========================================================
+
+Total patients:
+30
+
+Patients with unique detection scores:
+1
+
+Patients with duplicate detection scores:
+29
+
+Formula mismatches:
+0
+
+Invalid scores:
+0
+
+API failures:
+0
+
+Frontend verification:
+PASS
+
+Verification Result:
+PASS
